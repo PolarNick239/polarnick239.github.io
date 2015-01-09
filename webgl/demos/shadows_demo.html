@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple shadows. PolarNick WebGL.</title>
+
+    <script src="../resources/webgl-commons.js" type="text/javascript"></script>
+
+    <script src="../resources/webgl-utils.js" type="text/javascript"></script>
+    <script src="../resources/webgl-debug.js" type="text/javascript"></script>
+    <script src="../resources/J3DIMath.js"></script>
+    <script src="../resources/J3DI.js"></script>
+    <script src="../resources/mat3.js"></script>
+
+    <script id="textured_rectangle_vshader" type="x-shader/x-vertex">
+        #version 100
+        #line 16
+        uniform mat3 world_to_camera;
+
+        //attribute vec2 texture_coordinate;
+        attribute vec2 position;
+
+        //vec2 varying_texture_coordinate;
+        vec2 varying_position;
+
+        void main()
+        {
+            vec3 camera_position = world_to_camera * vec3(position, 1.0);
+            //varying_texture_coordinate = texture_coordinate;
+            varying_position = position;
+            gl_Position = vec4(camera_position.xy, 0.0, camera_position.z);
+        }
+    </script>
+
+    <script id="textured_rectangle_fshader" type="x-shader/x-fragment">
+        #version 100
+        #line 36
+        precision mediump float;
+
+        //uniform sampler2D background_tex;
+
+        uniform int lights_count;
+
+        uniform sampler2D light_depth_tex;
+
+        uniform mat3 world_to_light_depth_tex[LIGHTS_MAX];
+        uniform vec2 light_pos[LIGHTS_MAX];
+        uniform float light_range[LIGHTS_MAX];
+
+        //vec2 varying_texture_coordinate;
+        vec2 varying_position;
+
+        // @author: http://aras-p.info/blog/2009/07/30/encoding-floats-to-rgba-the-final/
+        float DecodeFloatRGBA( vec4 rgba ) {
+            return dot( rgba, vec4(1.0, 1.0/255.0, 1.0/65025.0, 1.0/16581375.0) );
+        }
+
+        void main()
+        {
+            gl_FragColor = vec4(1.0, 0.5, 0.5, 1.0); // texture2D(background_tex, varying_texture_coordinate); TODO: add cute kitten texture
+            float min_light = 0.2;
+            float max_light = min_light;
+            for (int i = 0; i < LIGHTS_MAX; i++) {
+                if (i >= lights_count) {
+                    break;
+                }
+                vec3 light_tex_pos = world_to_light_depth_tex[i] * vec3(varying_position, 1.0);
+                float x = light_tex_pos.x;
+                float y = light_tex_pos.y;
+                float z = light_tex_pos.z;
+                if (x > 0.0 && x < 1.0*z && y > 0.0 && y < 1.0*z) {
+                    float dist_from_light = length(varying_position - light_pos[i]);
+                    float light_depth = DecodeFloatRGBA(texture2D(light_depth_tex, vec2(x/z, i/LIGHTS_MAX)));
+                    if (y/z <= light_depth && dist_from_light*dist_from_light <= light_range[i] * light_range[i]) {
+                        // float a = (min_light - 1.0) / (light_range[i] * light_range[i]);
+                        // float parabolic_shadow = a*dist_from_light*dist_from_light + 1;
+                        float linear_shadow = 1.0 + dist_from_light * (min_light - 1.0) / light_range[i];
+                        max_light = max(linear_shadow, max_light);
+                    }
+                }
+            }
+            gl_FragColor *= max_light;
+        }
+    </script>
+
+    <script id="shadowcaster_vshader" type="x-shader/x-vertex">
+        #version 100
+        #line 87
+        precision mediump float;
+
+        uniform mat3 world_to_light_camera;
+
+        attribute vec2 position;
+
+        varying float depth;
+
+        void main()
+        {
+            vec3 camera_position = world_to_light_camera * vec3(position, 1.0);
+            gl_Position = vec4(camera_position.x, 0.0, camera_position.y, camera_position.z);
+            depth = camera_position.y / camera_position.z;
+        }
+    </script>
+
+    <script id="shadowcaster_fshader" type="x-shader/x-fragment">
+        #version 100
+        #line 107
+        precision mediump float;
+
+        varying float depth;
+
+        // @author: http://aras-p.info/blog/2009/07/30/encoding-floats-to-rgba-the-final/
+        vec4 EncodeFloatRGBA( float v ) {
+            vec4 enc = vec4(1.0, 255.0, 65025.0, 16581375.0) * v;
+            enc = fract(enc);
+            enc -= enc.yzww * vec4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);
+            return enc;
+        }
+
+        void main()
+        {
+            gl_FragColor = EncodeFloatRGBA(depth);
+        }
+    </script>
+
+    <script>
+        var LIGHTS_MAX = 32;
+
+        var shadow_resolution = 1024;
+
+        var width;
+        var height;
+
+        var gl_program;
+        var position_buffer;
+        var tex_coord_buffer;
+        var indices_buffer;
+
+        var gl_program_shadow;
+        var position_buffer_shadow;
+        var indices_buffer_shadow;
+        var shadow_framebuffer;
+
+        var depth_tex;
+
+        var meters_in_width = 15;
+        var light_range = 5;
+        var camera_pos_x;
+        var camera_pos_y;
+        var window_to_world;
+
+        var lights;
+        var lights_count;
+        var light;
+
+        var box_lines_indices_count;
+
+        function init()
+        {
+            var gl = initWebGL("webgl-canvas");
+            if (!gl) {
+                alert('No WebGL support!');
+                return;
+            }
+            init_webgl_commons(gl);
+
+            vertex_code = document.getElementById("textured_rectangle_vshader").text;
+            fragment_code = document.getElementById("textured_rectangle_fshader").text.split("LIGHTS_MAX").join(LIGHTS_MAX.toString());
+            gl_program = build_program(vertex_code, fragment_code);
+            vertex_code = document.getElementById("shadowcaster_vshader").text;
+            fragment_code = document.getElementById("shadowcaster_fshader").text;
+            gl_program_shadow = build_program(vertex_code, fragment_code);
+
+            var rect_range = 1000;
+            var texture_width = 1.5;
+            var position = new Float32Array([
+                        -rect_range, -rect_range,
+                        -rect_range, +rect_range,
+                        +rect_range, -rect_range,
+                        +rect_range, +rect_range]);
+            var texture_coordinate = new Float32Array([
+                -rect_range/texture_width, -rect_range/texture_width,
+                -rect_range/texture_width, +rect_range/texture_width,
+                +rect_range/texture_width, -rect_range/texture_width,
+                +rect_range/texture_width, +rect_range/texture_width]);
+            var indices = new Uint8Array([
+                0, 1, 2,
+                1, 2, 3]);
+
+
+            var box_width = 0.1;
+            var box_height = 0.1;
+            var box_split_x = 0.5;
+            var box_split_y = 0.5;
+            var box_offset_x = -1.0;
+            var box_offset_y = -1.0;
+            var box_step_x = box_width + box_split_x;
+            var box_step_y = box_height + box_split_y;
+            var box_rows = 5;
+            var box_cols = 5;
+            box_lines_indices_count = box_rows * box_cols * 4 * 2;
+
+            var box_position = new Float32Array(box_rows * box_cols * 4 * 2);
+            var box_indices = new Uint8Array(box_lines_indices_count);
+
+            for (var r = 0; r < box_rows; r++) {
+                for (var c = 0; c < box_cols; c++) {
+                    var offset = (r*box_cols + c);
+                    box_position[offset * 4 * 2 + 0 * 2 + 0] = box_offset_x + box_step_x * c;
+                    box_position[offset * 4 * 2 + 0 * 2 + 1] = box_offset_y + box_step_y * r;
+                    box_position[offset * 4 * 2 + 1 * 2 + 0] = box_offset_x + box_step_x * c;
+                    box_position[offset * 4 * 2 + 1 * 2 + 1] = box_offset_y + box_step_y * r + box_height;
+                    box_position[offset * 4 * 2 + 2 * 2 + 0] = box_offset_x + box_step_x * c + box_width;
+                    box_position[offset * 4 * 2 + 2 * 2 + 1] = box_offset_y + box_step_y * r;
+                    box_position[offset * 4 * 2 + 3 * 2 + 0] = box_offset_x + box_step_x * c + box_width;
+                    box_position[offset * 4 * 2 + 3 * 2 + 1] = box_offset_y + box_step_y * r + box_height;
+                    box_indices[offset * 4 * 2 + 0 * 2 + 0] = offset * 4 + 0;
+                    box_indices[offset * 4 * 2 + 0 * 2 + 1] = offset * 4 + 1;
+                    box_indices[offset * 4 * 2 + 1 * 2 + 0] = offset * 4 + 1;
+                    box_indices[offset * 4 * 2 + 1 * 2 + 1] = offset * 4 + 2;
+                    box_indices[offset * 4 * 2 + 2 * 2 + 0] = offset * 4 + 2;
+                    box_indices[offset * 4 * 2 + 2 * 2 + 1] = offset * 4 + 3;
+                    box_indices[offset * 4 * 2 + 3 * 2 + 0] = offset * 4 + 3;
+                    box_indices[offset * 4 * 2 + 3 * 2 + 1] = offset * 4 + 0;
+                }
+            }
+
+            light = new DirectionalLight(0, 0, 0, 120, 0.01, light_range);
+            lights_count = 1;
+            lights = [light];
+
+
+
+            indices_buffer = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+            indices_buffer.bind();
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+            position_buffer = new VertexBufferObject();
+            position_buffer.bind();
+            gl.bufferData(gl.ARRAY_BUFFER, position, gl.STATIC_DRAW);
+
+            tex_coord_buffer = new VertexBufferObject();
+            tex_coord_buffer.bind();
+            gl.bufferData(gl.ARRAY_BUFFER, texture_coordinate, gl.STATIC_DRAW);
+
+
+
+            indices_buffer_shadow = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+            indices_buffer_shadow.bind();
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, box_indices, gl.STATIC_DRAW);
+
+            position_buffer_shadow = new VertexBufferObject();
+            position_buffer_shadow.bind();
+            gl.bufferData(gl.ARRAY_BUFFER, box_position, gl.STATIC_DRAW);
+
+
+
+            shadow_framebuffer = new Framebuffer();
+            depth_tex = new Texture(gl.TEXTURE_2D);
+            depth_tex.set_params(CLAMP_TO_EDGE_TEXTURE.concat(NEAREST_TEXTURE));
+            depth_tex.bind();
+            gl.texImage2D(depth_tex.target, 0, gl.RGBA, shadow_resolution, LIGHTS_MAX, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+
+            var renderbuffer = gl.createRenderbuffer();
+            gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+            gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, shadow_resolution, LIGHTS_MAX);
+
+            shadow_framebuffer.bind();
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, depth_tex.handle, 0);
+            gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+            shadow_framebuffer.unbind();
+
+
+            var light_depth_loc = gl.getUniformLocation(gl_program, 'light_depth_tex');
+            gl.useProgram(gl_program);
+            gl.uniform1i(light_depth_loc, depth_tex.slot);
+
+            return gl;
+        }
+
+        function update_world(gl) {
+            var meters_in_screen_x = meters_in_width;
+            var meters_in_screen_y = meters_in_width * height / width;
+            var camera_rect = [[camera_pos_x - meters_in_screen_x / 2, camera_pos_y - meters_in_screen_y / 2],
+                [camera_pos_x + meters_in_screen_x / 2, camera_pos_y + meters_in_screen_y / 2]];
+            window_to_world = new Float32Array(9);
+            mat3.multiply(window_to_world,
+                    rect_to_rect_matrix([[0, 0], [width, height]], camera_rect),
+                    invert_y_in_range(0, height));
+            world_to_camera = rect_to_rect_matrix(camera_rect, [[-1.0, -1.0], [1.0, 1.0]]);
+
+            gl.useProgram(gl_program);
+            var loc = gl.getUniformLocation(gl_program, 'world_to_camera');
+            transposed = new Float32Array(9);
+            mat3.transpose(transposed, world_to_camera);
+            gl.uniformMatrix3fv(loc, false, transposed);
+        }
+
+        function update_light(gl, layer_index) {
+            var cur_light = lights[layer_index];
+            var frustum_matrix = cur_light.create_frustum_matrix();
+            var loc;
+
+            gl.useProgram(gl_program);
+            var matrix = new Float32Array(9);
+            mat3.multiply(matrix, rect_to_rect_matrix([[-1, -1], [1, 1]], [[0, 0], [1, 1]]), frustum_matrix);
+            loc = gl.getUniformLocation(gl_program, 'world_to_light_depth_tex[LAYER_INDEX]'.replace('LAYER_INDEX', layer_index.toString()));
+            transposed = new Float32Array(9);
+            mat3.transpose(transposed, matrix);
+            gl.uniformMatrix3fv(loc, false, transposed);
+            loc = gl.getUniformLocation(gl_program, 'light_pos[LAYER_INDEX]'.replace('LAYER_INDEX', layer_index.toString()));
+            gl.uniform2f(loc, cur_light.position_x, cur_light.position_y);
+            loc = gl.getUniformLocation(gl_program, 'light_pos[LAYER_INDEX]'.replace('LAYER_INDEX', layer_index.toString()));
+            gl.uniform1f(loc, cur_light.far);
+            loc = gl.getUniformLocation(gl_program, 'lights_count');
+            gl.uniform1i(loc, lights_count);
+
+            gl.useProgram(gl_program_shadow);
+            loc = gl.getUniformLocation(gl_program_shadow, 'world_to_light_camera');
+            matrix = frustum_matrix;
+            mat3.transpose(transposed, matrix);
+            gl.uniformMatrix3fv(loc, false, transposed);
+        }
+
+        function render_light_depth(gl) {
+            shadow_framebuffer.bind();
+            gl.viewport(0, 0, shadow_resolution, 1);
+            gl.enable(gl.DEPTH_TEST);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.clear(gl.DEPTH_BUFFER_BIT);
+            gl.useProgram(gl_program_shadow);
+
+            indices_buffer_shadow.bind();
+
+            loc = gl.getAttribLocation(gl_program_shadow, 'position');
+            gl.enableVertexAttribArray(loc);
+            gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 2*4, 0);
+
+            gl.drawElements(gl.LINES, box_lines_indices_count, gl.UNSIGNED_BYTE, 0);
+            shadow_framebuffer.unbind();
+        }
+
+        var requestId;
+
+        function reshape(gl)
+        {
+            // change the size of the canvas's backing store to match the size it is displayed.
+            var canvas = document.getElementById('webgl-canvas');
+            if (canvas.clientWidth == canvas.width && canvas.clientHeight == canvas.height)
+                return;
+
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            width = canvas.width;
+            height = canvas.height;
+
+            gl.viewport(0, 0, width, height);
+        }
+
+        function drawPicture(gl)
+        {
+            reshape(gl);
+            update_light(gl, lights_count - 1);
+            update_world(gl);
+            render_light_depth(gl);
+            gl.enable(gl.DEPTH_TEST);
+            gl.clearColor(0.0, 0.0, 0.2, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.clear(gl.DEPTH_BUFFER_BIT);
+
+            gl.useProgram(gl_program);
+
+            indices_buffer.bind();
+
+            loc = gl.getAttribLocation(gl_program, 'position');
+            gl.enableVertexAttribArray(loc);
+            gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 2*4, 0);
+
+//            loc = gl.getAttribLocation(gl_program, 'texture_coordinate');
+//            gl.enableVertexAttribArray(loc);
+//            gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 2*4, 0);
+
+            gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+        }
+
+        function start()
+        {
+            var c = document.getElementById("webgl-canvas");
+
+//            c = WebGLDebugUtils.makeLostContextSimulatingCanvas(c);
+//            c.loseContextInNCalls(1);
+
+            c.addEventListener('webglcontextlost', handleContextLost, false);
+            c.addEventListener('webglcontextrestored', handleContextRestored, false);
+
+            var gl = init();
+            if (!gl) {
+                return;
+            }
+
+            framerate = new Framerate("framerate");
+            var f = function() {
+                drawPicture(gl);
+                framerate.snapshot();
+                requestId = window.requestAnimFrame(f, c);
+            };
+            f();
+
+            function handleContextLost(e) {
+                e.preventDefault();
+                clearLoadingImages();
+                if (requestId !== undefined) {
+                    window.cancelAnimFrame(requestId);
+                    requestId = undefined;
+                }
+            }
+
+            function handleContextRestored() {
+                init();
+                f();
+            }
+        }
+
+    </script>
+
+</head>
+<body onLoad ="start()">
+<canvas id="webgl-canvas" width="800" height="600">
+    Your browser does not support canvas element!
+</canvas>
+<div id="framerate">
+</div>
+Not ready yet!
+</body>
+</html>
