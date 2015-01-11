@@ -33,7 +33,8 @@
     </script>
 
     <script id="fshader" type="x-shader/x-fragment">
-        precision mediump float;
+        precision highp float;
+
         varying vec4 v_color;
 
         void main()
@@ -54,10 +55,12 @@
         var color_buf;
 
         function init_locations() {
+            gl.useProgram(gl_program);
             gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'position');
             gl_program.colorAttrib = gl.getAttribLocation(gl_program, 'color');
             gl.enableVertexAttribArray(gl_program.positionAttrib);
             gl.enableVertexAttribArray(gl_program.colorAttrib);
+            gl.useProgram(null);
 
             gl_program.scaleToSquareUniform = gl.getUniformLocation(gl_program, 'scale_to_square');
             gl_program.timeUniform = gl.getUniformLocation(gl_program, 'time');
@@ -78,13 +81,15 @@
         }
 
         function bind_attributes() {
+            gl.useProgram(gl_program);
             color_buf.bind();
             gl.vertexAttribPointer(gl_program.colorAttrib, 4, gl.FLOAT, false, 4*4, 0);
             color_buf.unbind();
 
             position_buf.bind();
-            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 2*4, 0);
             position_buf.unbind();
+            gl.useProgram(null);
         }
 
         function update_canvas_shape(canvas) {
@@ -106,11 +111,13 @@
                 start_time = cur_time;
             }
 
+            gl.useProgram(gl_program);
             gl.uniform1f(gl_program.timeUniform, cur_time - start_time);
 
             var scale_width = Math.min(width, height)/width;
             var scale_height = Math.min(width, height)/height;
             gl.uniform2f(gl_program.scaleToSquareUniform, scale_width, scale_height);
+            gl.useProgram(null);
         }
 
         function render_frame(indices) {
@@ -121,7 +128,9 @@
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
             index_buf.bind();
+            gl.useProgram(gl_program);
             gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_BYTE, 0);
+            gl.useProgram(null);
             index_buf.unbind();
         }
 
@@ -143,12 +152,12 @@
             var lightness = 0.6;
             var indices = new Uint8Array([
                 0, 1, 2,
-                1, 2, 3]);
+                0, 2, 3]);
             var position = new Float32Array([
                 -1, -1,
                 -1, +1,
-                +1, -1,
-                +1, +1]);
+                +1, +1,
+                +1, -1]);
             var color = new Float32Array([
                 lightness, 0, 0, 1,
                 0, lightness, 0, 1,
@@ -159,7 +168,6 @@
             position_buf = new VertexBufferObject();
             color_buf = new VertexBufferObject();
 
-            gl.useProgram(gl_program);
             init_locations();
             upload_data(indices, position, color);
             bind_attributes();

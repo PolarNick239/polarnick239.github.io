@@ -1,6 +1,6 @@
 var matrix = {};
 
-matrix.dot = function (a, b) {
+matrix.dot = function (b, a) {
     var a00 = a[0], a01 = a[1], a02 = a[2],
         a10 = a[3], a11 = a[4], a12 = a[5],
         a20 = a[6], a21 = a[7], a22 = a[8],

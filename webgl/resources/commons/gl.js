@@ -10,11 +10,23 @@ var setupWebGL = function (canvas) {
         }
         if (context) {
             gl = context;
+            initWebGLValues();
             return true;
         }
     }
     return false;
 };
+
+function initWebGLValues() {
+    REPEAT_TEXTURE = [[gl.TEXTURE_WRAP_S, gl.REPEAT],
+        [gl.TEXTURE_WRAP_T, gl.REPEAT]];
+    CLAMP_TO_EDGE_TEXTURE = [[gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE],
+        [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]];
+    LINEAR_TEXTURE = [[gl.TEXTURE_MIN_FILTER, gl.LINEAR],
+        [gl.TEXTURE_MAG_FILTER, gl.LINEAR]];
+    NEAREST_TEXTURE = [[gl.TEXTURE_MIN_FILTER, gl.NEAREST],
+        [gl.TEXTURE_MAG_FILTER, gl.NEAREST]];
+}
 
 function build_shader(shader_code, shader_type) {
     var shader = gl.createShader(shader_type);
@@ -78,4 +90,57 @@ VertexBufferObject.prototype.bind = function () {
 
 VertexBufferObject.prototype.unbind = function () {
     gl.bindBuffer(this.target, null);
+};
+
+
+function Framebuffer() {
+    this.handle = gl.createFramebuffer();
+}
+
+Framebuffer.prototype.bind = function() {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.handle);
+};
+
+Framebuffer.prototype.unbind = function () {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+};
+
+var REPEAT_TEXTURE;
+
+var CLAMP_TO_EDGE_TEXTURE;
+
+var LINEAR_TEXTURE;
+
+var NEAREST_TEXTURE;
+
+var next_texture_slot = 1;
+function Texture(target) {
+    this.target = target;
+    this.slot = next_texture_slot;
+    next_texture_slot += 1;
+    this.handle = gl.createTexture();
+    this.bind();
+    gl.bindTexture(this.target, this.handle);
+}
+
+Texture.prototype.bind = function() {
+    gl.activeTexture(gl.TEXTURE0 + this.slot);
+};
+
+Texture.prototype.unbind = function() {
+    gl.activeTexture(gl.TEXTURE0);
+};
+
+Texture.prototype.set_params = function(params) {
+    for (var i = 0; i < params.length; i++) {
+        var key = params[i][0];
+        var value = params[i][1];
+        if (value === parseInt(value, 10)) {
+            gl.texParameteri(this.target, key, value);
+        } else if (value === parseFloat(value)) {
+            gl.texParameterf(this.target, key, value);
+        } else {
+            log("No glTexParameter for key = " + key + " value = " + value);
+        }
+    }
 };
