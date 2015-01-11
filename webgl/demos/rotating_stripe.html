@@ -1,0 +1,160 @@
+<html style="height: 100%">
+<head>
+    <title>Rotating stripe. PolarNick WebGL.</title>
+
+    <script src="../resources/commons/matrix.js" type="text/javascript"></script>
+    <script src="../resources/commons/gl.js" type="text/javascript"></script>
+    <script src="../resources/commons/js.js" type="text/javascript"></script>
+
+    <script id="vertex_shader" type="x-shader/x-vertex">
+        attribute vec2 position;
+
+        uniform mat3 mvpMatrix;
+
+        void main(void) {
+            vec3 framePosition = mvpMatrix * vec3(position, 1.0);
+            gl_Position = vec4(framePosition.x, framePosition.y, 0.0, framePosition.z);
+        }
+    </script>
+
+
+    <script id="fragment_shader" type="x-shader/x-fragment">
+        precision highp float;
+
+        uniform vec4 color;
+
+        void main(void) {
+            gl_FragColor = color;
+        }
+    </script>
+
+
+    <script id="main" type="text/javascript">
+
+        var width;
+        var height;
+
+        var gl_program;
+
+        var vertex_buf;
+        var index_buf;
+
+        var angle = 0;
+
+        function init_locations() {
+            gl_program.positionAttrib = gl.getAttribLocation(gl_program, "position");
+            gl_program.mvpMatrixUniform = gl.getUniformLocation(gl_program, "mvpMatrix");
+            gl_program.colorUniform = gl.getUniformLocation(gl_program, "color");
+            gl.enableVertexAttribArray(gl_program.positionAttrib);
+        }
+
+        function upload_data(vertices, indices) {
+            vertex_buf.bind();
+            gl.bufferData(vertex_buf.target, vertices, gl.STATIC_DRAW);
+            vertex_buf.unbind();
+
+            index_buf.bind();
+            gl.bufferData(index_buf.target, indices, gl.STATIC_DRAW);
+            index_buf.unbind();
+
+            gl.uniform4f(gl_program.colorUniform, 0.4, 0, 0, 1.0);
+        }
+
+        function bind_attributes() {
+            vertex_buf.bind();
+            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 0, 0);
+            vertex_buf.unbind();
+        }
+
+        function update_canvas_shape(canvas) {
+            if (canvas.width != canvas.clientWidth ||
+                    canvas.height != canvas.clientHeight) {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                width = canvas.width;
+                height = canvas.height;
+            }
+        }
+
+        var prev_update = null;
+        function update() {
+            var cur_time = new Date().getTime();
+            if (prev_update == null) {
+                prev_update = cur_time;
+            }
+
+            var ms = cur_time - prev_update;
+            angle += 0.005 * ms;
+            var mvpMatrix = matrix.rotation_2d(angle);
+
+            gl.uniformMatrix3fv(gl_program.mvpMatrixUniform, false, mvpMatrix);
+
+            prev_update = cur_time;
+        }
+
+        function render_frame(indices) {
+            gl.clearColor(0, 0, 0.1, 1.0);
+
+            gl.enable(gl.DEPTH_TEST);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            index_buf.bind();
+            gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_BYTE, 0);
+            index_buf.unbind();
+        }
+
+        function onready() {
+            var canvas = document.getElementById('webgl_canvas');
+            if (!setupWebGL(canvas)) {
+                alert('No WebGL support!');
+                return;
+            }
+            var framerate = new Framerate("framerate_canvas");
+
+            var vertex_shader_code = document.getElementById("vertex_shader").text;
+            var fragment_shader_code = document.getElementById("fragment_shader").text;
+            gl_program = build_program(vertex_shader_code, fragment_shader_code);
+
+            var vertices = new Float32Array([
+                -1.0, -0.1,
+                -1.0, 0.1,
+                1.0, 0.1,
+                1.0, -0.1]);
+            var indices = new Uint8Array([0, 1, 2, 0, 2, 3]);
+
+            vertex_buf = new VertexBufferObject();
+            index_buf = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+
+            gl.useProgram(gl_program);
+            init_locations();
+            upload_data(vertices, indices);
+            bind_attributes();
+
+            var start_loop = function () {
+                update_canvas_shape(canvas);
+                update();
+                render_frame(indices);
+
+                framerate.snapshot();
+                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
+                window.requestAnimFrame(start_loop, canvas);
+            };
+
+            start_loop();
+        }
+    </script>
+
+</head>
+    <body onload="onready();" style="margin: 0; padding: 0; height: 100%">
+        <canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
+        <div id="framerate_canvas" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                color: white">
+            Framerate: {FPS} FPS<br/>
+            This is the simplest demo.
+        </div>
+    </body>
+</html>

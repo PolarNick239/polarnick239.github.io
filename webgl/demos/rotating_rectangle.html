@@ -1,0 +1,192 @@
+<html style="height: 100%">
+<head>
+    <title>Rotating rectangle. PolarNick WebGL.</title>
+
+    <script src="../resources/commons/matrix.js" type="text/javascript"></script>
+    <script src="../resources/commons/gl.js" type="text/javascript"></script>
+    <script src="../resources/commons/js.js" type="text/javascript"></script>
+
+    <script id="vshader" type="x-shader/x-vertex">
+        uniform float time;
+        uniform vec2 scale_to_square;
+
+        attribute vec2 position;
+        attribute vec4 color;
+
+        varying vec4 v_color;
+
+        void main()
+        {
+            vec2 pos2d = position;
+            float scale = (0.75 - sin(time / 500.0) * 0.25) / sqrt(2.0);
+            float alpha = time / 500.0;
+            float cosA = cos(alpha);
+            float sinA = sin(alpha);
+            mat2 rotate = mat2(cosA, sinA, -sinA, cosA);
+
+            pos2d = scale * pos2d;
+            pos2d = rotate * pos2d;
+            pos2d = scale_to_square * pos2d;
+            gl_Position = vec4(pos2d, 0.0, 1.0);
+            v_color = color;
+        }
+    </script>
+
+    <script id="fshader" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 v_color;
+
+        void main()
+        {
+            gl_FragColor = v_color;
+        }
+    </script>
+
+    <script>
+
+        var width;
+        var height;
+
+        var gl_program;
+
+        var index_buf;
+        var position_buf;
+        var color_buf;
+
+        function init_locations() {
+            gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'position');
+            gl_program.colorAttrib = gl.getAttribLocation(gl_program, 'color');
+            gl.enableVertexAttribArray(gl_program.positionAttrib);
+            gl.enableVertexAttribArray(gl_program.colorAttrib);
+
+            gl_program.scaleToSquareUniform = gl.getUniformLocation(gl_program, 'scale_to_square');
+            gl_program.timeUniform = gl.getUniformLocation(gl_program, 'time');
+        }
+
+        function upload_data(indices, position, color) {
+            index_buf.bind();
+            gl.bufferData(index_buf.target, indices, gl.STATIC_DRAW);
+            index_buf.unbind();
+
+            position_buf.bind();
+            gl.bufferData(position_buf.target, position, gl.STATIC_DRAW);
+            position_buf.unbind();
+
+            color_buf.bind();
+            gl.bufferData(color_buf.target, color, gl.STATIC_DRAW);
+            color_buf.unbind();
+        }
+
+        function bind_attributes() {
+            color_buf.bind();
+            gl.vertexAttribPointer(gl_program.colorAttrib, 4, gl.FLOAT, false, 4*4, 0);
+            color_buf.unbind();
+
+            position_buf.bind();
+            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 0, 0);
+            position_buf.unbind();
+        }
+
+        function update_canvas_shape(canvas) {
+            if (canvas.width != canvas.clientWidth ||
+                    canvas.height != canvas.clientHeight) {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                width = canvas.width;
+                height = canvas.height;
+            }
+        }
+
+        var start_time = null;
+
+        function update() {
+            var cur_time = new Date().getTime();
+            if (start_time == null) {
+                start_time = cur_time;
+            }
+
+            gl.uniform1f(gl_program.timeUniform, cur_time - start_time);
+
+            var scale_width = Math.min(width, height)/width;
+            var scale_height = Math.min(width, height)/height;
+            gl.uniform2f(gl_program.scaleToSquareUniform, scale_width, scale_height);
+        }
+
+        function render_frame(indices) {
+            gl.enable(gl.DEPTH_TEST);
+
+            gl.clearColor(0, 0, 0.1, 1);
+            gl.clearDepth(1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            index_buf.bind();
+            gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_BYTE, 0);
+            index_buf.unbind();
+        }
+
+        function onready()
+        {
+            var canvas = document.getElementById('webgl_canvas');
+
+            if (!setupWebGL(canvas)) {
+                alert('No WebGL support!');
+                return;
+            }
+            var framerate = new Framerate("framerate_canvas");
+
+
+            var vertex_shader_code = document.getElementById("vshader").text;
+            var fragment_shader_code = document.getElementById("fshader").text;
+            gl_program = build_program(vertex_shader_code, fragment_shader_code);
+
+            var lightness = 0.6;
+            var indices = new Uint8Array([
+                0, 1, 2,
+                1, 2, 3]);
+            var position = new Float32Array([
+                -1, -1,
+                -1, +1,
+                +1, -1,
+                +1, +1]);
+            var color = new Float32Array([
+                lightness, 0, 0, 1,
+                0, lightness, 0, 1,
+                0, 0, lightness, 1,
+                lightness, lightness, 0, 1]);
+
+            index_buf = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+            position_buf = new VertexBufferObject();
+            color_buf = new VertexBufferObject();
+
+            gl.useProgram(gl_program);
+            init_locations();
+            upload_data(indices, position, color);
+            bind_attributes();
+
+            var start_loop = function () {
+                update_canvas_shape(canvas);
+                update();
+                render_frame(indices);
+
+                framerate.snapshot();
+                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
+                window.requestAnimFrame(start_loop, canvas);
+            };
+
+            start_loop();
+        }
+    </script>
+
+</head>
+    <body onload="onready();" style="margin: 0; padding: 0; height: 100%">
+        <canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
+        <div id="framerate_canvas" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    color: white">
+            Framerate: {FPS} FPS
+        </div>
+    </body>
+</html>
