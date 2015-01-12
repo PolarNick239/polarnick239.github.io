@@ -17,3 +17,10 @@ DirectionalLight.prototype.create_frustum_matrix = function () {
     var res = matrix.dot(matrix.frustum_2d(this.left, this.right, this.near, this.far), rotation);
     return matrix.dot(res, translation);
 };
+
+DirectionalLight.prototype.copy = function () {
+    var new_light = new DirectionalLight(this.position_x, this.position_y, this.course, 0, this.near, this.far);
+    new_light.left = this.left;
+    new_light.right = this.right;
+    return new_light;
+};

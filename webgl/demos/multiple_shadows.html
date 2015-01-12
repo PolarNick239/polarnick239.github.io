@@ -71,6 +71,8 @@
                 if (x >= 0.0 && x <= 1.0*z && y >= -1.0*z && y <= 1.0*z) {
                     float dist_from_light = length(v_position - light_pos[i]);
                     vec4 rgba = texture2D(depth_textures, vec2(x/z, (1.0 + 2.0*float(i))/(2.0*float(LIGHTS_MAX))));
+                    //gl_FragColor = rgba;
+                    //return;
                     float light_depth = unpack(rgba);
                     if (dist_from_light <= light_range[i] && y/z <= light_depth) {
                         float linear_light = 1.0 + dist_from_light * (min_light - 1.0) / light_range[i];
@@ -140,7 +142,7 @@
     <script id="main" type="text/javascript">
 
         var SHADOW_RESOLUTION = 1024;
-        var LIGHTS_MAX = 32;
+        var LIGHTS_MAX = 2;
         var LIGHT_RANGE = 5;
 
         var box_rows = 5;
@@ -157,8 +159,9 @@
         var depth_tex;
 
         var lights = [];
+        var light;
 
-        var meters_in_width = 15;
+        var meters_in_width = 10;
         var camera_pos_x = 0;
         var camera_pos_y = 0;
 
@@ -437,6 +440,34 @@
             gl_program.buf_indices.unbind();
         }
 
+        function register_mouse_handlers(canvas) {
+
+            var on_move = function(mouse_event) {
+                var mouse_pos = new Float32Array([mouse_event.clientX, mouse_event.clientY, 1]);
+                var world_click = matrix.dot(window_to_world, mouse_pos);
+                var click_x = world_click[0] / world_click[2];
+                var click_y = world_click[1] / world_click[2];
+                light.position_x = click_x;
+                light.position_y = click_y;
+            };
+
+            var on_click = function(mouse_event) {
+                on_move(mouse_event);
+                if (lights.length < LIGHTS_MAX) {
+                    light = light.copy();
+                    lights.push(light);
+                }
+            };
+
+            var on_wheel = function(mouse_event) {
+                light.course -= mouse_event.deltaY / 10;
+            };
+
+            canvas.addEventListener('click', on_click, false);
+            canvas.addEventListener('mousemove', on_move, false);
+            canvas.addEventListener('wheel', on_wheel, false);
+        }
+
         function onready() {
             var canvas = document.getElementById('webgl_canvas');
             if (!setupWebGL(canvas)) {
@@ -463,13 +494,16 @@
             init_locations();
             init_rtt();
 
-            lights.push(new DirectionalLight(0, -2, 0, 120, 0.01, LIGHT_RANGE));
+            light = new DirectionalLight(0, -2, 0, 120, 0.01, LIGHT_RANGE);
+            lights.push(light);
+
+            register_mouse_handlers(canvas);
 
             var start_loop = function () {
                 upload_data();
 
                 update_canvas_shape(canvas);
-                update();
+                update(canvas);
 
                 gl.useProgram(gl_program_shadow);
                 bind_attributes_shadow();
@@ -501,7 +535,14 @@
                 left: 0;
                 color: white">
     Framerate: {FPS} FPS<br/>
-    TODO: implement interactive
+    <br/>
+    MOVE mouse to move light.<br/>
+    LEFT_CLICK to fix the light.<br/>
+    MOUSE_WHEEL to rotate the light.<br/>
+    <br/>
+    Known artifacts:<br/>
+    1. More than two lights works bad (not perfomance).<br/>
+    2. Some horizontal/vertical artifacts in shadow<br/>
 </div>
 </body>
 </html>
