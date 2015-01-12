@@ -68,11 +68,11 @@
                 float x = depth_tex_pos.x;
                 float y = depth_tex_pos.y;
                 float z = depth_tex_pos.z;
-                if (x >= 0.0 && x <= 1.0*z && y >= 0.0 && y <= 1.0*z) {
+                if (x >= 0.0 && x <= 1.0*z && y >= -1.0*z && y <= 1.0*z) {
                     float dist_from_light = length(v_position - light_pos[i]);
-                    vec4 rgba = texture2D(depth_textures, vec2(x, (1.0 + 2.0*float(i))/(2.0*float(LIGHTS_MAX))));
+                    vec4 rgba = texture2D(depth_textures, vec2(x/z, (1.0 + 2.0*float(i))/(2.0*float(LIGHTS_MAX))));
                     float light_depth = unpack(rgba);
-                    if (y/z <= light_depth && dist_from_light <= light_range[i]) {
+                    if (dist_from_light <= light_range[i] && y/z <= light_depth) {
                         float linear_light = 1.0 + dist_from_light * (min_light - 1.0) / light_range[i];
                         max_light = max(linear_light, max_light);
                     }
@@ -101,7 +101,7 @@
             vec3 camera_position = world_to_light_camera[int(light_indexf+0.5)] * vec3(position, 1.0);
             camera_position /= camera_position.z;
             v_depth = camera_position.y;
-            gl_Position = vec4(camera_position.x, -1.0 + (1.0 + 2.0*light_indexf)/(2.0*float(LIGHTS_MAX)), v_depth, 1.0);
+            gl_Position = vec4(camera_position.x, -1.0 + (1.0 + 2.0*light_indexf)/float(LIGHTS_MAX), v_depth, 1.0);
         }
 
 
@@ -168,7 +168,6 @@
         function init_locations() {
             gl.useProgram(gl_program);
             gl_program.attrib_position = gl.getAttribLocation(gl_program, "position");
-            gl.enableVertexAttribArray(gl_program.attrib_position);
 
             gl_program.uniform_worldToCamera = gl.getUniformLocation(gl_program, "world_to_camera");
             gl_program.uniform_depthTextures = gl.getUniformLocation(gl_program, "depth_textures");
@@ -189,9 +188,7 @@
 
             gl.useProgram(gl_program_shadow);
             gl_program_shadow.attrib_position = gl.getAttribLocation(gl_program_shadow, "position");
-            gl.enableVertexAttribArray(gl_program_shadow.attrib_position);
             gl_program_shadow.attrib_light_index = gl.getAttribLocation(gl_program_shadow, "light_indexf");
-            gl.enableVertexAttribArray(gl_program_shadow.attrib_light_index);
 
             gl_program_shadow.uniform_worldToCamera = [];
             for (i = 0; i < LIGHTS_MAX; i++) {
@@ -356,7 +353,7 @@
             var light = lights[index];
             var frustum_matrix = light.create_frustum_matrix();
 
-            var worldToDepthTex = matrix.dot(matrix.rect_to_rect([[-1, -1], [1, 1]], [[0, 0], [1, 1]]), frustum_matrix);
+            var worldToDepthTex = matrix.dot(matrix.rect_to_rect([[-1, -1], [1, 1]], [[0, -1], [1, 1]]), frustum_matrix);
 
             gl.useProgram(gl_program);
             gl.uniform1f(gl_program.uniform_lightRange[index], light.far);
@@ -374,7 +371,6 @@
                     canvas.height != canvas.clientHeight) {
                 canvas.width = canvas.clientWidth;
                 canvas.height = canvas.clientHeight;
-                gl.viewport(0, 0, canvas.width, canvas.height);
                 width = canvas.width;
                 height = canvas.height;
             }
@@ -385,23 +381,32 @@
 
         function bind_attributes_shadow() {
             gl_program_shadow.buf_position.bind();
+            gl.enableVertexAttribArray(gl_program_shadow.attrib_position);
             gl.vertexAttribPointer(gl_program_shadow.attrib_position, 2, gl.FLOAT, false, 2*4, 0);
             gl_program_shadow.buf_position.unbind();
             gl_program_shadow.buf_light_indices.bind();
+            gl.enableVertexAttribArray(gl_program_shadow.attrib_light_index);
             gl.vertexAttribPointer(gl_program_shadow.attrib_light_index, 1, gl.FLOAT, false, 4, 0);
             gl_program_shadow.buf_light_indices.unbind();
         }
 
+        function unbind_attributes_shadow() {
+            gl.disableVertexAttribArray(gl_program_shadow.attrib_position);
+            gl.disableVertexAttribArray(gl_program_shadow.attrib_light_index);
+        }
+
         function render_frame_shadow() {
             shadow_framebuffer.bind();
+            gl.viewport(0, 0, SHADOW_RESOLUTION, LIGHTS_MAX);
 
-            gl.clearColor(0, 0, 0, 0);
+            gl.clearColor(0, 0, 1.0, 1.0);
             gl.clearDepth(1.0);
 
             gl.enable(gl.DEPTH_TEST);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
             gl_program_shadow.buf_indices.bind();
+            gl.lineWidth(1.0);
             gl.drawElements(gl.LINES, gl_program_shadow.indices_length * lights.length / LIGHTS_MAX, gl.UNSIGNED_BYTE, 0);
             gl_program_shadow.buf_indices.unbind();
             shadow_framebuffer.unbind();
@@ -409,11 +414,18 @@
 
         function bind_attributes() {
             gl_program.buf_position.bind();
+            gl.enableVertexAttribArray(gl_program.attrib_position);
             gl.vertexAttribPointer(gl_program.attrib_position, 2, gl.FLOAT, false, 2*4, 0);
             gl_program.buf_position.unbind();
         }
 
+        function unbind_attributes() {
+            gl.disableVertexAttribArray(gl_program.attrib_position);
+        }
+
         function render_frame() {
+            gl.viewport(0, 0, width, height);
+
             gl.clearColor(0.1, 0, 0, 1.0);
             gl.clearDepth(1.0);
 
@@ -448,10 +460,10 @@
             gl_program_shadow.buf_position = new VertexBufferObject();
             gl_program_shadow.buf_light_indices = new VertexBufferObject();
 
-            init_rtt();
             init_locations();
+            init_rtt();
 
-            lights.push(new DirectionalLight(-1.0, -2.0, 0, 120, 0.01, LIGHT_RANGE));
+            lights.push(new DirectionalLight(0, -2, 0, 120, 0.01, LIGHT_RANGE));
 
             var start_loop = function () {
                 upload_data();
@@ -462,11 +474,13 @@
                 gl.useProgram(gl_program_shadow);
                 bind_attributes_shadow();
                 render_frame_shadow();
+                unbind_attributes_shadow();
                 gl.useProgram(null);
 
                 gl.useProgram(gl_program);
                 bind_attributes();
                 render_frame();
+                unbind_attributes();
                 gl.useProgram(null);
 
                 framerate.snapshot();
@@ -487,7 +501,7 @@
                 left: 0;
                 color: white">
     Framerate: {FPS} FPS<br/>
-    Not finished yet.
+    TODO: implement interactive
 </div>
 </body>
 </html>
