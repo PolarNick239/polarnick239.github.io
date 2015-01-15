@@ -2,9 +2,9 @@
 <head>
     <title>Voronoi diagram. PolarNick WebGL.</title>
 
-    <script src="../resources/commons/matrix.js" type="text/javascript"></script>
     <script src="../resources/commons/gl.js" type="text/javascript"></script>
     <script src="../resources/commons/js.js" type="text/javascript"></script>
+    <script src="../resources/commons/utils.js" type="text/javascript"></script>
 
     <script id="vshader" type="x-shader/x-vertex">
         #line 10
@@ -209,7 +209,7 @@
             var angle = Math.random() * 2 * Math.PI;
             var speed_length = (1 + Math.random()) * (POINT_SPEED / 2);
             point.speed = [speed_length * Math.cos(angle), speed_length * Math.sin(angle)];
-            point.color = [Math.random(), Math.random(), Math.random(), 1.0];
+            point.color = hsv_to_rgb(next_random_hue(), 0.5, 0.95).concat([1.0]);
             var index = Math.random() * 3;
             for (var i = 2; i >= 0; i--) {
                 if (index > i) {
