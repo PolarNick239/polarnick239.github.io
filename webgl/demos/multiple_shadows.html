@@ -333,11 +333,6 @@
             gl_program_shadow.buf_light_indices.bind();
             gl.bufferData(gl_program_shadow.buf_light_indices.target, create_shadow_light_indices(), gl.STATIC_DRAW);
             gl_program_shadow.buf_light_indices.unbind();
-
-            update_world();
-            for (var i = 0; i < lights.length; i++) {
-                update_light(i);
-            }
         }
 
         function update_world() {
@@ -384,6 +379,10 @@
         }
 
         function update() {
+            update_world();
+            for (var i = 0; i < lights.length; i++) {
+                update_light(i);
+            }
         }
 
         function bind_attributes_shadow() {
@@ -516,12 +515,12 @@
             lights.push(light);
 
             register_mouse_handlers(canvas);
+            upload_data();
 
             var start_loop = function () {
-                upload_data();
+                update();
 
                 update_canvas_shape(canvas);
-                update(canvas);
 
                 gl.useProgram(gl_program_shadow);
                 bind_attributes_shadow();

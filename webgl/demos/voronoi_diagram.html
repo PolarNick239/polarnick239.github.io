@@ -1,0 +1,330 @@
+<html style="height: 100%">
+<head>
+    <title>Voronoi diagram. PolarNick WebGL.</title>
+
+    <script src="../resources/commons/matrix.js" type="text/javascript"></script>
+    <script src="../resources/commons/gl.js" type="text/javascript"></script>
+    <script src="../resources/commons/js.js" type="text/javascript"></script>
+
+    <script id="vshader" type="x-shader/x-vertex">
+        #line 10
+
+        attribute vec2 position;
+
+        varying vec2 xy;
+
+        void main()
+        {
+            xy = (position + vec2(1.0, 1.0)) / 2.0;
+            gl_Position = vec4(position, 0.0, 1.0);
+        }
+    </script>
+
+    <script id="fshader" type="x-shader/x-fragment">
+        #line 24
+
+        precision highp float;
+
+        uniform float time;
+
+        uniform int points_count;
+
+        uniform vec2 point_start_xy[MAX_POINTS];
+        uniform vec2 point_speed_xy[MAX_POINTS];
+        uniform vec4 point_color[MAX_POINTS];
+        uniform float point_light_range[MAX_POINTS];
+
+        uniform float x_multiplier;
+        uniform float y_multiplier;
+
+        varying vec2 xy;
+
+        float pow4(float x) {
+            float x2 = x * x;
+            return x2 * x2;
+        }
+
+        void main()
+        {
+            if (points_count == 0) {
+                gl_FragColor = vec4(0, 0, 0.1, 1);
+                return;
+            }
+
+            vec2 cur_xy = xy * vec2(x_multiplier, y_multiplier);
+            vec2 position = fract(point_start_xy[0] + point_speed_xy[0] * time) * vec2(x_multiplier, y_multiplier);
+            vec2 delta = cur_xy - position;
+
+            float min_dist2 = dot(delta, delta);
+            float nearest_point_range = point_light_range[0];
+            vec4 nearest_point_color = point_color[0];
+
+            for (int i = 1; i < MAX_POINTS; i++) {
+                if (i >= points_count) {
+                    break;
+                }
+                vec2 position = fract(point_start_xy[i] + point_speed_xy[i] * time) * vec2(x_multiplier, y_multiplier);
+                delta = cur_xy - position;
+                float dist2 = dot(delta, delta);
+                if (dist2 < min_dist2) {
+                    min_dist2 = dist2;
+                    nearest_point_range = point_light_range[i];
+                    nearest_point_color = point_color[i];
+                }
+            }
+
+            float min_dist = pow(min_dist2, 0.5);
+            if (min_dist < nearest_point_range) {
+                gl_FragColor= vec4(0,0,0,1);
+            } else {
+                gl_FragColor = nearest_point_color;
+            }
+        }
+    </script>
+
+    <script>
+
+        var MAX_POINTS = 32;
+
+        var POINT_SPEED = 0.0001;
+        var POINT_LIGHT_RANGE = 0.002;
+        var POINT_INITIAL_COUNT = 8;
+
+        var width;
+        var height;
+
+        var gl_program;
+
+        var points = [];
+
+        function init_locations() {
+            gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'position');
+
+            gl_program.timeUniform = gl.getUniformLocation(gl_program, 'time');
+            gl_program.pointsCountUniform = gl.getUniformLocation(gl_program, 'points_count');
+
+            gl_program.pointStartUniforms = [];
+            gl_program.pointSpeedUniforms = [];
+            gl_program.pointColorUniforms = [];
+            gl_program.pointLightRangeUniforms = [];
+            for (var i = 0; i < MAX_POINTS; i++) {
+                gl_program.pointStartUniforms.push(gl.getUniformLocation(gl_program, 'point_start_xy[POINT_INDEX]'.replace('POINT_INDEX', i.toString())));
+                gl_program.pointSpeedUniforms.push(gl.getUniformLocation(gl_program, 'point_speed_xy[POINT_INDEX]'.replace('POINT_INDEX', i.toString())));
+                gl_program.pointColorUniforms.push(gl.getUniformLocation(gl_program, 'point_color[POINT_INDEX]'.replace('POINT_INDEX', i.toString())));
+                gl_program.pointLightRangeUniforms.push(gl.getUniformLocation(gl_program, 'point_light_range[POINT_INDEX]'.replace('POINT_INDEX', i.toString())));
+            }
+
+            gl_program.xMultiplierUniform = gl.getUniformLocation(gl_program, 'x_multiplier');
+            gl_program.yMultiplierUniform = gl.getUniformLocation(gl_program, 'y_multiplier');
+        }
+
+        function upload_data() {
+            var positions = new Float32Array([
+                -1, -1,
+                -1, 1,
+                1, 1,
+                1, -1]);
+            var indices = new Uint8Array([
+                0, 1, 2,
+                0, 2, 3
+            ]);
+
+            gl_program.indices_length = indices.length;
+
+            gl_program.index_buf = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+            gl_program.index_buf.bind();
+            gl.bufferData(gl_program.index_buf.target, indices, gl.STATIC_DRAW);
+            gl_program.index_buf.unbind();
+
+            gl_program.position_buf = new VertexBufferObject();
+            gl_program.position_buf.bind();
+            gl.bufferData(gl_program.position_buf.target, positions, gl.STATIC_DRAW);
+            gl_program.position_buf.unbind();
+        }
+
+        function bind_attributes() {
+            gl_program.position_buf.bind();
+            gl.enableVertexAttribArray(gl_program.position_buf);
+            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 2*4, 0);
+            gl_program.position_buf.unbind();
+        }
+
+        var start_time = null;
+        var passed_time = null;
+        var paused = false;
+
+        function pause() {
+            paused = true;
+            var cur_time = new Date().getTime();
+            passed_time = cur_time - start_time;
+            start_time = null;
+        }
+
+        function unpause() {
+            paused = false;
+            var cur_time = new Date().getTime();
+            start_time = cur_time - passed_time;
+            passed_time = null;
+        }
+
+        function update() {
+            var time;
+            if (paused) {
+                time = passed_time;
+            } else {
+                var cur_time = new Date().getTime();
+                if (start_time == null) {
+                    start_time = cur_time;
+                }
+                time = cur_time - start_time;
+            }
+
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.timeUniform, time);
+
+            gl.uniform1f(gl_program.xMultiplierUniform, width / width);
+            gl.uniform1f(gl_program.yMultiplierUniform, height / width);
+            gl.useProgram(null);
+        }
+
+        function update_points_count() {
+            gl.useProgram(gl_program);
+            gl.uniform1i(gl_program.pointsCountUniform, points.length);
+            gl.useProgram(null);
+        }
+
+        function upload_point(point_index) {
+            gl.useProgram(gl_program);
+            var point = points[point_index];
+            gl.uniform2f(gl_program.pointStartUniforms[point_index], point.start_position[0], point.start_position[1]);
+            gl.uniform2f(gl_program.pointSpeedUniforms[point_index], point.speed[0], point.speed[1]);
+            gl.uniform4f(gl_program.pointColorUniforms[point_index], point.color[0], point.color[1], point.color[2], point.color[3]);
+            gl.uniform1f(gl_program.pointLightRangeUniforms[point_index], point.light_range);
+            gl.useProgram(null);
+        }
+
+        function create_random_point() {
+            var point = {};
+            point.start_position = [Math.random(), Math.random()];
+            var angle = Math.random() * 2 * Math.PI;
+            var speed_length = (1 + Math.random()) * (POINT_SPEED / 2);
+            point.speed = [speed_length * Math.cos(angle), speed_length * Math.sin(angle)];
+            point.color = [Math.random(), Math.random(), Math.random(), 1.0];
+            var index = Math.random() * 3;
+            for (var i = 2; i >= 0; i--) {
+                if (index > i) {
+                    point.color[i] = Math.min(1, point.color[i] + 0.5);
+                    break;
+                }
+            }
+            point.light_range = POINT_LIGHT_RANGE;
+
+            console.log("New point:\n position=", point.start_position, ",\n speed=", point.speed, ',\n color=', point.color);
+            return point;
+        }
+
+        function render_frame() {
+            gl.enable(gl.DEPTH_TEST);
+
+            gl.viewport(0, 0, width, height);
+
+            gl.clearColor(0, 0, 0.1, 1);
+            gl.clearDepth(1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            gl_program.index_buf.bind();
+            gl.drawElements(gl.TRIANGLES, gl_program.indices_length, gl.UNSIGNED_BYTE, 0);
+            gl_program.index_buf.unbind();
+        }
+
+        function update_canvas_shape(canvas) {
+            if (canvas.width != canvas.clientWidth ||
+                    canvas.height != canvas.clientHeight) {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                width = canvas.width;
+                height = canvas.height;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function onready()
+        {
+            var canvas = document.getElementById('webgl_canvas');
+
+            if (!setupWebGL(canvas)) {
+                alert('No WebGL support!');
+                return;
+            }
+            var framerate = new Framerate("framerate_canvas");
+
+            var vertex_shader_code = document.getElementById("vshader").text;
+            var fragment_shader_code = document.getElementById("fshader").text;
+            fragment_shader_code = fragment_shader_code.split("MAX_POINTS").join(MAX_POINTS.toString());
+            gl_program = build_program(vertex_shader_code, fragment_shader_code);
+
+            init_locations();
+            upload_data();
+
+            for (var i = 0; i < POINT_INITIAL_COUNT; i++) {
+                var point = create_random_point();
+                points.push(point);
+                update_points_count();
+                upload_point(i);
+            }
+
+            register_keys_handlers();
+            var paused = false;
+            var start_loop = function () {
+                if ((!paused) | update_canvas_shape(canvas)) {
+                    update();
+
+                    gl.useProgram(gl_program);
+                    bind_attributes();
+                    render_frame();
+                    gl.useProgram(null);
+
+                    framerate.snapshot();
+                }
+                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
+                window.requestAnimFrame(start_loop, canvas);
+            };
+
+            function register_keys_handlers() {
+                var key_handler = function(keyboard_event) {
+                    if (keyboard_event.keyCode == 32) {// 32: ' '
+                        if (paused) {
+                            paused = false;
+                            unpause();
+                        } else {
+                            paused = true;
+                            pause();
+                        }
+                    }
+                };
+
+                window.addEventListener('keypress', key_handler, false);
+            }
+
+            start_loop();
+        }
+    </script>
+
+</head>
+<body onload="onready();" style="margin: 0; padding: 0; height: 100%">
+<canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
+<div id="framerate_canvas" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    color: black">
+    Framerate: {FPS} FPS<br/>
+    <br/>
+    This is the demo of <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Voronoi diagram</a><br/>
+    <br/>
+    Press SPACE to pause
+</div>
+</body>
+</html>
