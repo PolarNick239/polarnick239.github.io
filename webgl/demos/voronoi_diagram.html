@@ -31,6 +31,12 @@
 
         uniform int points_count;
 
+        /*
+        * 0 - Euclidean distance
+        * 1 - Manhattan distance
+        */
+        uniform int distance_type;
+
         uniform vec2 point_start_xy[MAX_POINTS];
         uniform vec2 point_speed_xy[MAX_POINTS];
         uniform vec4 point_color[MAX_POINTS];
@@ -50,6 +56,16 @@
             return x * x * x;
         }
 
+        float calculate_distance(vec2 a) {
+            if (distance_type == 0) {
+                return dot(a, a);
+            } else if (distance_type == 1) {
+                return abs(a.x) + abs(a.y);
+            } else {
+                return -1.0;
+            }
+        }
+
         void main()
         {
             if (points_count == 0) {
@@ -61,7 +77,8 @@
             vec2 position = fract(point_start_xy[0] + point_speed_xy[0] * time) * vec2(x_multiplier, y_multiplier);
             vec2 delta = cur_xy - position;
 
-            float min_dist2 = dot(delta, delta);
+            float min_dist = calculate_distance(delta);
+            vec2 nearest_point = position;
             float nearest_point_range = point_light_range[0];
             vec4 nearest_point_color = point_color[0];
 
@@ -71,15 +88,17 @@
                 }
                 vec2 position = fract(point_start_xy[i] + point_speed_xy[i] * time) * vec2(x_multiplier, y_multiplier);
                 delta = cur_xy - position;
-                float dist2 = dot(delta, delta);
-                if (dist2 < min_dist2) {
-                    min_dist2 = dist2;
+                float dist = calculate_distance(delta);
+                if (dist < min_dist) {
+                    min_dist = dist;
+                    nearest_point = position;
                     nearest_point_range = point_light_range[i];
                     nearest_point_color = point_color[i];
                 }
             }
 
-            float dist = pow(min_dist2, 0.5);
+            delta = nearest_point - cur_xy;
+            float dist = pow(dot(delta, delta), 0.5);
             float attenuation = 1.0/(1.0 + 1000.0 * dist + 10000.0 * dist * dist);
             gl_FragColor = nearest_point_color * 0.2 + vec4(attenuation, attenuation, attenuation, 0.8) * nearest_point_color;
         }
@@ -93,6 +112,8 @@
         var POINT_SPEED = 0.0001;
         var POINT_LIGHT_RANGE = 0.01;
 
+        var distance_type = 0;
+
         var width;
         var height;
 
@@ -105,6 +126,7 @@
 
             gl_program.timeUniform = gl.getUniformLocation(gl_program, 'time');
             gl_program.pointsCountUniform = gl.getUniformLocation(gl_program, 'points_count');
+            gl_program.distanceTypeUniform = gl.getUniformLocation(gl_program, 'distance_type');
 
             gl_program.pointStartUniforms = [];
             gl_program.pointSpeedUniforms = [];
@@ -196,6 +218,12 @@
             gl.useProgram(null);
         }
 
+        function update_distance_type(distance_type) {
+            gl.useProgram(gl_program);
+            gl.uniform1i(gl_program.distanceTypeUniform, distance_type);
+            gl.useProgram(null);
+        }
+
         function upload_point(point_index) {
             gl.useProgram(gl_program);
             var point = points[point_index];
@@ -274,9 +302,10 @@
             for (var i = 0; i < POINT_INITIAL_COUNT; i++) {
                 var point = create_random_point();
                 points.push(point);
-                update_points_count();
                 upload_point(i);
             }
+            update_points_count();
+            update_distance_type(distance_type);
 
             register_keys_handlers();
             var paused = false;
@@ -305,7 +334,11 @@
                             paused = true;
                             pause();
                         }
+                    } else if (keyboard_event.keyCode == 77 || keyboard_event.keyCode == 109) {// 77: 'M', 109: 'm'
+                        distance_type = (distance_type + 1) % 2;
+                        update_distance_type(distance_type);
                     }
+                    console.log(keyboard_event.keyCode);
                 };
 
                 window.addEventListener('keypress', key_handler, false);
@@ -327,7 +360,8 @@
     <br/>
     This is the demo of <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Voronoi diagram</a><br/>
     <br/>
-    Press SPACE to pause
+    Press SPACE to pause<br/>
+    Press M to change distance between Euclidean and Manhattan distance
 </div>
 </body>
 </html>
