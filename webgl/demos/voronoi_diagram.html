@@ -37,6 +37,12 @@
         */
         uniform int distance_type;
 
+        /*
+        * 0 - border is border (space is rectangle for distance)
+        * 1 - border is a teleport (space is torus for distance)
+        */
+        uniform int border_type;
+
         uniform vec2 point_start_xy[MAX_POINTS];
         uniform vec2 point_speed_xy[MAX_POINTS];
         uniform vec4 point_color[MAX_POINTS];
@@ -56,11 +62,37 @@
             return x * x * x;
         }
 
-        float calculate_distance(vec2 a) {
+        vec2 min_delta_torus(vec2 a, vec2 b) {
+            vec2 border = vec2(x_multiplier, y_multiplier);
+            return min(abs(a - b),
+                            min(abs(border - a) + b, abs(border - b) + a));
+        }
+
+        vec2 calc_delta(vec2 a, vec2 b) {
+            if (border_type == 0) {
+                return abs(b - a);
+            } else if (border_type == 1) {
+                return min_delta_torus(a, b);
+            } else {
+                return vec2(-1, -1);
+            }
+        }
+
+        float euclidean_distance(vec2 a, vec2 b) {
+            vec2 delta = calc_delta(a, b);
+            return pow(dot(delta, delta), 0.5);
+        }
+
+        float manhattan_distance(vec2 a, vec2 b) {
+            vec2 delta = calc_delta(a, b);
+            return abs(delta.x) + abs(delta.y);
+        }
+
+        float calculate_distance(vec2 a, vec2 b) {
             if (distance_type == 0) {
-                return dot(a, a);
+                return euclidean_distance(a, b);
             } else if (distance_type == 1) {
-                return abs(a.x) + abs(a.y);
+                return manhattan_distance(a, b);
             } else {
                 return -1.0;
             }
@@ -75,9 +107,8 @@
 
             vec2 cur_xy = xy * vec2(x_multiplier, y_multiplier);
             vec2 position = fract(point_start_xy[0] + point_speed_xy[0] * time) * vec2(x_multiplier, y_multiplier);
-            vec2 delta = cur_xy - position;
 
-            float min_dist = calculate_distance(delta);
+            float min_dist = calculate_distance(cur_xy, position);
             vec2 nearest_point = position;
             float nearest_point_range = point_light_range[0];
             vec4 nearest_point_color = point_color[0];
@@ -87,8 +118,7 @@
                     break;
                 }
                 vec2 position = fract(point_start_xy[i] + point_speed_xy[i] * time) * vec2(x_multiplier, y_multiplier);
-                delta = cur_xy - position;
-                float dist = calculate_distance(delta);
+                float dist = calculate_distance(cur_xy, position);
                 if (dist < min_dist) {
                     min_dist = dist;
                     nearest_point = position;
@@ -97,8 +127,7 @@
                 }
             }
 
-            delta = nearest_point - cur_xy;
-            float dist = pow(dot(delta, delta), 0.5);
+            float dist = euclidean_distance(cur_xy, nearest_point);
             float attenuation = 1.0/(1.0 + 1000.0 * dist + 10000.0 * dist * dist);
             gl_FragColor = nearest_point_color * 0.2 + vec4(attenuation, attenuation, attenuation, 0.8) * nearest_point_color;
         }
@@ -112,7 +141,17 @@
         var POINT_SPEED = 0.0001;
         var POINT_LIGHT_RANGE = 0.01;
 
+        /*
+         * 0 - Euclidean distance
+         * 1 - Manhattan distance
+         */
         var distance_type = 0;
+
+        /*
+         * 0 - border is border (space is rectangle for distance)
+         * 1 - border is a teleport (space is torus for distance)
+         */
+        var border_type = 0;
 
         var width;
         var height;
@@ -127,6 +166,7 @@
             gl_program.timeUniform = gl.getUniformLocation(gl_program, 'time');
             gl_program.pointsCountUniform = gl.getUniformLocation(gl_program, 'points_count');
             gl_program.distanceTypeUniform = gl.getUniformLocation(gl_program, 'distance_type');
+            gl_program.borderTypeUniform = gl.getUniformLocation(gl_program, 'border_type');
 
             gl_program.pointStartUniforms = [];
             gl_program.pointSpeedUniforms = [];
@@ -224,6 +264,12 @@
             gl.useProgram(null);
         }
 
+        function update_border_type(border_type) {
+            gl.useProgram(gl_program);
+            gl.uniform1i(gl_program.borderTypeUniform, border_type);
+            gl.useProgram(null);
+        }
+
         function upload_point(point_index) {
             gl.useProgram(gl_program);
             var point = points[point_index];
@@ -281,6 +327,38 @@
             }
         }
 
+        function register_keys_handlers() {
+            var key_handler = function(keyboard_event) {
+                var should_render = false;
+                if (keyboard_event.keyCode == 32) {// 32: ' '
+                    if (paused) {
+                        paused = false;
+                        unpause();
+                    } else {
+                        paused = true;
+                        pause();
+                    }
+                } else if (keyboard_event.keyCode == 77 || keyboard_event.keyCode == 109) {// 77: 'M', 109: 'm'
+                    distance_type = (distance_type + 1) % 2;
+                    update_distance_type(distance_type);
+                    should_render = true;
+                } else if (keyboard_event.keyCode == 84 || keyboard_event.keyCode == 116) {// 84: 'T', 116: 't'
+                    border_type = (border_type + 1) % 2;
+                    update_border_type(border_type);
+                    should_render = true;
+                }
+
+                if (paused && should_render) {
+                    gl.useProgram(gl_program);
+                    bind_attributes();
+                    render_frame();
+                    gl.useProgram(null);
+                }
+            };
+
+            window.addEventListener('keypress', key_handler, false);
+        }
+
         function onready()
         {
             var canvas = document.getElementById('webgl_canvas');
@@ -307,7 +385,6 @@
             update_points_count();
             update_distance_type(distance_type);
 
-            register_keys_handlers();
             var paused = false;
             var start_loop = function () {
                 if ((!paused) | update_canvas_shape(canvas)) {
@@ -324,31 +401,7 @@
                 window.requestAnimFrameMaxFPS(start_loop, canvas, 1000/30);
             };
 
-            function register_keys_handlers() {
-                var key_handler = function(keyboard_event) {
-                    if (keyboard_event.keyCode == 32) {// 32: ' '
-                        if (paused) {
-                            paused = false;
-                            unpause();
-                        } else {
-                            paused = true;
-                            pause();
-                        }
-                    } else if (keyboard_event.keyCode == 77 || keyboard_event.keyCode == 109) {// 77: 'M', 109: 'm'
-                        distance_type = (distance_type + 1) % 2;
-                        update_distance_type(distance_type);
-                        if (paused) {
-                            gl.useProgram(gl_program);
-                            bind_attributes();
-                            render_frame();
-                            gl.useProgram(null);
-                        }
-                    }
-                };
-
-                window.addEventListener('keypress', key_handler, false);
-            }
-
+            register_keys_handlers();
             start_loop();
         }
     </script>
@@ -366,7 +419,8 @@
     This is the demo of <a href="https://en.wikipedia.org/wiki/Voronoi_diagram">Voronoi diagram</a><br/>
     <br/>
     Press SPACE to pause<br/>
-    Press M to change distance between Euclidean and Manhattan distance
+    Press M to change distance between Euclidean and Manhattan distance<br/>
+    Press T to change border type (torus-like distance)
 </div>
 </body>
 </html>
