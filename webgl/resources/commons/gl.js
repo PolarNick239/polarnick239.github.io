@@ -1,4 +1,4 @@
-var DEBUG_FLAG = true;
+var DEBUG_FLAG = false;
 
 var gl;
 
