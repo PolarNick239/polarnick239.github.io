@@ -67,6 +67,6 @@ window.requestAnimFrame = (function () {
         };
 })();
 
-window.requestAnimFrameMaxFPS = function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-    return window.setTimeout(callback, 0);
+window.requestAnimFrameMaxFPS = function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element, /* timeout in milliseconds */ timeout) {
+    return window.setTimeout(callback, timeout);
 };

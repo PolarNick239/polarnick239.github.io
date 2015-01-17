@@ -250,7 +250,7 @@
             }
             point.light_range = POINT_LIGHT_RANGE;
 
-            console.log("New point:\n position=", point.start_position, ",\n speed=", point.speed, ',\n color=', point.color);
+            //console.log("New point:\n position=", point.start_position, ",\n speed=", point.speed, ',\n color=', point.color);
             return point;
         }
 
@@ -321,7 +321,7 @@
                     framerate.snapshot();
                 }
                 //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
-                window.requestAnimFrame(start_loop, canvas);
+                window.requestAnimFrameMaxFPS(start_loop, canvas, 1000/30);
             };
 
             function register_keys_handlers() {
