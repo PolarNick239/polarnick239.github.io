@@ -1,3 +1,5 @@
+var DEBUG_FLAG = true;
+
 var gl;
 
 var setupWebGL = function (canvas) {
@@ -5,11 +7,19 @@ var setupWebGL = function (canvas) {
     var context = null;
     for (var ii = 0; ii < names.length; ++ii) {
         try {
-            context = canvas.getContext(names[ii], {antialias: true});
+            context = canvas.getContext(names[ii]);
         } catch (e) {
         }
-        if (context) {
+        if (context != null) {
             gl = context;
+            if (DEBUG_FLAG) {
+                var throwOnGLError = function(err, funcName, args) {
+                    alert(WebGLDebugUtils.glEnumToString(err) + " was caused by call to: " + funcName);
+                    throw WebGLDebugUtils.glEnumToString(err) + " was caused by call to: " + funcName;
+                };
+
+                gl = WebGLDebugUtils.makeDebugContext(gl, throwOnGLError);
+            }
             initWebGLValues();
             return true;
         }
@@ -40,6 +50,7 @@ function build_shader(shader_code, shader_type) {
         console.log('Shader compilation failed!');
         var compilationLog = gl.getShaderInfoLog(shader);
         console.log('Shader compiler log: ' + compilationLog);
+        alert('Shader compiler log: ' + compilationLog);
         return null;
     }
 }
@@ -67,7 +78,8 @@ function build_program(vertex_code, fragment_code) {
     var success = gl.getProgramParameter(gl_program, gl.LINK_STATUS);
     if (!success) {
         var error_log = gl.getProgramInfoLog(gl_program);
-        log("Error in program linking: " + error_log);
+        console.log("Error in program linking: " + error_log);
+        alert("Error in program linking: " + error_log);
         return null;
     }
 

@@ -6,6 +6,8 @@
     <script src="../resources/commons/gl.js" type="text/javascript"></script>
     <script src="../resources/commons/js.js" type="text/javascript"></script>
 
+    <script src="../resources/webgl-debug.js" type="text/javascript"></script>
+
     <script id="vertex_shader" type="x-shader/x-vertex">
         uniform mat3 mvpMatrix;
 
@@ -19,7 +21,7 @@
 
 
     <script id="fragment_shader" type="x-shader/x-fragment">
-        precision highp float;
+        precision mediump float;
 
         uniform vec4 color;
 
