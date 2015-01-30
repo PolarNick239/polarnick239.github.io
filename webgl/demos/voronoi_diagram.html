@@ -385,9 +385,9 @@
             update_points_count();
             update_distance_type(distance_type);
 
-            var paused = false;
+            paused = false;
             var start_loop = function () {
-                if ((!paused) | update_canvas_shape(canvas)) {
+                if (update_canvas_shape(canvas) || !paused) {
                     update();
 
                     gl.useProgram(gl_program);

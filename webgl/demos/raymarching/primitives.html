@@ -1,0 +1,316 @@
+<html style="height: 100%">
+<head>
+    <title>Raymarching primitives. PolarNick WebGL.</title>
+
+    <script src="../../resources/commons/gl.js" type="text/javascript"></script>
+    <script src="../../resources/commons/js.js" type="text/javascript"></script>
+
+    <script src="../../resources/webgl-debug.js" type="text/javascript"></script>
+
+    <script id="vshader" type="x-shader/x-vertex">
+        #line 11
+
+        attribute vec2 aPosition;
+
+        void main()
+        {
+            gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+    </script>
+
+    <script id="fshader" type="x-shader/x-fragment">
+        #line 22
+        #define PI 3.14159265359
+        precision highp float;
+
+        uniform float iTime;
+
+        uniform vec2 iResolution;
+
+        // Primitives BEGIN
+
+        float sphere(in vec3 point, in float radius) {
+            return length(point) - radius;
+        }
+
+        float box(vec3 point, vec3 size) {
+            vec3 d = abs(point) - size;
+            return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+        }
+
+        // Primitives END
+
+        vec2 update(vec2 nearest, vec2 candidate) {
+            return (candidate.x < nearest.x) ? candidate : nearest;
+        }
+
+        vec2 findNearest(in vec3 position) {
+            vec2 res = vec2(1000000.0, -1.0);
+            res = update(res, vec2( box      (position - vec3(3.0, 0.0, 0.25),   vec3(1.0, 1.0, 0.5)),   0.0));
+            res = update(res, vec2( sphere   (position - vec3(0.0, 1.0, 0.0),    1.0),                   1.0));
+            return res;
+        }
+
+        vec3 getColor(float id) {
+            vec3 backgroundColor = vec3(0.0, 0.0, 0.2);
+            if      (id == -1.0)    return backgroundColor;
+            else if (id == 0.0)     return vec3(0.2, 0.0, 0.2);
+            else if (id == 1.0)     return vec3(0.0, 0.2, 0.0);
+            else return vec3(1.0, 0.0, 0.0);
+        }
+
+        vec3 calcNormal(in vec3 position) {
+            vec3 eps = vec3( 0.001, 0.0, 0.0 );
+            vec3 normal = vec3(
+                findNearest(position + eps.xyy).x - findNearest(position - eps.xyy).x,
+                findNearest(position + eps.yxy).x - findNearest(position - eps.yxy).x,
+                findNearest(position + eps.yyx).x - findNearest(position - eps.yyx).x );
+            return normalize(normal);
+        }
+
+        vec3 castRay(in vec3 rayStart, in vec3 rayDirection) {
+            const float minDistance = 0.001;
+            const int maxIterations = 32;
+
+            float depth = 0.0;
+            float nearestObjectId = -1.0;
+            int iterations = 0;
+            for (int i = 0; i < maxIterations; i++) {
+                vec2 nearest = findNearest(rayStart + rayDirection * depth);
+
+                if (nearest.x < minDistance) {
+                    nearestObjectId = nearest.y;
+                    iterations = i + 1;
+                    break;
+                } else {
+                    depth += nearest.x;
+                }
+            }
+
+            return vec3(depth, nearestObjectId, iterations);
+        }
+
+        vec3 render(in vec3 rayStart, in vec3 rayDirection) {
+            vec3 res = castRay(rayStart, rayDirection);
+            return vec3(res.z / 32.0);
+            if (res.y != -1.0) {
+                vec3 lightColor = vec3(1.0, 1.0, 1.0);
+                vec3 lightPosition = vec3(0.0, 0.0, 10.0);
+
+                vec3 position = rayStart + rayDirection * res.x;
+                vec3 normal = calcNormal(position);
+                vec3 lightDirection = normalize(lightPosition - position);
+
+                return max(dot(normal, -lightDirection), 0.0) * getColor(res.y);
+            } else {
+                return getColor(-1.0);
+            }
+        }
+
+        void main()
+        {
+            vec3 cameraOffset = vec3(0.0, 0.0, 0.0);  // This world point is a target of camera
+            float positionAngle = iTime / 1000.0;
+            vec3 cameraPosition = vec3(cos(positionAngle) * 10.0, sin(positionAngle) * 10.0, 5.0);  // This is relative coordinates. In world coordinates camera is located at cameraOffset+cameraPosition.
+            float cameraRollAngle = 0.0;  // Camera rotation around its ray of view.
+            float cameraAngleOfView = 90.0 * PI / 180.0;
+            float screenSize = 1.0;
+            float cameraFocalDistance = screenSize / tan(cameraAngleOfView / 2.0);
+
+            vec3 cameraDirection = normalize(-cameraPosition);
+            vec3 cameraScreenXAxis = normalize( cross(cameraDirection, (cameraDirection.xy != vec2(0.0, 0.0)) ? vec3(0.0, 0.0, 1.0): vec3(0.0, 1.0, 0.0)) );
+            vec3 cameraScreenYAxis = normalize( cross(cameraScreenXAxis, cameraDirection) );
+            vec3 screenCenter = cameraDirection * cameraFocalDistance;
+
+            float cosRoll = cos(-cameraRollAngle);
+            float sinRoll = sin(-cameraRollAngle);
+            mat2 cameraRollRotation = mat2(cosRoll, -sinRoll, sinRoll, cosRoll);
+
+            vec2 pixel = (gl_FragCoord.xy / iResolution - 0.5) * 2.0;
+            pixel.y *= iResolution.y / iResolution.x;
+
+            pixel = cameraRollRotation * pixel;
+
+            vec3 rayDirection = normalize( screenCenter + (pixel.x * cameraScreenXAxis) + (pixel.y * cameraScreenYAxis) );
+
+            vec3 color = render(cameraOffset + cameraPosition, rayDirection);
+            //vec3 color = render(vec3(10.0, pixel.x * 10.0, pixel.y * 10.0), vec3(-1.0, 0.0, 0.0));
+            gl_FragColor = vec4(color, 1.0);
+        }
+    </script>
+
+    <script>
+        var width;
+        var height;
+
+        var gl_program;
+
+        function init_locations() {
+            gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'aPosition');
+            gl_program.timeUniform = gl.getUniformLocation(gl_program, 'iTime');
+            gl_program.resolutionUniform = gl.getUniformLocation(gl_program, 'iResolution');
+        }
+
+        function upload_data() {
+            var positions = new Float32Array([
+                -1, -1,
+                -1, 1,
+                1, 1,
+                1, -1]);
+            var indices = new Uint8Array([
+                0, 1, 2,
+                0, 2, 3
+            ]);
+
+            gl_program.indices_length = indices.length;
+
+            gl_program.index_buf = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+            gl_program.index_buf.bind();
+            gl.bufferData(gl_program.index_buf.target, indices, gl.STATIC_DRAW);
+            gl_program.index_buf.unbind();
+
+            gl_program.position_buf = new VertexBufferObject();
+            gl_program.position_buf.bind();
+            gl.bufferData(gl_program.position_buf.target, positions, gl.STATIC_DRAW);
+            gl_program.position_buf.unbind();
+        }
+
+        function bind_attributes() {
+            gl_program.position_buf.bind();
+            gl.enableVertexAttribArray(gl_program.position_buf);
+            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 2*4, 0);
+            gl_program.position_buf.unbind();
+        }
+
+        var start_time = null;
+        var passed_time = null;
+        var paused = false;
+
+        function pause() {
+            paused = true;
+            var cur_time = new Date().getTime();
+            passed_time = cur_time - start_time;
+            start_time = null;
+        }
+
+        function unpause() {
+            paused = false;
+            var cur_time = new Date().getTime();
+            start_time = cur_time - passed_time;
+            passed_time = null;
+        }
+
+        function update_time() {
+            var time;
+            if (paused) {
+                time = passed_time;
+            } else {
+                var cur_time = new Date().getTime();
+                if (start_time == null) {
+                    start_time = cur_time;
+                }
+                time = cur_time - start_time;
+            }
+
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.timeUniform, time);
+            gl.useProgram(null);
+        }
+
+        function update_resolution() {
+            gl.useProgram(gl_program);
+            gl.uniform2f(gl_program.resolutionUniform, width, height);
+            gl.useProgram(null);
+        }
+
+        function render_frame() {
+            gl.disable(gl.DEPTH_TEST);
+
+            gl.viewport(0, 0, width, height);
+
+            gl.clearColor(1, 1, 1, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            gl_program.index_buf.bind();
+            gl.drawElements(gl.TRIANGLES, gl_program.indices_length, gl.UNSIGNED_BYTE, 0);
+            gl_program.index_buf.unbind();
+        }
+
+        function update_canvas_shape(canvas) {
+            if (canvas.width != canvas.clientWidth ||
+                    canvas.height != canvas.clientHeight) {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                width = canvas.width;
+                height = canvas.height;
+                update_resolution();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function register_keys_handlers() {
+            var key_handler = function(keyboard_event) {
+                if (keyboard_event.keyCode == 32) {// 32: ' '
+                    if (paused) {
+                        unpause();
+                    } else {
+                        pause();
+                    }
+                }
+            };
+
+            window.addEventListener('keypress', key_handler, false);
+        }
+
+        function onready()
+        {
+            var canvas = document.getElementById('webgl_canvas');
+
+            if (!setupWebGL(canvas)) {
+                alert('No WebGL support!');
+                return;
+            }
+            var framerate = new Framerate("framerate_canvas");
+
+            var vertex_shader_code = document.getElementById("vshader").text;
+            var fragment_shader_code = document.getElementById("fshader").text;
+            gl_program = build_program(vertex_shader_code, fragment_shader_code);
+
+            init_locations();
+            upload_data();
+
+            var start_loop = function () {
+                if (update_canvas_shape(canvas) || !paused) {
+                    update_time();
+
+                    gl.useProgram(gl_program);
+                    bind_attributes();
+                    render_frame();
+                    gl.useProgram(null);
+
+                    framerate.snapshot();
+                }
+                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
+                window.requestAnimFrame(start_loop, canvas);
+            };
+
+            register_keys_handlers();
+            start_loop();
+        }
+    </script>
+
+</head>
+<body onload="onready();" style="margin: 0; padding: 0; height: 100%">
+<canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
+<div id="framerate_canvas" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    color: white">
+    Framerate: {FPS} FPS<br/>
+    Press SPACE to pause<br/>
+</div>
+</body>
+</html>
