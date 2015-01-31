@@ -365,7 +365,7 @@
 
             gl.viewport(0, 0, width, height);
 
-            gl.clearColor(1, 1, 1, 1);
+            gl.clearColor(0, 0, 0, 1);
             gl.clear(gl.COLOR_BUFFER_BIT);
 
             gl_program.index_buf.bind();
@@ -411,7 +411,6 @@
                     render_frame();
                     gl.useProgram(null);
                 }
-                console.log(keyboard_event.keyCode.toString());
             };
 
             window.addEventListener('keypress', key_handler, false);
@@ -444,12 +443,12 @@
                     gl.useProgram(gl_program);
                     bind_attributes();
                     render_frame();
+                    gl.finish();
                     gl.useProgram(null);
 
                     framerate.snapshot();
                 }
-                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
-                window.requestAnimFrame(start_loop, canvas);
+                requestAnimFrameSmart(start_loop, canvas);
             };
 
             register_keys_handlers();

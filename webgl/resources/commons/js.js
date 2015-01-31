@@ -8,7 +8,7 @@
  * @from J3DI.js - https://code.google.com/p/webgl-code-storage/source/browse/trunk/samples/SpinningBox/resources/J3DI.js?r=2
  */
 Framerate = function (id) {
-    this.numFramerates = 10;
+    this.numFramerates = 4;
     this.framerateUpdateInterval = 500;
     this.id = id;
     this.sourceHtml = document.getElementById(this.id).innerHTML;
@@ -63,10 +63,27 @@ window.requestAnimFrame = (function () {
         window.oRequestAnimationFrame ||
         window.msRequestAnimationFrame ||
         function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-            return window.setTimeout(callback);
+            return window.setTimeout(callback, 1000 / 30);
         };
 })();
 
-window.requestAnimFrameMaxFPS = function (/* function FrameRequestCallback */ callback, /* DOMElement Element */ element, /* timeout in milliseconds */ timeout) {
-    return window.setTimeout(callback, timeout);
-};
+var lastCall = null;
+
+function requestAnimFrameSmart(callback, canvas) {
+    var minDelay = 15;
+
+    function callbackWrapper() {
+        var time = new Date().getTime();
+        var timePassed = time - lastCall;
+        if (timePassed < minDelay) {
+            while (timePassed < minDelay) {
+                time = new Date().getTime();
+                timePassed = time - lastCall;
+            }
+        }
+        lastCall = time;
+        callback();
+    }
+
+    window.requestAnimFrame(callbackWrapper, canvas);
+}

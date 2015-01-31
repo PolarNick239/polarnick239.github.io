@@ -137,10 +137,10 @@
                 update_canvas_shape(canvas);
                 update();
                 render_frame(indices);
+                gl.finish();
 
                 framerate.snapshot();
-                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
-                window.requestAnimFrame(start_loop, canvas);
+                window.requestAnimFrameSmart(start_loop, canvas);
             };
 
             start_loop();

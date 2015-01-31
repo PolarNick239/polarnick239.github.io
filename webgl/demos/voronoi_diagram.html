@@ -386,19 +386,25 @@
             update_distance_type(distance_type);
 
             paused = false;
+            var prev = new Date().getTime();
             var start_loop = function () {
                 if (update_canvas_shape(canvas) || !paused) {
+
+                    var time = new Date().getTime();
+                    console.log(time - prev);
+                    prev = time;
+
                     update();
 
                     gl.useProgram(gl_program);
                     bind_attributes();
                     render_frame();
                     gl.useProgram(null);
+                    gl.finish();
 
                     framerate.snapshot();
                 }
-                //replace with "requestAnimFrameMaxFPS(foo, canvas);" to get max FPS
-                window.requestAnimFrameMaxFPS(start_loop, canvas, 1000/30);
+                requestAnimFrameSmart(start_loop, canvas);
             };
 
             register_keys_handlers();
