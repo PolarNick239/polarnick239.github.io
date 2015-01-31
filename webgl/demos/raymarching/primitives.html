@@ -245,7 +245,7 @@
         var width;
         var height;
 
-        var MAX_ANTIALISING = 2;
+        var MAX_ANTIALISING = 1;
         var antialising = 0;
 
         var gl_program;
@@ -381,7 +381,7 @@
                     } else {
                         pause();
                     }
-                } else if (keyboard_event.keyCode == 65) {// 65: 'A'
+                } else if (keyboard_event.keyCode == 97 || keyboard_event.keyCode == 65) {// 97: 'a' or 65: 'A'
                     antialising += 1;
                     if (antialising > MAX_ANTIALISING) {
                         antialising = 0;
@@ -396,6 +396,7 @@
                     render_frame();
                     gl.useProgram(null);
                 }
+                console.log(keyboard_event.keyCode.toString());
             };
 
             window.addEventListener('keypress', key_handler, false);
