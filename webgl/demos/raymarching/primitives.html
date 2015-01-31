@@ -24,43 +24,115 @@
         precision highp float;
 
         uniform float iTime;
+        uniform float iAntialising;
 
         uniform vec2 iResolution;
 
-        // Primitives BEGIN
+
+        // LENGTHS    BEGIN
+        float length4(vec2 v) {
+            v *= v;
+            v *= v;
+            return pow(v.x + v.y, 1.0 / 4.0);
+        }
+
+        float length6(vec2 v) {
+            v *= v * v;
+            v *= v;
+            return pow(v.x + v.y, 1.0 / 6.0);
+        }
+
+        float length8(vec2 v) {
+            v *= v;
+            v *= v;
+            v *= v;
+            return pow(v.x + v.y, 1.0 / 8.0);
+        }
+        // LENGTHS    END
+
+
+        // PRIMITIVES BEGIN
+        float plane(in vec3 point) {
+            return point.z;
+        }
+
+        float capsule(vec3 p, vec3 a, vec3 b, float radius) {
+            vec3 ap = p - a, ab = b - a;
+            float h = clamp(dot(ap, ab) / dot(ab, ab), 0.0, 1.0);
+            return length(ap - ab*h) - radius;
+        }
 
         float sphere(in vec3 point, in float radius) {
             return length(point) - radius;
         }
 
-        float box(vec3 point, vec3 size) {
+        float box(in vec3 point, in vec3 size) {
             vec3 d = abs(point) - size;
-            return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+            return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
         }
 
-        // Primitives END
+        float boxRounded(in vec3 point, in vec3 size, float radius) {
+            return length(max(abs(point) - size, 0.0)) - radius;
+        }
+
+        float torusSquare(in vec3 point, in vec2 size) {
+            return length8(vec2(length8(point.xy) - size.x, point.z))  - size.y;
+        }
+
+        float cylinderRounded(in vec3 point, in vec2 size, in float radius) {
+            vec2 delta = abs(vec2(length(point.xy), point.z)) - size;
+            return min(max(delta.x, delta.y), 0.0) + length(max(delta, 0.0)) - radius;
+        }
+        // PRIMITIVES END
+
+
+        // TRANSFORMS BEGIN
+        vec3 transformTwist(in vec3 point) {
+            float z = point.z / 1.5;
+            float c = cos(1.0 * z * z * z);
+            float s = sin(1.0 * z * z * z);
+            mat2 m = mat2(c, -s, s, c);
+            return vec3(m * point.xy, point.z);
+        }
+        // TRANSFORMS END
+
 
         vec2 update(vec2 nearest, vec2 candidate) {
             return (candidate.x < nearest.x) ? candidate : nearest;
         }
 
         vec2 findNearest(in vec3 position) {
-            vec2 res = vec2(1000000.0, -1.0);
-            res = update(res, vec2( box      (position - vec3(3.0, 0.0, 0.25),   vec3(1.0, 1.0, 0.5)),   0.0));
-            res = update(res, vec2( sphere   (position - vec3(0.0, 1.0, 0.0),    1.0),                   1.0));
+            vec2 res = vec2(1000.0, -1.0);
+
+            res = update(res, vec2( plane      (position),                                                    0.0));
+
+            res = update(res, vec2( box        (position - vec3(2.0, 2.0, 0.6),   vec3(1.0, 1.0, 0.5)),       1.0));
+            res = update(res, vec2( sphere     (position - vec3(2.0, -2.0, 1.1),  1.0),                       2.0));
+            res = update(res, vec2( boxRounded (position - vec3(-2.0, -2.0, 0.6), vec3(0.9, 0.9, 0.4), 0.1),  3.0));
+            res = update(res, vec2( torusSquare(position - vec3(-2.0, 2.0, 0.5),  vec2(0.8, 0.2)),            4.0));
+            res = update(res, vec2( cylinderRounded (
+                                transformTwist(position) - vec3(0.1, 0.0, 2.0),  vec2(0.05, 1.95), 0.05),             5.0));
+            res = update(res, vec2( cylinderRounded (
+                                transformTwist(position) - vec3(-0.1, 0.0, 2.0),  vec2(0.05, 1.95), 0.05),            6.0));
             return res;
         }
 
-        vec3 getColor(float id) {
-            vec3 backgroundColor = vec3(0.7, 0.8, 1.0);
+        vec3 getColor(float id, vec3 position) {
+            vec3 backgroundColor = vec3(0.0, 0.0, 0.0);
+            float gridStep = 1.0;
             if      (id == -1.0)    return backgroundColor;
-            else if (id == 0.0)     return vec3(0.2, 0.0, 0.2);
-            else if (id == 1.0)     return vec3(0.0, 0.2, 0.0);
+            else if (id == 0.0)     return vec3(0.25, 0.25, 0.25) + vec3(0.5, 0.5, 0.5) * mod(floor(position.x / gridStep) + floor(position.y / gridStep), 2.0);
+            else if (id == 1.0)     return vec3(0.2, 0.0, 0.2);
+            else if (id == 2.0)     return vec3(0.0, 0.2, 0.0);
+            else if (id == 3.0)     return vec3(0.2, 0.2, 0.0);
+            else if (id == 4.0)     return vec3(0.2, 0.2, 0.5);
+            else if (id == 5.0)     return vec3(0.7, 0.0, 0.0);
+            else if (id == 6.0)     return vec3(0.7, 0.7, 0.7);
             else return vec3(1.0, 0.0, 0.0);
         }
 
         vec3 calcNormal(in vec3 position) {
-            vec3 eps = vec3( 0.001, 0.0, 0.0 );
+            vec3 eps = vec3(0.002, 0.0, 0.0);
             vec3 normal = vec3(
                 findNearest(position + eps.xyy).x - findNearest(position - eps.xyy).x,
                 findNearest(position + eps.yxy).x - findNearest(position - eps.yxy).x,
@@ -68,20 +140,20 @@
             return normalize(normal);
         }
 
-        vec3 castRay(in vec3 rayStart, in vec3 rayDirection) {
-            const float minDistance = 0.002;
+        vec4 castRay(in vec3 rayStart, in vec3 rayDirection) {
+            const float minDistance = 0.001;
             const int maxIterations = 50;
-            const float maxDepth = 20.0;
+            const float maxDepth = 300.0;
 
             float depth = 0.0;
             float nearestObjectId = -1.0;
             int iterations = 0;
             for (int i = 0; i < maxIterations; i++) {
-                vec2 nearest = findNearest(rayStart + rayDirection * depth);
+                vec3 position = rayStart + rayDirection * depth;
+                vec2 nearest = findNearest(position);
 
                 iterations = i + 1;
                 nearestObjectId = nearest.y;
-
                 if (nearest.x < minDistance) {
                     break;
                 } else {
@@ -92,29 +164,39 @@
             if (depth > maxDepth) {
                 nearestObjectId = -1.0;
             }
-            return vec3(depth, nearestObjectId, iterations);
+            vec3 lightPosition = vec3(0.0, 0.0, 4.2);
+            float minDistToLight = capsule(lightPosition, rayStart, rayStart + rayDirection * depth, 0.15);
+            return vec4(depth, nearestObjectId, iterations, minDistToLight);
         }
 
         vec3 render(in vec3 rayStart, in vec3 rayDirection) {
-            vec3 res = castRay(rayStart, rayDirection);
+            vec4 res = castRay(rayStart, rayDirection);
+            vec3 position = rayStart + rayDirection * res.x;
             if (res.y != -1.0) {
                 vec3 lightColor = vec3(1.0, 1.0, 1.0);
-                vec3 lightPosition = vec3(0.0, 0.0, 10.0);
+                vec3 lightPosition = vec3(0.0, 0.0, 4.2);
 
-                vec3 position = rayStart + rayDirection * res.x;
+                if (res.w <= 0.001) {
+                    return lightColor;
+                }
+
                 vec3 normal = calcNormal(position);
                 vec3 lightDirection = normalize(position - lightPosition);
 
-                float ambient = 0.2;
+                float ambient = res.y == 0.0 ? 0.0 : 0.1;
                 float diffuse = max(0.0, dot(normal, -lightDirection));
-                float specular = (diffuse == 0.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 2.0);
-                float attenuation = 1.0 / (1.0 + 0.001 * pow(length(lightPosition - position), 2.0));
-                vec3 linearColor = (ambient + attenuation * (diffuse + specular)) * getColor(res.y);
+                float specular = (diffuse == 0.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 8.0) * 2.0;
+                float attenuation = 1.0 / (1.0 + 0.03 * pow(length(lightPosition - position), 2.0));
+                vec3 linearColor = (ambient + attenuation * (diffuse + specular)) * getColor(res.y, position);
 
                 vec3 gamma = vec3(1.0/2.2);
-                return pow(linearColor, gamma);
+                vec3 color = pow(linearColor, gamma);
+                if (res.w > 0.001) {
+                    color += lightColor * 0.001 / (res.w * res.w);
+                }
+                return color;
             } else {
-                return getColor(-1.0);
+                return getColor(-1.0, position);
             }
         }
 
@@ -138,16 +220,24 @@
             float sinRoll = sin(-cameraRollAngle);
             mat2 cameraRollRotation = mat2(cosRoll, -sinRoll, sinRoll, cosRoll);
 
-            vec2 pixel = (gl_FragCoord.xy / iResolution - 0.5) * 2.0;
-            pixel.y *= iResolution.y / iResolution.x;
+            vec3 color = vec3(0.0);
+            float subPixels = pow(4.0, iAntialising);
+            for (float i = 0.0; i < 256.0; i++) {
+                if (i >= subPixels) {
+                    break;
+                }
+                float subPixelsInRow = pow(2.0, iAntialising);
+                vec2 pixel = gl_FragCoord.xy + vec2(mod(i, subPixelsInRow), mod(i / subPixelsInRow, subPixelsInRow)) / subPixelsInRow;
+                pixel = (pixel / iResolution - 0.5) * 2.0;
+                pixel.y *= iResolution.y / iResolution.x;
 
-            pixel = cameraRollRotation * pixel;
+                pixel = cameraRollRotation * pixel;
 
-            vec3 rayDirection = normalize( screenCenter + (pixel.x * cameraScreenXAxis) + (pixel.y * cameraScreenYAxis) );
+                vec3 rayDirection = normalize( screenCenter + (pixel.x * cameraScreenXAxis) + (pixel.y * cameraScreenYAxis) );
 
-            vec3 color = render(cameraOffset + cameraPosition, rayDirection);
-            //vec3 color = render(vec3(10.0, pixel.x * 10.0, pixel.y * 10.0), vec3(-1.0, 0.0, 0.0));
-            gl_FragColor = vec4(color, 1.0);
+                color += render(cameraOffset + cameraPosition, rayDirection);
+            }
+            gl_FragColor = vec4(color / subPixels, 1.0);
         }
     </script>
 
@@ -155,12 +245,19 @@
         var width;
         var height;
 
+        var MAX_ANTIALISING = 2;
+        var antialising = 0;
+
         var gl_program;
+
+        var legendCanvas;
+        var legendSourceHTML;
 
         function init_locations() {
             gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'aPosition');
             gl_program.timeUniform = gl.getUniformLocation(gl_program, 'iTime');
             gl_program.resolutionUniform = gl.getUniformLocation(gl_program, 'iResolution');
+            gl_program.antialisingUniform = gl.getUniformLocation(gl_program, 'iAntialising');
         }
 
         function upload_data() {
@@ -235,6 +332,19 @@
             gl.useProgram(null);
         }
 
+        function update_antialising() {
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.antialisingUniform, antialising);
+            gl.useProgram(null);
+            var antialisingText;
+            if (antialising == 0) {
+                antialisingText = 'NONE';
+            } else {
+                antialisingText = Math.pow(4, antialising).toString() + 'X';
+            }
+            document.getElementById('legend_canvas').innerHTML = legendSourceHTML.replace('{ANTIALIASING}', antialisingText);
+        }
+
         function render_frame() {
             gl.disable(gl.DEPTH_TEST);
 
@@ -264,12 +374,27 @@
 
         function register_keys_handlers() {
             var key_handler = function(keyboard_event) {
+                var should_render = false;
                 if (keyboard_event.keyCode == 32) {// 32: ' '
                     if (paused) {
                         unpause();
                     } else {
                         pause();
                     }
+                } else if (keyboard_event.keyCode == 65) {// 65: 'A'
+                    antialising += 1;
+                    if (antialising > MAX_ANTIALISING) {
+                        antialising = 0;
+                    }
+                    update_antialising();
+                    should_render = true;
+                }
+
+                if (paused && should_render) {
+                    gl.useProgram(gl_program);
+                    bind_attributes();
+                    render_frame();
+                    gl.useProgram(null);
                 }
             };
 
@@ -285,6 +410,8 @@
                 return;
             }
             var framerate = new Framerate("framerate_canvas");
+            legendCanvas = document.getElementById('legend_canvas');
+            legendSourceHTML = legendCanvas.innerHTML;
 
             var vertex_shader_code = document.getElementById("vshader").text;
             var fragment_shader_code = document.getElementById("fshader").text;
@@ -292,6 +419,7 @@
 
             init_locations();
             upload_data();
+            update_antialising();
 
             var start_loop = function () {
                 if (update_canvas_shape(canvas) || !paused) {
@@ -320,9 +448,16 @@
                     position: fixed;
                     top: 0;
                     left: 0;
-                    color: black">
+                    color: white">
     Framerate: {FPS} FPS<br/>
+</div>
+<div id="legend_canvas" style="
+                    position: fixed;
+                    top: 1cm;
+                    left: 0;
+                    color: white">
     Press SPACE to pause<br/>
+    Press A to change antialiasing ({ANTIALIASING})<br/>
 </div>
 </body>
 </html>
