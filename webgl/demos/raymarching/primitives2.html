@@ -25,21 +25,26 @@
 
         uniform float iTime;
         uniform float iAntialising;
+        uniform float iMotionBlur;
+        uniform float iSpeed;
 
         uniform vec2 iResolution;
 
         float lightHeight;
         float torusAngle;
+        float cameraAngle;
 
         void updateWorld(float time) {
+            time *= iSpeed;
             lightHeight = 2.15 + 2.0 * sin(time / 1000.0);
             torusAngle = time / 1000.0;
+            cameraAngle = time / 2000.0;
         }
 
         float round(float a) {
             float downA = floor(a);
             float upA = ceil(a);
-            return (abs(a - downA) < abs(a - upA)) ? downA : upA;
+            return (abs(a - downA) < abs(a - upA)) ? downA : downA;
         }
 
         // LENGTHS    BEGIN
@@ -221,21 +226,15 @@
 
         void main()
         {
-            updateWorld(iTime);
-
             vec3 cameraOffset = vec3(0.0, 0.0, 0.0);  // This world point is a target of camera
-            float positionAngle = iTime / 2000.0;
             float cameraDistance = 10.0;
-            vec3 cameraPosition = vec3(cos(positionAngle) * cameraDistance, sin(positionAngle) * cameraDistance, 5.0);  // This is relative coordinates. In world coordinates camera is located at cameraOffset+cameraPosition.
             float cameraRollAngle = 0.0;  // Camera rotation around its ray of view.
             float cameraAngleOfView = 90.0 * PI / 180.0;
             float screenSize = 2.0;
             float cameraFocalDistance = (screenSize / 2.0) / tan(cameraAngleOfView / 2.0);
 
-            vec3 cameraDirection = normalize(-cameraPosition);
-            vec3 cameraScreenXAxis = normalize( cross(cameraDirection, (cameraDirection.xy != vec2(0.0, 0.0)) ? vec3(0.0, 0.0, 1.0): vec3(0.0, 1.0, 0.0)) );
-            vec3 cameraScreenYAxis = normalize( cross(cameraScreenXAxis, cameraDirection) );
-            vec3 screenCenter = cameraDirection * cameraFocalDistance;
+
+
 
             float cosRoll = cos(-cameraRollAngle);
             float sinRoll = sin(-cameraRollAngle);
@@ -243,7 +242,7 @@
 
             vec3 color = vec3(0.0);
 
-            if (iAntialising > 0.0) {
+            if (iAntialising > 0.0 || iMotionBlur > 0.0) {
                 float lineWidth = 3.0;
                 if (round(gl_FragCoord.x / lineWidth) == round(iResolution.x / (lineWidth * 2.0))) {
                     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -251,23 +250,42 @@
                 }
             }
             float antialising = (gl_FragCoord.x > iResolution.x/2.0) ? iAntialising : 0.0;
+            float motionBlur = (gl_FragCoord.x < iResolution.x/2.0 && iMotionBlur > 0.0) ? iMotionBlur : 1.0;
             float subPixels = pow(4.0, antialising);
-            for (float i = 0.0; i < 256.0; i++) {
-                if (i >= subPixels) {
+
+            float motionBlurSummaryWeight = 0.0;
+            for (float j = 0.0; j < 256.0; j++) {
+                if (j >= motionBlur) {
                     break;
                 }
-                float subPixelsInRow = pow(2.0, antialising);
-                vec2 pixel = gl_FragCoord.xy + vec2(mod(i, subPixelsInRow), mod(i / subPixelsInRow, subPixelsInRow)) / subPixelsInRow;
-                pixel = (pixel / iResolution - 0.5) * 2.0;
-                pixel.y *= iResolution.y / iResolution.x;
+                updateWorld(iTime - (j / motionBlur) * 150.0);
 
-                pixel = cameraRollRotation * pixel;
+                vec3 cameraPosition = vec3(cos(cameraAngle) * cameraDistance, sin(cameraAngle) * cameraDistance, 5.0);  // This is relative coordinates. In world coordinates camera is located at cameraOffset+cameraPosition.
+                vec3 cameraDirection = normalize(-cameraPosition);
 
-                vec3 rayDirection = normalize( screenCenter + (pixel.x * cameraScreenXAxis) + (pixel.y * cameraScreenYAxis) );
+                vec3 cameraScreenXAxis = normalize( cross(cameraDirection, (cameraDirection.xy != vec2(0.0, 0.0)) ? vec3(0.0, 0.0, 1.0): vec3(0.0, 1.0, 0.0)) );
+                vec3 cameraScreenYAxis = normalize( cross(cameraScreenXAxis, cameraDirection) );
+                vec3 screenCenter = cameraDirection * cameraFocalDistance;
 
-                color += render(cameraOffset + cameraPosition, rayDirection);
+                float motionBlurCurrentWeight = motionBlur - j/1.0;
+                for (float i = 0.0; i < 256.0; i++) {
+                    if (i >= subPixels) {
+                        break;
+                    }
+                    float subPixelsInRow = pow(2.0, antialising);
+                    vec2 pixel = gl_FragCoord.xy + vec2(mod(i, subPixelsInRow), mod(i / subPixelsInRow, subPixelsInRow)) / subPixelsInRow;
+                    pixel = (pixel / iResolution - 0.5) * 2.0;
+                    pixel.y *= iResolution.y / iResolution.x;
+
+                    pixel = cameraRollRotation * pixel;
+
+                    vec3 rayDirection = normalize( screenCenter + (pixel.x * cameraScreenXAxis) + (pixel.y * cameraScreenYAxis) );
+
+                    color += motionBlurCurrentWeight * min(render(cameraOffset + cameraPosition, rayDirection), vec3(1.0));
+                }
+                motionBlurSummaryWeight += motionBlurCurrentWeight;
             }
-            gl_FragColor = vec4(color / subPixels, 1.0);
+            gl_FragColor = vec4(color / (subPixels * motionBlurSummaryWeight), 1.0);
         }
     </script>
 
@@ -278,16 +296,27 @@
         var MAX_ANTIALISING = 1;
         var antialising = 0;
 
+        var MIN_MOTION_BLUR = 4;
+        var MAX_MOTION_BLUR = 12;
+        var motionBlur = 0;
+
+        var MIN_SPEED = 1;
+        var MAX_SPEED = 3;
+        var speed = 1;
+
         var gl_program;
 
-        var legendCanvas;
-        var legendSourceHTML;
+        var antialiasingSourceHTML;
+        var motionBlurSourceHTML;
+        var speedBlurSourceHTML;
 
         function init_locations() {
             gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'aPosition');
             gl_program.timeUniform = gl.getUniformLocation(gl_program, 'iTime');
             gl_program.resolutionUniform = gl.getUniformLocation(gl_program, 'iResolution');
             gl_program.antialisingUniform = gl.getUniformLocation(gl_program, 'iAntialising');
+            gl_program.motionBlurUniform = gl.getUniformLocation(gl_program, 'iMotionBlur');
+            gl_program.speedUniform = gl.getUniformLocation(gl_program, 'iSpeed');
         }
 
         function upload_data() {
@@ -372,7 +401,28 @@
             } else {
                 antialisingText = Math.pow(4, antialising).toString() + 'X';
             }
-            document.getElementById('legend_canvas').innerHTML = legendSourceHTML.replace('{ANTIALIASING}', antialisingText);
+            document.getElementById('antialiasing_canvas').innerHTML = antialiasingSourceHTML.replace('{ANTIALIASING}', antialisingText);
+        }
+
+        function update_motion_blur() {
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.motionBlurUniform, motionBlur);
+            gl.useProgram(null);
+            var motionBlurText;
+            if (motionBlur == 0) {
+                motionBlurText = 'NONE';
+            } else {
+                motionBlurText = motionBlur.toString() + 'X';
+            }
+            document.getElementById('motion_blur_canvas').innerHTML = motionBlurSourceHTML.replace('{MOTION_BLUR}', motionBlurText);
+        }
+
+        function update_speed() {
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.speedUniform, speed);
+            gl.useProgram(null);
+            var speedText = speed.toString() + 'X';
+            document.getElementById('speed_canvas').innerHTML = speedSourceHTML.replace('{SPEED}', speedText);
         }
 
         function render_frame() {
@@ -418,6 +468,26 @@
                     }
                     update_antialising();
                     should_render = true;
+                } else if (keyboard_event.keyCode == 109 || keyboard_event.keyCode == 77) {// 109: 'm' or 77: 'M'
+                    motionBlur += 4;
+                    if (motionBlur < MIN_MOTION_BLUR) {
+                        motionBlur = MIN_MOTION_BLUR;
+                    }
+                    motionBlur = Math.max(motionBlur, MIN_MOTION_BLUR);
+                    if (motionBlur > MAX_MOTION_BLUR) {
+                        motionBlur = 0;
+                    }
+                    update_motion_blur();
+                    should_render = true;
+                } else if (keyboard_event.keyCode == 115 || keyboard_event.keyCode == 83) {// 115: 's' or 83: 'S'
+                    speed += 1;
+                    if (speed > MAX_SPEED) {
+                        speed = MIN_SPEED;
+                    }
+                    update_speed();
+                    should_render = true;
+                } else {
+                    console.log(keyboard_event.keyCode);
                 }
 
                 if (paused && should_render) {
@@ -440,8 +510,9 @@
                 return;
             }
             var framerate = new Framerate("framerate_canvas");
-            legendCanvas = document.getElementById('legend_canvas');
-            legendSourceHTML = legendCanvas.innerHTML;
+            antialiasingSourceHTML = document.getElementById('antialiasing_canvas').innerHTML;
+            motionBlurSourceHTML = document.getElementById('motion_blur_canvas').innerHTML;
+            speedSourceHTML = document.getElementById('speed_canvas').innerHTML;
 
             var vertex_shader_code = document.getElementById("vshader").text;
             var fragment_shader_code = document.getElementById("fshader").text;
@@ -450,6 +521,8 @@
             init_locations();
             upload_data();
             update_antialising();
+            update_motion_blur();
+            update_speed();
 
             var start_loop = function () {
                 if (update_canvas_shape(canvas) || !paused) {
@@ -476,18 +549,41 @@
 <canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
 <div id="framerate_canvas" style="
                     position: fixed;
-                    top: 0;
+                    top: 1cm;
                     left: 0;
                     color: white">
     Framerate: {FPS} FPS<br/>
 </div>
 <div id="legend_canvas" style="
                     position: fixed;
-                    top: 1cm;
+                    top: 2cm;
                     left: 0;
                     color: white">
-    Press SPACE to pause<br/>
-    Press A to enable antialiasing to the right from black line ({ANTIALIASING})<br/>
+    Press <b>SPACE</b> to pause<br/>
+    Press <b>A</b> to change Antialiasing on RIGHT from black line<br/>
+    Press <b>M</b> to change Motion Blur on LEFT from black line<br/>
+    Press <b>S</b> to change Speed<br/>
+</div>
+<div id="antialiasing_canvas" style="
+                    position: fixed;
+                    top: 0;
+                    left: 50%;
+                    color: white">
+    Antialiasing:    {ANTIALIASING}
+</div>
+<div id="motion_blur_canvas" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    color: white">
+    Motion Blur:     {MOTION_BLUR}
+</div>
+<div id="speed_canvas" style="
+                    position: fixed;
+                    top: 4cm;
+                    left: 0;
+                    color: white">
+    Speed:     {SPEED}
 </div>
 </body>
 </html>
