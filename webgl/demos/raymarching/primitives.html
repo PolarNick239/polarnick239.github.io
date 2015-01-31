@@ -28,6 +28,13 @@
 
         uniform vec2 iResolution;
 
+        float lightHeight;
+        float torusAngle;
+
+        void updateWorld(float time) {
+            lightHeight = 2.15 + 2.0 * sin(time / 1000.0);
+            torusAngle = time / 1000.0;
+        }
 
         // LENGTHS    BEGIN
         float length4(vec2 v) {
@@ -87,12 +94,16 @@
 
 
         // TRANSFORMS BEGIN
-        vec3 transformTwist(in vec3 point) {
-            float z = point.z / 1.5;
-            float c = cos(1.0 * z * z * z);
-            float s = sin(1.0 * z * z * z);
+        vec3 rotateXY(in vec3 point, in float angle) {
+            float c = cos(angle);
+            float s = sin(angle);
             mat2 m = mat2(c, -s, s, c);
             return vec3(m * point.xy, point.z);
+        }
+
+        vec3 transformTwist(in vec3 point) {
+            float z = point.z / 1.5;
+            return rotateXY(point, z * z * z);
         }
         // TRANSFORMS END
 
@@ -109,11 +120,13 @@
             res = update(res, vec2( box        (position - vec3(2.0, 2.0, 0.6),   vec3(1.0, 1.0, 0.5)),       1.0));
             res = update(res, vec2( sphere     (position - vec3(2.0, -2.0, 1.1),  1.0),                       2.0));
             res = update(res, vec2( boxRounded (position - vec3(-2.0, -2.0, 0.6), vec3(0.9, 0.9, 0.4), 0.1),  3.0));
-            res = update(res, vec2( torusSquare(position - vec3(-2.0, 2.0, 0.5),  vec2(0.8, 0.2)),            4.0));
+            res = update(res, vec2( torusSquare(rotateXY(position - vec3(-2.0, 2.0, 0.5), torusAngle),  vec2(0.8, 0.2)),            4.0));
+            float cylinderHeight = lightHeight - 0.2;
+            float radius = 0.05;
             res = update(res, vec2( cylinderRounded (
-                                transformTwist(position) - vec3(0.1, 0.0, 2.0),  vec2(0.05, 1.95), 0.05),             5.0));
+                                transformTwist(position) - vec3(0.1, 0.0, cylinderHeight/2.0),  vec2(0.05, cylinderHeight/2.0 - radius), radius),             5.0));
             res = update(res, vec2( cylinderRounded (
-                                transformTwist(position) - vec3(-0.1, 0.0, 2.0),  vec2(0.05, 1.95), 0.05),            6.0));
+                                transformTwist(position) - vec3(-0.1, 0.0, cylinderHeight/2.0),  vec2(0.05, cylinderHeight/2.0 - radius), radius),            6.0));
             return res;
         }
 
@@ -164,7 +177,7 @@
             if (depth > maxDepth) {
                 nearestObjectId = -1.0;
             }
-            vec3 lightPosition = vec3(0.0, 0.0, 4.2);
+            vec3 lightPosition = vec3(0.0, 0.0, lightHeight);
             float minDistToLight = capsule(lightPosition, rayStart, rayStart + rayDirection * depth, 0.15);
             return vec4(depth, nearestObjectId, iterations, minDistToLight);
         }
@@ -174,7 +187,7 @@
             vec3 position = rayStart + rayDirection * res.x;
             if (res.y != -1.0) {
                 vec3 lightColor = vec3(1.0, 1.0, 1.0);
-                vec3 lightPosition = vec3(0.0, 0.0, 4.2);
+                vec3 lightPosition = vec3(0.0, 0.0, lightHeight);
 
                 if (res.w <= 0.001) {
                     return lightColor;
@@ -202,6 +215,8 @@
 
         void main()
         {
+            updateWorld(iTime);
+
             vec3 cameraOffset = vec3(0.0, 0.0, 0.0);  // This world point is a target of camera
             float positionAngle = iTime / 2000.0;
             float cameraDistance = 10.0;
