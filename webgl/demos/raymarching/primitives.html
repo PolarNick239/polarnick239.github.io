@@ -52,7 +52,7 @@
         }
 
         vec3 getColor(float id) {
-            vec3 backgroundColor = vec3(0.0, 0.0, 0.2);
+            vec3 backgroundColor = vec3(0.7, 0.8, 1.0);
             if      (id == -1.0)    return backgroundColor;
             else if (id == 0.0)     return vec3(0.2, 0.0, 0.2);
             else if (id == 1.0)     return vec3(0.0, 0.2, 0.0);
@@ -69,8 +69,9 @@
         }
 
         vec3 castRay(in vec3 rayStart, in vec3 rayDirection) {
-            const float minDistance = 0.001;
-            const int maxIterations = 32;
+            const float minDistance = 0.002;
+            const int maxIterations = 50;
+            const float maxDepth = 20.0;
 
             float depth = 0.0;
             float nearestObjectId = -1.0;
@@ -78,30 +79,40 @@
             for (int i = 0; i < maxIterations; i++) {
                 vec2 nearest = findNearest(rayStart + rayDirection * depth);
 
+                iterations = i + 1;
+                nearestObjectId = nearest.y;
+
                 if (nearest.x < minDistance) {
-                    nearestObjectId = nearest.y;
-                    iterations = i + 1;
                     break;
                 } else {
                     depth += nearest.x;
                 }
             }
 
+            if (depth > maxDepth) {
+                nearestObjectId = -1.0;
+            }
             return vec3(depth, nearestObjectId, iterations);
         }
 
         vec3 render(in vec3 rayStart, in vec3 rayDirection) {
             vec3 res = castRay(rayStart, rayDirection);
-            return vec3(res.z / 32.0);
             if (res.y != -1.0) {
                 vec3 lightColor = vec3(1.0, 1.0, 1.0);
                 vec3 lightPosition = vec3(0.0, 0.0, 10.0);
 
                 vec3 position = rayStart + rayDirection * res.x;
                 vec3 normal = calcNormal(position);
-                vec3 lightDirection = normalize(lightPosition - position);
+                vec3 lightDirection = normalize(position - lightPosition);
 
-                return max(dot(normal, -lightDirection), 0.0) * getColor(res.y);
+                float ambient = 0.2;
+                float diffuse = max(0.0, dot(normal, -lightDirection));
+                float specular = (diffuse == 0.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 2.0);
+                float attenuation = 1.0 / (1.0 + 0.001 * pow(length(lightPosition - position), 2.0));
+                vec3 linearColor = (ambient + attenuation * (diffuse + specular)) * getColor(res.y);
+
+                vec3 gamma = vec3(1.0/2.2);
+                return pow(linearColor, gamma);
             } else {
                 return getColor(-1.0);
             }
@@ -110,12 +121,13 @@
         void main()
         {
             vec3 cameraOffset = vec3(0.0, 0.0, 0.0);  // This world point is a target of camera
-            float positionAngle = iTime / 1000.0;
-            vec3 cameraPosition = vec3(cos(positionAngle) * 10.0, sin(positionAngle) * 10.0, 5.0);  // This is relative coordinates. In world coordinates camera is located at cameraOffset+cameraPosition.
+            float positionAngle = iTime / 2000.0;
+            float cameraDistance = 10.0;
+            vec3 cameraPosition = vec3(cos(positionAngle) * cameraDistance, sin(positionAngle) * cameraDistance, 5.0);  // This is relative coordinates. In world coordinates camera is located at cameraOffset+cameraPosition.
             float cameraRollAngle = 0.0;  // Camera rotation around its ray of view.
             float cameraAngleOfView = 90.0 * PI / 180.0;
-            float screenSize = 1.0;
-            float cameraFocalDistance = screenSize / tan(cameraAngleOfView / 2.0);
+            float screenSize = 2.0;
+            float cameraFocalDistance = (screenSize / 2.0) / tan(cameraAngleOfView / 2.0);
 
             vec3 cameraDirection = normalize(-cameraPosition);
             vec3 cameraScreenXAxis = normalize( cross(cameraDirection, (cameraDirection.xy != vec2(0.0, 0.0)) ? vec3(0.0, 0.0, 1.0): vec3(0.0, 1.0, 0.0)) );
@@ -308,7 +320,7 @@
                     position: fixed;
                     top: 0;
                     left: 0;
-                    color: white">
+                    color: black">
     Framerate: {FPS} FPS<br/>
     Press SPACE to pause<br/>
 </div>
