@@ -36,7 +36,7 @@
 
         void updateWorld(float time) {
             time *= iSpeed;
-            lightHeight = 2.15 + 2.0 * sin(time / 1000.0);
+            lightHeight = 2.65 + 1.5 * sin(time / 1000.0);
             torusAngle = time / 1000.0;
             cameraAngle = time / 2000.0;
         }
@@ -44,7 +44,7 @@
         float round(float a) {
             float downA = floor(a);
             float upA = ceil(a);
-            return (abs(a - downA) < abs(a - upA)) ? downA : downA;
+            return (abs(a - downA) < abs(a - upA)) ? downA : upA;
         }
 
         // LENGTHS    BEGIN
@@ -113,7 +113,7 @@
         }
 
         vec3 transformTwist(in vec3 point) {
-            float z = point.z / 1.5;
+            float z = (4.0 - point.z);
             return rotateXY(point, z * z * z);
         }
         // TRANSFORMS END
@@ -135,9 +135,9 @@
             float cylinderHeight = lightHeight - 0.2;
             float radius = 0.05;
             res = update(res, vec2( cylinderRounded (
-                                transformTwist(position) - vec3(0.1, 0.0, cylinderHeight/2.0),  vec2(0.05, cylinderHeight/2.0 - radius), radius),             5.0));
+                                transformTwist(position) - vec3(0.02, 0.0, cylinderHeight/2.0),  vec2(0.005, cylinderHeight/2.0 - radius), radius),             5.0));
             res = update(res, vec2( cylinderRounded (
-                                transformTwist(position) - vec3(-0.1, 0.0, cylinderHeight/2.0),  vec2(0.05, cylinderHeight/2.0 - radius), radius),            6.0));
+                                transformTwist(position) - vec3(-0.02, 0.0, cylinderHeight/2.0),  vec2(0.005, cylinderHeight/2.0 - radius), radius),            6.0));
             return res;
         }
 
@@ -189,8 +189,28 @@
                 nearestObjectId = -1.0;
             }
             vec3 lightPosition = vec3(0.0, 0.0, lightHeight);
-            float minDistToLight = capsule(lightPosition, rayStart, rayStart + rayDirection * depth, 0.15);
+            float minDistToLight = capsule(lightPosition, rayStart, rayStart + rayDirection * depth, 0.005);
             return vec4(depth, nearestObjectId, iterations, minDistToLight);
+        }
+
+        float softShadow(in vec3 position, in vec3 direction, in float distanceToLight) {
+            float maxDepth = min(1000.0, distanceToLight);
+            float softness = 1.0;
+
+            float depth = 0.1;
+            float shadow = 0.0;
+            for (int step = 0; step < 1000; step++) {
+                if (depth > maxDepth) {
+                    break;
+                }
+                float dist = findNearest(position + direction * depth).x;
+                if (dist < 0.001) {
+                    return 1.0;
+                }
+
+                depth += dist;
+            }
+            return min(shadow, 1.0);
         }
 
         vec3 render(in vec3 rayStart, in vec3 rayDirection) {
@@ -206,12 +226,14 @@
 
                 vec3 normal = calcNormal(position);
                 vec3 lightDirection = normalize(position - lightPosition);
+                float distanceToLight = length(lightPosition - position);
 
-                float ambient = res.y == 0.0 ? 0.0 : 0.1;
+                float shadow = softShadow(position, -lightDirection, distanceToLight);
+                float ambient = min(1.0/distanceToLight / distanceToLight, 0.1);
                 float diffuse = max(0.0, dot(normal, -lightDirection));
-                float specular = (diffuse == 0.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 8.0) * 2.0;
+                float specular = (shadow == 1.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 8.0) * 2.0;
                 float attenuation = 1.0 / (1.0 + 0.03 * pow(length(lightPosition - position), 2.0));
-                vec3 linearColor = (ambient + attenuation * (diffuse + specular)) * getColor(res.y, position);
+                vec3 linearColor = (ambient + attenuation * (diffuse + specular) * (1.0 - shadow)) * getColor(res.y, position);
 
                 vec3 gamma = vec3(1.0/2.2);
                 vec3 color = pow(linearColor, gamma);
@@ -243,14 +265,14 @@
             vec3 color = vec3(0.0);
 
             if (iAntialising > 0.0 || iMotionBlur > 0.0) {
-                float lineWidth = 3.0;
-                if (round(gl_FragCoord.x / lineWidth) == round(iResolution.x / (lineWidth * 2.0))) {
+                float lineWidth = 1.0;
+                if (round(gl_FragCoord.x / lineWidth) == round(iResolution.x / (lineWidth * 2.005))) {
                     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
                     return;
                 }
             }
-            float antialising = (gl_FragCoord.x > iResolution.x/2.0) ? iAntialising : 0.0;
-            float motionBlur = (gl_FragCoord.x < iResolution.x/2.0 && iMotionBlur > 0.0) ? iMotionBlur : 1.0;
+            float antialising = (gl_FragCoord.x > iResolution.x/2.005) ? iAntialising : 0.0;
+            float motionBlur = (gl_FragCoord.x < iResolution.x/2.005 && iMotionBlur > 0.0) ? iMotionBlur : 1.0;
             float subPixels = pow(4.0, antialising);
 
             float motionBlurSummaryWeight = 0.0;
