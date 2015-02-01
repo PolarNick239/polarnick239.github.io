@@ -33,12 +33,14 @@
         float lightHeight;
         float torusAngle;
         float cameraAngle;
+        float cameraRollAngle;
 
         void updateWorld(float time) {
             time *= iSpeed;
             lightHeight = 2.65 + 1.5 * sin(time / 1000.0);
             torusAngle = time / 1000.0;
             cameraAngle = time / 2000.0;
+            cameraRollAngle = (-15.0 + 30.0 * sin(iTime/1000.0)) * PI / 180.0;  // Camera rotation around its ray of view.
         }
 
         float round(float a) {
@@ -195,20 +197,20 @@
 
         float softShadow(in vec3 position, in vec3 direction, in float distanceToLight) {
             float maxDepth = min(1000.0, distanceToLight);
-            float softness = 1.0;
 
             float depth = 0.1;
             float shadow = 0.0;
-            for (int step = 0; step < 1000; step++) {
+            for (int step = 0; step < 512; step++) {
                 if (depth > maxDepth) {
                     break;
                 }
-                float dist = findNearest(position + direction * depth).x;
-                if (dist < 0.001) {
+                vec2 nearest = findNearest(position + direction * depth);
+                if (nearest.x < 0.005) {
                     return 1.0;
                 }
 
-                depth += dist;
+                shadow = max(shadow, 1.0 / (50.0*nearest.x));
+                depth += clamp(nearest.x, 0.001, 0.05);
             }
             return min(shadow, 1.0);
         }
@@ -250,29 +252,21 @@
         {
             vec3 cameraOffset = vec3(0.0, 0.0, 0.0);  // This world point is a target of camera
             float cameraDistance = 10.0;
-            float cameraRollAngle = 0.0;  // Camera rotation around its ray of view.
             float cameraAngleOfView = 90.0 * PI / 180.0;
             float screenSize = 2.0;
             float cameraFocalDistance = (screenSize / 2.0) / tan(cameraAngleOfView / 2.0);
-
-
-
-
-            float cosRoll = cos(-cameraRollAngle);
-            float sinRoll = sin(-cameraRollAngle);
-            mat2 cameraRollRotation = mat2(cosRoll, -sinRoll, sinRoll, cosRoll);
 
             vec3 color = vec3(0.0);
 
             if (iAntialising > 0.0 || iMotionBlur > 0.0) {
                 float lineWidth = 1.0;
-                if (round(gl_FragCoord.x / lineWidth) == round(iResolution.x / (lineWidth * 2.005))) {
+                if (round(gl_FragCoord.x / lineWidth) == round(iResolution.x / (lineWidth * 2.0))) {
                     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
                     return;
                 }
             }
-            float antialising = (gl_FragCoord.x > iResolution.x/2.005) ? iAntialising : 0.0;
-            float motionBlur = (gl_FragCoord.x < iResolution.x/2.005 && iMotionBlur > 0.0) ? iMotionBlur : 1.0;
+            float antialising = (gl_FragCoord.x > iResolution.x/2.0) ? iAntialising : 0.0;
+            float motionBlur = (gl_FragCoord.x < iResolution.x/2.0 && iMotionBlur > 0.0) ? iMotionBlur : 1.0;
             float subPixels = pow(4.0, antialising);
 
             float motionBlurSummaryWeight = 0.0;
@@ -281,6 +275,10 @@
                     break;
                 }
                 updateWorld(iTime - (j / motionBlur) * 150.0);
+
+                float cosRoll = cos(-cameraRollAngle);
+                float sinRoll = sin(-cameraRollAngle);
+                mat2 cameraRollRotation = mat2(cosRoll, -sinRoll, sinRoll, cosRoll);
 
                 vec3 cameraPosition = vec3(cos(cameraAngle) * cameraDistance, sin(cameraAngle) * cameraDistance, 5.0);  // This is relative coordinates. In world coordinates camera is located at cameraOffset+cameraPosition.
                 vec3 cameraDirection = normalize(-cameraPosition);
@@ -323,8 +321,10 @@
         var motionBlur = 0;
 
         var MIN_SPEED = 1;
-        var MAX_SPEED = 3;
-        var speed = 1;
+        var MAX_SPEED = 5;
+        var speed = 3;
+
+        var time = 0;
 
         var gl_program;
 
@@ -374,7 +374,7 @@
 
         var start_time = null;
         var passed_time = null;
-        var paused = false;
+        var paused = true;
 
         function pause() {
             paused = true;
@@ -391,16 +391,7 @@
         }
 
         function update_time() {
-            var time;
-            if (paused) {
-                time = passed_time;
-            } else {
-                var cur_time = new Date().getTime();
-                if (start_time == null) {
-                    start_time = cur_time;
-                }
-                time = cur_time - start_time;
-            }
+            time += 30.0 * speed;
 
             gl.useProgram(gl_program);
             gl.uniform1f(gl_program.timeUniform, time);
@@ -478,11 +469,7 @@
             var key_handler = function(keyboard_event) {
                 var should_render = false;
                 if (keyboard_event.keyCode == 32) {// 32: ' '
-                    if (paused) {
-                        unpause();
-                    } else {
-                        pause();
-                    }
+                    paused = false;
                 } else if (keyboard_event.keyCode == 97 || keyboard_event.keyCode == 65) {// 97: 'a' or 65: 'A'
                     antialising += 1;
                     if (antialising > MAX_ANTIALISING) {
@@ -508,8 +495,18 @@
                     }
                     update_speed();
                     should_render = true;
+                } else if (keyboard_event.keyCode == 104 || keyboard_event.keyCode == 72) {// 115: 'h' or 83: 'H'
+                    var ids = ['speed_canvas', 'motion_blur_canvas', 'antialiasing_canvas', 'legend_canvas', 'framerate_canvas'];
+                    for (var i = 0; i < ids.length; i++) {
+                        var id = ids[i];
+                        if (document.getElementById(id).style.display == 'block') {
+                            document.getElementById(id).style.display = 'none';
+                        } else {
+                            document.getElementById(id).style.display = 'block';
+                        }
+                    }
                 } else {
-                    console.log(keyboard_event.keyCode);
+                    console.log('Key pressed: ' + keyboard_event.keyCode.toString());
                 }
 
                 if (paused && should_render) {
@@ -557,6 +554,7 @@
                     gl.useProgram(null);
 
                     framerate.snapshot();
+                    paused = true;
                 }
                 requestAnimFrameSmart(start_loop, canvas);
             };
@@ -581,10 +579,11 @@
                     top: 2cm;
                     left: 0;
                     color: white">
-    Press <b>SPACE</b> to unpause (this is useful to play with antialiasing)<br/>
+    Press <b>SPACE</b> to move to next frame. If you will resize window - you can even enjoy slideshow! ;)<br/>
     Press <b>A</b> to change Antialiasing on RIGHT from black line<br/>
     Press <b>M</b> to change Motion Blur on LEFT from black line<br/>
     Press <b>S</b> to change Speed<br/>
+    Press <b>H</b> to hide legend<br/>
 </div>
 <div id="antialiasing_canvas" style="
                     position: fixed;
@@ -602,7 +601,7 @@
 </div>
 <div id="speed_canvas" style="
                     position: fixed;
-                    top: 4cm;
+                    top: 5cm;
                     left: 0;
                     color: white">
     <u>S</u>peed:     {SPEED}
