@@ -34,6 +34,8 @@
         float torusAngle;
         float cameraAngle;
         float cameraRollAngle;
+        float boxAngleXY;
+        float boxAngleXZ;
 
         void updateWorld(float time) {
             time *= iSpeed;
@@ -41,6 +43,8 @@
             torusAngle = time / 1000.0;
             cameraAngle = time / 2000.0;
             cameraRollAngle = (-15.0 + 30.0 * sin(iTime/1000.0)) * PI / 180.0;  // Camera rotation around its ray of view.
+            boxAngleXY = -time / 2000.0;
+            boxAngleXZ = time / 3000.0;
         }
 
         float round(float a) {
@@ -114,6 +118,13 @@
             return vec3(m * point.xy, point.z);
         }
 
+        vec3 rotateXZ(in vec3 point, in float angle) {
+            float c = cos(angle);
+            float s = sin(angle);
+            mat3 m = mat3(c, 0.0, -s, 0.0, 1.0, 0.0, s, 0.0, c);
+            return m * point;
+        }
+
         vec3 transformTwist(in vec3 point) {
             float z = (4.0 - point.z);
             return rotateXY(point, z * z * z);
@@ -130,7 +141,7 @@
 
             res = update(res, vec2( plane      (position),                                                    0.0));
 
-            res = update(res, vec2( box        (position - vec3(2.0, 2.0, 0.6),   vec3(1.0, 1.0, 0.5)),       1.0));
+            res = update(res, vec2( box        (rotateXZ(rotateXY(position - vec3(2.0, 2.0, 1.0), boxAngleXY), boxAngleXZ),   vec3(0.7, 0.7, 0.7)),       1.0));
             res = update(res, vec2( sphere     (position - vec3(2.0, -2.0, 1.1),  1.0),                       2.0));
             res = update(res, vec2( boxRounded (position - vec3(-2.0, -2.0, 0.6), vec3(0.9, 0.9, 0.4), 0.1),  3.0));
             res = update(res, vec2( torusSquare(rotateXY(position - vec3(-2.0, 2.0, 0.5), torusAngle),  vec2(0.8, 0.2)),            4.0));
@@ -171,7 +182,7 @@
             const int maxIterations = 50;
             const float maxDepth = 300.0;
 
-            float depth = 0.0;
+            float depth = 0.01;
             float nearestObjectId = -1.0;
             int iterations = 0;
             for (int i = 0; i < maxIterations; i++) {
@@ -215,6 +226,40 @@
             return min(shadow, 1.0);
         }
 
+        vec3 renderILOVEWEBGLRESTRICTIONS(in vec3 rayStart, in vec3 rayDirection) {
+            vec4 res = castRay(rayStart, rayDirection);
+            vec3 position = rayStart + rayDirection * res.x;
+            if (res.y != -1.0) {
+                vec3 lightColor = vec3(1.0, 1.0, 1.0);
+                vec3 lightPosition = vec3(0.0, 0.0, lightHeight);
+
+                if (res.w <= 0.001) {
+                    return lightColor;
+                }
+
+                vec3 normal = calcNormal(position);
+
+                vec3 lightDirection = normalize(position - lightPosition);
+                float distanceToLight = length(lightPosition - position);
+
+                float shadow = softShadow(position, -lightDirection, distanceToLight);
+                float ambient = min(1.0/distanceToLight / distanceToLight, 0.1);
+                float diffuse = max(0.0, dot(normal, -lightDirection));
+                float specular = (shadow == 1.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 8.0) * 2.0;
+                float attenuation = 1.0 / (1.0 + 0.03 * pow(length(lightPosition - position), 2.0));
+                vec3 linearColor = (ambient + attenuation * (diffuse + specular) * (1.0 - shadow)) * getColor(res.y, position);
+
+                vec3 gamma = vec3(1.0/2.2);
+                vec3 color = pow(linearColor, gamma);
+                if (res.w > 0.001) {
+                    color += lightColor * 0.001 / (res.w * res.w);
+                }
+                return color;
+            } else {
+                return getColor(-1.0, position);
+            }
+        }
+
         vec3 render(in vec3 rayStart, in vec3 rayDirection) {
             vec4 res = castRay(rayStart, rayDirection);
             vec3 position = rayStart + rayDirection * res.x;
@@ -227,6 +272,7 @@
                 }
 
                 vec3 normal = calcNormal(position);
+
                 vec3 lightDirection = normalize(position - lightPosition);
                 float distanceToLight = length(lightPosition - position);
 
@@ -235,7 +281,11 @@
                 float diffuse = max(0.0, dot(normal, -lightDirection));
                 float specular = (shadow == 1.0) ? 0.0 : pow(max(0.0, dot(-rayDirection, reflect(lightDirection, normal))), 8.0) * 2.0;
                 float attenuation = 1.0 / (1.0 + 0.03 * pow(length(lightPosition - position), 2.0));
-                vec3 linearColor = (ambient + attenuation * (diffuse + specular) * (1.0 - shadow)) * getColor(res.y, position);
+                vec3 colorOfObject = getColor(res.y, position);
+                if (res.y == 1.0) {
+                    colorOfObject = renderILOVEWEBGLRESTRICTIONS(position, reflect(rayDirection, normal));
+                }
+                vec3 linearColor = (ambient + attenuation * (diffuse + specular) * (1.0 - shadow)) * colorOfObject;
 
                 vec3 gamma = vec3(1.0/2.2);
                 vec3 color = pow(linearColor, gamma);
