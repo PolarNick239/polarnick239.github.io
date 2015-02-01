@@ -316,7 +316,7 @@
         var height;
 
         var MAX_ANTIALISING = 1;
-        var antialising = 0;
+        var antialising = MAX_ANTIALISING;
 
         var MIN_MOTION_BLUR = 4;
         var MAX_MOTION_BLUR = 12;
@@ -581,7 +581,7 @@
                     top: 2cm;
                     left: 0;
                     color: white">
-    Press <b>SPACE</b> to pause<br/>
+    Press <b>SPACE</b> to unpause (this is useful to play with antialiasing)<br/>
     Press <b>A</b> to change Antialiasing on RIGHT from black line<br/>
     Press <b>M</b> to change Motion Blur on LEFT from black line<br/>
     Press <b>S</b> to change Speed<br/>
@@ -591,21 +591,21 @@
                     top: 0;
                     left: 50%;
                     color: white">
-    Antialiasing:    {ANTIALIASING}
+    <u>A</u>ntialiasing:    {ANTIALIASING}
 </div>
 <div id="motion_blur_canvas" style="
                     position: fixed;
                     top: 0;
                     left: 0;
                     color: white">
-    Motion Blur:     {MOTION_BLUR}
+    <u>M</u>otion Blur:     {MOTION_BLUR}
 </div>
 <div id="speed_canvas" style="
                     position: fixed;
                     top: 4cm;
                     left: 0;
                     color: white">
-    Speed:     {SPEED}
+    <u>S</u>peed:     {SPEED}
 </div>
 </body>
 </html>
