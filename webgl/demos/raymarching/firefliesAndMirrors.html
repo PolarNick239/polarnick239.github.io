@@ -1,0 +1,506 @@
+<html style="height: 100%">
+<head>
+    <title>Raymarching mirrors and fireflies. PolarNick WebGL.</title>
+
+    <script src="../../resources/commons/gl.js" type="text/javascript"></script>
+    <script src="../../resources/commons/js.js" type="text/javascript"></script>
+
+    <script src="../../resources/webgl-debug.js" type="text/javascript"></script>
+
+    <script id="vshader" type="x-shader/x-vertex">
+        #line 11
+
+        attribute vec2 aPosition;
+
+        void main()
+        {
+            gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+    </script>
+
+    <script id="fshader" type="x-shader/x-fragment">
+        #line 22
+        precision highp float;
+
+        const float idAbyss = -1.0;
+        const float idMirror0 = 0.0;
+        const float idMirror1 = 1.0;
+        const float idMirrorEdge0 = 2.0;
+        const float idMirrorEdge1 = 3.0;
+
+        const float mirrorX = 1.0;
+        const float mirrorWidth = 0.5;
+        float mirrorHeight;
+        const float mirrorEdgeWidth = 0.01;
+        const float fireflyRadius = 0.005;
+        const float fireflyLightRadius = 0.05;
+
+        const vec3 edgeColor1 = vec3(0.75, 0.75, 0.75);
+        const vec3 edgeColor0 = vec3(1.0, 0.84, 0.0);
+        const vec3 abyssColor = vec3(0.0, 0.0, 0.0);
+        const vec3 errorColor = vec3(1.0, 0.0, 0.0);
+
+        const float INFINITY = 1000.0;
+        const float EPS = 0.000001;
+        const float minDistance = 0.001;
+        const float PI = 3.14159265359;
+        const float START_MOVING_TIME = 10.0;
+        const float ACCELERATION_MOVING_TIME = 5.0;
+
+
+        uniform vec2 iResolution;
+        uniform float iAntialising;
+        uniform float iTime;
+
+
+        float cameraRollAngle;  // Camera rotation angle around its ray of view.
+        vec3 cameraOffset;
+        vec3 cameraPosition;  // This is relative camera position. Real world camera position is (cameraOffset + cameraPosition).
+
+        const int firefliesCount = 4;
+
+        vec3 firefliesPosition[firefliesCount];
+        vec3 firefliesColor[firefliesCount];
+
+
+        void initFireflies(float time) {
+            firefliesPosition[0] = vec3(-0.7 + sin(time * 5.0) * 0.05, sin(time + PI/2.0)*0.3-0.2, cos(time + PI/2.0)*0.2-0.1);
+            firefliesPosition[1] = vec3(-0.7 + sin(time * 5.0) * 0.05,
+                (mod(time, 4.0 * PI) > 2.0 * PI) ? sin(time + PI/2.0)*0.3-0.2 : sin(-time - PI/2.0)*0.1+0.2,
+                cos(time + PI/2.0)*0.2-0.1);
+            firefliesPosition[2] = vec3(sin(time) * 0.4, sin(time) * 0.1, cos(time) * 0.2);
+            firefliesPosition[3] = vec3(cos(time) * 1.8, sin(time) * mirrorWidth, -0.3);
+
+            firefliesColor[0] = vec3(0.0, 0.0, 1.0);
+            firefliesColor[1] = vec3(1.0, 0.0, 0.0);
+            firefliesColor[2] = vec3(0.0, 1.0, 0.0);
+            firefliesColor[3] = vec3(0.1, 0.3, 0.1);
+        }
+
+        void updateWorld(float time) {
+            time /= 500.0;
+            initFireflies(time);
+            mirrorHeight = mirrorWidth * iResolution.y / iResolution.x;
+
+            if (time < START_MOVING_TIME) {
+                time = 0.0;
+            } else {
+                time -= START_MOVING_TIME;
+                float p = 4.0;
+                float a = 1.0 / (p * pow(ACCELERATION_MOVING_TIME, p - 1.0));
+                if (time < ACCELERATION_MOVING_TIME) {
+                    time = a * pow(time, p);
+                } else {
+                    time = a * pow(ACCELERATION_MOVING_TIME, p) + (time - ACCELERATION_MOVING_TIME);
+                }
+            }
+            float t = sin(time*0.3);
+            cameraOffset = vec3(0.5 - 0.3 * t * t, t * (mirrorWidth + 0.1), 0.1*t*t);
+            vec2 xMotionNormal = normalize(vec2(2.0*0.3*t, 1.0));
+            cameraPosition = vec3(0.1*xMotionNormal.y, 0.1*xMotionNormal.x, 0.0);
+            cameraRollAngle = 5.0 * sin(time*0.8);
+        }
+
+
+
+        float mirror(in vec3 position) {
+            vec2 size = vec2(mirrorWidth, mirrorHeight);
+            return length(vec3(position.x, max((abs(position.yz) - size), 0.0)));
+        }
+
+        float mirrorEdge(in vec3 position) {
+            vec2 mirrorSize = vec2(mirrorWidth, mirrorHeight);
+            vec2 mirrorWithEdgeSize = mirrorSize + vec2(mirrorEdgeWidth);
+            vec2 dist = max(mirrorSize - abs(position.yz), 0.0);
+            float yzDistance = min(dist.x, dist.y);
+            return max(length(vec3(position.x, max((abs(position.yz) - mirrorWithEdgeSize), 0.0))),
+                        length(vec2(position.x, yzDistance)));
+        }
+
+        float projectPointOnTheSegment(in vec3 position, in vec3 a, in vec3 b) {
+            vec3 ap = position - a;
+            vec3 ab = b - a;
+            return dot(ap, ab) / dot(ab, ab);
+        }
+
+        float segment(in vec3 position, in vec3 a, in vec3 b) {
+            vec3 ap = position - a;
+            vec3 ab = b - a;
+            float t = dot(ap, ab) / dot(ab, ab);
+            return length(ap - ab * clamp(t, 0.0, 1.0));
+        }
+
+        float intersectRayWithYZPlane(in vec3 position, in vec3 direction, in float planeX) {
+            return (planeX - position.x) / direction.x;
+        }
+
+
+        vec2 update(in vec2 nearest, in vec2 candidate) {
+            return (candidate.x < nearest.x) ? candidate : nearest;
+        }
+
+        vec2 findNearest(in vec3 position, in vec3 direction) {
+            direction = normalize(direction);
+            float mirrorId = (direction.x < 0.0) ? idMirror0 : idMirror1;
+            float curMirrorX = (mirrorId == idMirror0) ? -mirrorX : mirrorX;
+            float toGoMirror = intersectRayWithYZPlane(position, direction, curMirrorX);
+            if (toGoMirror < -EPS) {
+                return vec2(INFINITY, idAbyss);
+            }
+            vec3 intersection = position + direction * toGoMirror;
+            if (abs(intersection.y) < mirrorWidth + EPS && abs(intersection.z) < mirrorHeight + EPS) {
+                return vec2(toGoMirror, mirrorId);
+            } else if (abs(intersection.y) < mirrorWidth + mirrorEdgeWidth + EPS && abs(intersection.z) < mirrorHeight + mirrorEdgeWidth + EPS) {
+                return vec2(toGoMirror, (mirrorId == idMirror0) ? idMirrorEdge0 : idMirrorEdge1);
+            } else {
+                return vec2(INFINITY, idAbyss);
+            }
+            //vec2 res = vec2(INFINITY,                                                    idAbyss);
+            //if (direction.x < 0.0) {
+            //    res = update(res, vec2(mirror    (position - vec3(-mirrorX, 0.0, 0.0)),  idMirror0));
+            //    res = update(res, vec2(mirrorEdge(position - vec3(-mirrorX, 0.0, 0.0)),  idMirrorEdge0));
+            //} else {
+            //    res = update(res, vec2(mirror    (position - vec3( mirrorX, 0.0, 0.0)),  idMirror1));
+            //    res = update(res, vec2(mirrorEdge(position - vec3( mirrorX, 0.0, 0.0)),  idMirrorEdge1));
+            //}
+            //return res;
+        }
+
+        vec3 getColor(float id) {
+            if (id == idMirrorEdge0) {
+                return edgeColor0;
+            } else if (id == idMirrorEdge1) {
+                return edgeColor1;
+            } else if (id == idAbyss) {
+                return abyssColor;
+            } else {
+                return errorColor;
+            }
+        }
+
+        vec3 calcNormal(float id) {
+            if (id == idMirror0 || id == idMirrorEdge0) {
+                return vec3(+1.0, 0.0, 0.0);
+            } else if (id == idMirror1 || id == idMirrorEdge1) {
+                return vec3(-1.0, 0.0, 0.0);
+            } else {
+                return vec3(0.0, 0.0, 1.0);
+            }
+        }
+
+        vec2 castRay(in vec3 rayStart, in vec3 rayDirection, inout vec3 haloColor) {
+            rayDirection = normalize(rayDirection);
+            vec2 nearest = findNearest(rayStart, rayDirection);
+            float depth = nearest.x;
+
+            for (int j = 0; j < firefliesCount; j++) {
+                float t = projectPointOnTheSegment(firefliesPosition[j], rayStart, rayStart + depth * rayDirection);
+                float dist = segment(firefliesPosition[j], rayStart, rayStart + depth * rayDirection);
+                if (t >= 0.0 && t < 1.0) {
+                    if (dist < fireflyRadius) {
+                        haloColor += firefliesColor[j];
+                    } else if (dist < fireflyLightRadius) {
+                        //float attenuation = 1.0 - dist * dist * dist / (fireflyRadius * fireflyRadius * fireflyRadius);
+                        float fraction = 1.0 - sqrt(dist - fireflyRadius) / sqrt(fireflyLightRadius - fireflyRadius);
+                        haloColor += firefliesColor[j] * fraction;
+                    }
+                }
+            }
+            return nearest;
+        }
+
+        vec3 render(in vec3 rayStart, in vec3 rayDirection) {
+            const int maxReflections = 4096;
+
+            vec3 halo = vec3(0.0, 0.0, 0.0);
+            float nearestObjectId;
+            vec3 position;
+            for (int i = 0; i < maxReflections; i++) {
+                vec2 res = castRay(rayStart, rayDirection, halo);
+
+                position = rayStart + rayDirection * res.x;
+                nearestObjectId = res.y;
+                if (nearestObjectId == idMirror0 || nearestObjectId == idMirror1) {
+                    rayStart = position;
+                    rayDirection.x *= -1.0;
+                } else {
+                    break;
+                }
+            }
+
+
+            vec3 objectColor = getColor(nearestObjectId);
+            vec3 objectNormal = calcNormal(nearestObjectId);
+
+            float globalAmbient = 0.8;
+            vec3 color = objectColor * globalAmbient;
+
+            //float materialShininess = 256.0;
+            //float materialSpecular = 0.5;
+            //for (int i = 0; i < firefliesCount; i++) {
+            //    float lightAmbient = 0.0;
+            //    float lightAttenuation = 0.5;
+            //    vec3 lightColor = firefliesColor[i];
+            //    vec3 lightPosition = firefliesPosition[i];
+
+            //    color += lightAmbient * lightColor;
+
+            //    vec3 toLight = normalize(firefliesPosition[i] - position);
+            //    vec3 toViewer = normalize(-rayDirection);
+
+            //    float diffuse = dot(objectNormal, toLight);
+            //    if (diffuse > 0.0) {
+            //        float attenuation = 1.0 / (1.0 + lightAttenuation * pow(length(firefliesPosition[i] - position), 2.0));
+            //        vec3 reflectedLightToViewer = reflect(-toLight, objectNormal);
+            //        color += diffuse * attenuation * lightColor;
+            //        float specular = dot(toViewer, reflectedLightToViewer);
+            //        if (specular > 0.0) {
+            //            color += pow(specular, materialShininess) * materialSpecular * attenuation * lightColor;
+            //        }
+            //    }
+            //}
+
+            color += halo;
+            return min(color, vec3(1.0));
+        }
+
+        void main() {
+            updateWorld(iTime);
+
+            float cameraAngleOfView = 90.0 * PI / 180.0;
+            float cameraFocalDistance = 1.0 / tan(cameraAngleOfView / 2.0);
+
+            vec3 cameraDirection = normalize(-cameraPosition);
+            vec3 cameraScreenXAxis = normalize( cross(cameraDirection, (cameraDirection.xy != vec2(0.0, 0.0)) ? vec3(0.0, 0.0, 1.0): vec3(0.0, 1.0, 0.0)) );
+            vec3 cameraScreenYAxis = normalize( cross(cameraScreenXAxis, cameraDirection) );
+            vec3 screenCenter = cameraDirection * cameraFocalDistance;
+            float subPixels = pow(4.0, iAntialising);
+            vec3 color = vec3(0.0);
+            for (float i = 0.0; i < 256.0; i++) {
+                if (i >= subPixels) {
+                    break;
+                }
+                float subPixelsInRow = pow(2.0, iAntialising);
+                vec2 pixel = gl_FragCoord.xy + vec2(mod(i, subPixelsInRow), mod(i / subPixelsInRow, subPixelsInRow)) / subPixelsInRow;
+                pixel = (pixel / iResolution - 0.5) * 2.0;
+                pixel.y *= iResolution.y / iResolution.x;
+
+                float cosRoll = cos(-cameraRollAngle*PI/180.0);
+                float sinRoll = sin(-cameraRollAngle*PI/180.0);
+                mat2 cameraRollRotation = mat2(cosRoll, -sinRoll, sinRoll, cosRoll);
+                pixel = cameraRollRotation * pixel;
+
+                vec3 rayDirection = normalize( screenCenter + (pixel.x * cameraScreenXAxis) + (pixel.y * cameraScreenYAxis) );
+                color += render(cameraOffset + cameraPosition, rayDirection);
+            }
+
+            gl_FragColor.rgb = color / subPixels;
+            gl_FragColor.a = 1.0;
+        }
+    </script>
+
+    <script>
+        var width;
+        var height;
+
+        var MAX_ANTIALIASING = 2;
+        var MIN_ANTIALIASING = 0;
+        var antialising = 1;
+
+        var gl_program;
+
+        function init_locations() {
+            gl_program.positionAttrib = gl.getAttribLocation(gl_program, 'aPosition');
+            gl_program.timeUniform = gl.getUniformLocation(gl_program, 'iTime');
+            gl_program.resolutionUniform = gl.getUniformLocation(gl_program, 'iResolution');
+            gl_program.antialisingUniform = gl.getUniformLocation(gl_program, 'iAntialising');
+        }
+
+        function upload_data() {
+            var positions = new Float32Array([
+                -1, -1,
+                -1, 1,
+                1, 1,
+                1, -1]);
+            var indices = new Uint8Array([
+                0, 1, 2,
+                0, 2, 3
+            ]);
+
+            gl_program.indices_length = indices.length;
+
+            gl_program.index_buf = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+            gl_program.index_buf.bind();
+            gl.bufferData(gl_program.index_buf.target, indices, gl.STATIC_DRAW);
+            gl_program.index_buf.unbind();
+
+            gl_program.position_buf = new VertexBufferObject();
+            gl_program.position_buf.bind();
+            gl.bufferData(gl_program.position_buf.target, positions, gl.STATIC_DRAW);
+            gl_program.position_buf.unbind();
+        }
+
+        function bind_attributes() {
+            gl_program.position_buf.bind();
+            gl.enableVertexAttribArray(gl_program.position_buf);
+            gl.vertexAttribPointer(gl_program.positionAttrib, 2, gl.FLOAT, false, 2*4, 0);
+            gl_program.position_buf.unbind();
+        }
+
+        var start_time = null;
+        var passed_time = null;
+        var paused = false;
+
+        function pause() {
+            paused = true;
+            var cur_time = new Date().getTime();
+            passed_time = cur_time - start_time;
+            start_time = null;
+        }
+
+        function unpause() {
+            paused = false;
+            var cur_time = new Date().getTime();
+            start_time = cur_time - passed_time;
+            passed_time = null;
+        }
+
+        function update_time() {
+            var time;
+            if (paused) {
+                time = passed_time;
+            } else {
+                var cur_time = new Date().getTime();
+                if (start_time == null) {
+                    start_time = cur_time;
+                }
+                time = cur_time - start_time;
+            }
+
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.timeUniform, time);
+            gl.useProgram(null);
+        }
+
+        function update_antialising() {
+            gl.useProgram(gl_program);
+            gl.uniform1f(gl_program.antialisingUniform, antialising);
+            gl.useProgram(null);
+        }
+
+        function update_resolution() {
+            gl.useProgram(gl_program);
+            gl.uniform2f(gl_program.resolutionUniform, width, height);
+            gl.useProgram(null);
+        }
+
+        function render_frame() {
+            gl.disable(gl.DEPTH_TEST);
+
+            gl.viewport(0, 0, width, height);
+
+            gl.clearColor(0, 0, 0, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            gl_program.index_buf.bind();
+            gl.drawElements(gl.TRIANGLES, gl_program.indices_length, gl.UNSIGNED_BYTE, 0);
+            gl_program.index_buf.unbind();
+        }
+
+        function update_canvas_shape(canvas) {
+            if (canvas.width != canvas.clientWidth ||
+                    canvas.height != canvas.clientHeight) {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+                width = canvas.width;
+                height = canvas.height;
+                update_resolution();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function register_keys_handlers() {
+            var key_handler = function(keyboard_event) {
+                var should_render = false;
+                if (keyboard_event.keyCode == 32) {// 32: ' '
+                    if (paused) {
+                        unpause();
+                    } else {
+                        pause();
+                    }
+                } else if (keyboard_event.keyCode == 97 || keyboard_event.keyCode == 65) {// 97: 'a' or 65: 'A'
+                    antialising -= 1;
+                    if (antialising > MAX_ANTIALIASING) {
+                        antialising = MIN_ANTIALIASING;
+                    }
+                    if (antialising < MIN_ANTIALIASING) {
+                        antialising = MAX_ANTIALIASING;
+                    }
+                    update_antialising();
+                    should_render = true;
+                }
+
+                if (paused && should_render) {
+                    gl.useProgram(gl_program);
+                    bind_attributes();
+                    render_frame();
+                    gl.useProgram(null);
+                }
+            };
+
+            window.addEventListener('keypress', key_handler, false);
+        }
+
+        function onready()
+        {
+            var canvas = document.getElementById('webgl_canvas');
+
+            if (!setupWebGL(canvas)) {
+                alert('No WebGL support!');
+                return;
+            }
+            var framerate = new Framerate("framerate_canvas");
+
+            var vertex_shader_code = document.getElementById("vshader").text;
+            var fragment_shader_code = document.getElementById("fshader").text;
+            gl_program = build_program(vertex_shader_code, fragment_shader_code);
+
+            init_locations();
+            upload_data();
+            update_antialising();
+
+            var start_loop = function () {
+                if (update_canvas_shape(canvas) || !paused) {
+                    update_time();
+
+                    gl.useProgram(gl_program);
+                    bind_attributes();
+                    render_frame();
+                    gl.finish();
+                    gl.useProgram(null);
+
+                    framerate.snapshot();
+                }
+                requestAnimFrameSmart(start_loop, canvas);
+            };
+
+            register_keys_handlers();
+            start_loop();
+        }
+    </script>
+
+</head>
+<body onload="onready();" style="margin: 0; padding: 0; height: 100%">
+<canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
+<div id="framerate_canvas" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    color: white;
+                    display: none">
+    {FPS} FPS<br/>
+</div>
+</body>
+</html>
