@@ -34,7 +34,7 @@
     void main()
     {
         vec3 color = vec3(0.0);
-        vec2 uv = (position + vec2(1.0)) * 2.0;
+        vec2 uv = (position + vec2(1.0)) / 2.0;
 
         float freq = texture2D(uAudio, vec2(uv.x, 0.0)).x;
         if (freq > uv.y) {
