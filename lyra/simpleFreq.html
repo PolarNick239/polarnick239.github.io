@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Lyra. Game with VK music</title>
+</head>
+
+<script src="../webgl/resources/commons/gl.js" type="text/javascript"></script>
+<script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
+
+<script id="vshader" type="x-shader/x-vertex">
+    #line 16
+    attribute vec2 aPosition;
+
+    varying vec2 position;
+
+    void main()
+    {
+        position = aPosition;
+        gl_Position = vec4(aPosition, 0.0, 1.0);
+    }
+</script>
+
+<script id="fshader" type="x-shader/x-fragment">
+    #line 29
+    #define WAVES 8.0
+    precision mediump float;
+
+    uniform sampler2D uAudio;
+    uniform float uTime;
+
+    varying vec2 position;
+
+    void main()
+    {
+        vec3 color = vec3(0.0);
+        vec2 uv = (position + vec2(1.0)) * 2.0;
+
+        float freq = texture2D(uAudio, vec2(uv.x, 0.0)).x;
+        if (freq > uv.y) {
+            color.b = 1.0;
+        }
+
+        gl_FragColor = vec4(color, 1.0);
+    }
+</script>
+
+<script type="text/javascript">
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    var width;
+    var height;
+
+    var audioContext = new AudioContext();
+    var canvas;
+    var startTime = new Date().getTime();
+
+    var program;
+    var audioTexture;
+
+    function onready() {
+        canvas = document.getElementById('webgl_canvas');
+        setupWebGL(canvas);
+        program = build_program(document.getElementById("vshader").text, document.getElementById("fshader").text);
+        gl.useProgram(program);
+        audioTexture = new Texture(gl.TEXTURE_2D);
+
+        var AUDIO_PERMISSIONS = 8;
+        var PERMISSIONS = AUDIO_PERMISSIONS;
+        VK.init({apiId: 4817675});
+
+        VK.Auth.login(function (response) {
+            var session = response.session;
+            if (session) {
+                start(session);
+            } else {
+                alert('You must allow us to load your music from VK.\n' +
+                'We do only this, no posts, no personal information gathering.')
+            }
+        }, PERMISSIONS);
+    }
+
+    function start(session) {
+        var userId = session.mid;
+        console.log('User id: ' + userId);
+        VK.Api.call('audio.get', {owner_id: userId, offset: 0, count: 239}, function (r) {
+            var response = r.response;
+            for (var i = 1; i < response.length; i++) {
+                var audioReponse = response[i];
+
+                var artist = audioReponse.artist;
+                var title = audioReponse.title;
+                var url = audioReponse.url;
+                console.log('Audio: artist=' + artist + ', title=' + title + ', ' + url);
+            }
+
+            audioReponse = response[1 + Math.floor(Math.random() * (response.length - 1))];
+            artist = audioReponse.artist;
+            title = audioReponse.title;
+            url = audioReponse.url;
+            console.log('Playing:');
+            console.log('Audio: artist=' + artist + ', title=' + title + ', ' + url);
+            var audio = document.createElement('audio');
+            audio.src = url;
+            audio.sound = {};
+
+            audio.sound.source = audioContext.createMediaElementSource(audio);
+            audio.sound.analyser = audioContext.createAnalyser();
+
+            audio.sound.source.connect(audio.sound.analyser);
+            audio.sound.analyser.connect(audioContext.destination);
+
+            initProgram(audio.sound.analyser.frequencyBinCount);
+            audio.addEventListener('canplay', function () {
+
+                audio.sound.freqData = new Uint8Array(audio.sound.analyser.frequencyBinCount);
+                audio.sound.waveData = new Uint8Array(audio.sound.analyser.frequencyBinCount);
+                audio.play();
+
+                var start_loop = function () {
+                    audio.sound.analyser.getByteFrequencyData(audio.sound.freqData);
+                    audio.sound.analyser.getByteTimeDomainData(audio.sound.waveData);
+                    renderFrame(new Date().getTime() - startTime, audio.sound.freqData, audio.sound.waveData);
+                    window.requestAnimFrame(start_loop, canvas);
+                };
+                start_loop();
+            });
+        });
+    }
+
+    function updateCanvas(canvas) {
+        if (canvas.width != canvas.clientWidth ||
+                canvas.height != canvas.clientHeight) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            width = canvas.width;
+            height = canvas.height;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function initProgram(frequencyBinCount) {
+        program.positionAttrib = gl.getAttribLocation(program, 'aPosition');
+        program.timeUniform = gl.getUniformLocation(program, 'uTime');
+        program.audioUniform = gl.getUniformLocation(program, 'uAudio');
+
+        var positions = new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]);
+        var indices = new Uint8Array([0, 1, 2, 0, 2, 3]);
+
+        program.position_buf = new VertexBufferObject();
+        program.position_buf.bind();
+        gl.bufferData(program.position_buf.target, positions, gl.STATIC_DRAW);
+        gl.enableVertexAttribArray(program.position_buf);
+        gl.vertexAttribPointer(program.positionAttrib, 2, gl.FLOAT, false, 2*4, 0);
+        program.position_buf.unbind();
+
+        program.index_buf = new VertexBufferObject(gl.ELEMENT_ARRAY_BUFFER);
+        program.index_buf.bind();
+        gl.bufferData(program.index_buf.target, indices, gl.STATIC_DRAW);
+        program.index_buf.unbind();
+
+        audioTexture.set_params(LINEAR_TEXTURE.concat(CLAMP_TO_EDGE_TEXTURE));
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, frequencyBinCount, 2, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, null);
+    }
+
+    function renderFrame(time, freqData, waveData) {
+        gl.uniform1f(program.timeUniform, time);
+        gl.uniform1i(program.audioUniform, audioTexture.slot);
+
+        audioTexture.bind();
+        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, freqData.length, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, freqData);
+        gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 1, waveData.length, 1, gl.LUMINANCE, gl.UNSIGNED_BYTE, waveData);
+        audioTexture.unbind();
+
+        updateCanvas(canvas);
+
+        gl.disable(gl.DEPTH_TEST);
+        gl.viewport(0, 0, width, height);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        program.index_buf.bind();
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+        program.index_buf.unbind();
+    }
+
+    window.requestAnimFrame = (function () {
+        return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (/* function */ callback, /* DOMElement */ element) {
+                    window.setTimeout(callback, 1000 / 60);
+                };
+    })();
+</script>
+
+<body onload="onready();" style="margin: 0; padding: 0; height: 100%">
+    <canvas id="webgl_canvas" style="width: 100%; height: 100%"></canvas>
+</body>
+</html>
