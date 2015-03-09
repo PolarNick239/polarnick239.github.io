@@ -9,7 +9,7 @@
 <script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
 
 <script id="vshader" type="x-shader/x-vertex">
-    #line 16
+    #line 12
     attribute vec2 aPosition;
 
     varying vec2 position;
@@ -22,7 +22,7 @@
 </script>
 
 <script id="fshader" type="x-shader/x-fragment">
-    #line 29
+    #line 25
     precision mediump float;
 
     uniform sampler2D uAudio;
@@ -35,10 +35,16 @@
         vec3 color = vec3(0.0);
         vec2 uv = (position + vec2(1.0)) / 2.0;
 
-        float freq = texture2D(uAudio, vec2(uv.x, 0.0)).x;
-        if (freq > uv.y) {
-            color.g = 1.0 - uv.y;
-            color.r = 2.0 * uv.y;
+        for (float i = 0.0; i < float(WAVES_COUNT); i++) {
+            float freq = texture2D(uAudio, vec2(1.0 - (i + 0.5) / float(WAVES_COUNT), 0.0)).x;
+
+            vec2 p = uv;
+            p.x += uTime / 10000.0 + i * 0.5;
+            p.y -= 0.5;
+            p.y += sin(p.x * (12.0 + clamp(freq, 0.35, 2.0))) * cos(p.x * 2.0) * freq / 2.0;
+
+            float intensity = abs(0.01 / p.y) * clamp(freq, 0.35, 2.0);
+            color += vec3(1.0 * intensity * (i / 5.0), 0.5 * intensity, 1.75 * intensity) * (3.0 / float(WAVES_COUNT));
         }
 
         gl_FragColor = vec4(color, 1.0);
@@ -47,6 +53,8 @@
 
 <script type="text/javascript">
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    var WAVES_COUNT = 8;
 
     var width;
     var height;
@@ -61,7 +69,8 @@
     function onready() {
         canvas = document.getElementById('webgl_canvas');
         setupWebGL(canvas);
-        program = build_program(document.getElementById("vshader").text, document.getElementById("fshader").text);
+        program = build_program(document.getElementById("vshader").text, document.getElementById("fshader").text
+                .split("WAVES_COUNT").join(WAVES_COUNT.toString()));
         gl.useProgram(program);
         audioTexture = new Texture(gl.TEXTURE_2D);
 
@@ -110,7 +119,7 @@
             audio.sound.source.connect(audio.sound.analyser);
             audio.sound.analyser.connect(audioContext.destination);
 
-            initProgram(audio.sound.analyser.frequencyBinCount);
+            initProgram(WAVES_COUNT);
             audio.addEventListener('canplay', function () {
 
                 audio.sound.freqData = new Uint8Array(audio.sound.analyser.frequencyBinCount);
@@ -120,7 +129,22 @@
                 var start_loop = function () {
                     audio.sound.analyser.getByteFrequencyData(audio.sound.freqData);
                     audio.sound.analyser.getByteTimeDomainData(audio.sound.waveData);
-                    renderFrame(new Date().getTime() - startTime, audio.sound.freqData, audio.sound.waveData);
+                    var freqMerged = new Uint8Array(WAVES_COUNT);
+                    var waveMerged = new Uint8Array(WAVES_COUNT);
+                    for (var i = 0; i < WAVES_COUNT; i++) {
+                        var from = Math.floor(audio.sound.freqData.length * i / WAVES_COUNT);
+                        var to = Math.floor(audio.sound.freqData.length * (i + 1) / WAVES_COUNT);
+                        var count = to - from;
+                        var freq = 0;
+                        var wave = 0;
+                        for (var j = from; j < to; j++) {
+                            freq += audio.sound.freqData[j];
+                            wave += audio.sound.waveData[j];
+                        }
+                        freqMerged[i] = freq / count;
+                        waveMerged[i] = wave / count;
+                    }
+                    renderFrame(new Date().getTime() - startTime, freqMerged, waveMerged);
                     window.requestAnimFrame(start_loop, canvas);
                 };
                 start_loop();
@@ -161,7 +185,7 @@
         gl.bufferData(program.index_buf.target, indices, gl.STATIC_DRAW);
         program.index_buf.unbind();
 
-        audioTexture.set_params(LINEAR_TEXTURE.concat(CLAMP_TO_EDGE_TEXTURE));
+        audioTexture.set_params(NEAREST_TEXTURE.concat(CLAMP_TO_EDGE_TEXTURE));
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, frequencyBinCount, 2, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, null);
     }
 
