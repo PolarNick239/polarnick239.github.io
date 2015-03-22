@@ -1356,11 +1356,6 @@ var App = (function () {
             new MainMenuLabel("Press S key for stereo (OculusRift or so)")
         ];
         this.ANON_MENU_ITEMS = [
-            new MainMenuButton("Login with vk.com").addOnClick(function (evt) {
-                VK.Auth.login(function (response) {
-                    _this.loggedIn(response.session);
-                }, 8 /* AUDIO */);
-            })
         ];
         this.AUTH_MENU_ITEMS = [
             new MainMenuButton("Quick play").addOnClick(function (evt) {
