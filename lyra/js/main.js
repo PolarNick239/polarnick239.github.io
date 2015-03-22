@@ -1349,7 +1349,7 @@ var App = (function () {
         });
         this.PERMANENT_MENU_ITEMS = [
             new MainMenuButton("Play demo song").addOnClick(function (evt) {
-                _this.loadAudioAndStart("/demos/webgl/metallica.mp3");
+                _this.loadAudioAndStart("demos/webgl/metallica.mp3");
             }),
             new MainMenuLabel("Or drag and drop mp3 file here"),
             new MainMenuLabel("Press A key for anaglyph"),
