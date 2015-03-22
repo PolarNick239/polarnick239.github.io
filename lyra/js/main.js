@@ -1018,8 +1018,8 @@ var game;
                 this.mapShader.uniformF('uFreqBins[' + i.toString() + ']', this.freqBins[i] / 255.0);
             }
             this.mapShader.uniformF('uTime', this.getAbsoluteTime());
-            var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
             if (this.anaglyph) {
+                var leftCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
                 gl.enable(gl.DEPTH_TEST);
                 gl.clear(gl.DEPTH | gl.COLOR);
                 this.mapShader.uniformMatrixF('uCameraMtx', leftCameraMtx);
@@ -1032,6 +1032,7 @@ var game;
                 gl.colorMask(1, 1, 1, 1);
             }
             else if (this.stereo) {
+                var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
                 gl.enable(gl.DEPTH_TEST);
                 gl.clear(gl.DEPTH | gl.COLOR);
                 this.mapShader.uniformMatrixF('uCameraMtx', leftCameraMtx);
@@ -1053,8 +1054,8 @@ var game;
             //this.blocksShader.vertexAttribute('aNormal', this.blockNormBuf);
             this.blocksShader.uniformF('uCameraPosition', this.eye[0], this.eye[1], this.eye[2]);
             this.setUniformCameraLight(this.blocksShader, 'uLight', this.eye[0], this.eye[1], this.eye[2], 2.0, 0.1, 0.5);
-            var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
             if (this.anaglyph) {
+                var leftCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
                 gl.clear(gl.DEPTH);
                 this.blocksShader.uniformMatrixF("uCameraMtx", leftCameraMtx);
                 gl.colorMask(1, 0, 0, 0);
@@ -1066,6 +1067,7 @@ var game;
                 gl.colorMask(1, 1, 1, 1);
             }
             else if (this.stereo) {
+                var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
                 this.blocksShader.uniformMatrixF("uCameraMtx", leftCameraMtx);
                 this.blocksShader.draw(this.canvas.width / 2, this.canvas.height, gl.TRIANGLES, this.blockIndBuf, 0);
                 this.blocksShader.uniformMatrixF("uCameraMtx", rightCameraMtx);
@@ -1083,8 +1085,8 @@ var game;
             //this.planeShader.vertexAttribute('aNormal', this.planeNormBuf);
             this.planeShader.uniformF("uCameraPosition", this.eye[0], this.eye[1], this.eye[2]);
             this.planeShader.uniformMatrixF("uModelMtx", this.planeModel);
-            var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
             if (this.anaglyph) {
+                var leftCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
                 gl.clear(gl.DEPTH);
                 this.planeShader.uniformMatrixF("uCameraMtx", leftCameraMtx);
                 gl.colorMask(1, 0, 0, 0);
@@ -1096,6 +1098,7 @@ var game;
                 gl.colorMask(1, 1, 1, 1);
             }
             else if (this.stereo) {
+                var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
                 this.planeShader.uniformMatrixF("uCameraMtx", leftCameraMtx);
                 this.planeShader.draw(this.canvas.width / 2, this.canvas.height, gl.TRIANGLES, this.planeIndBuf, 0);
                 this.planeShader.uniformMatrixF("uCameraMtx", rightCameraMtx);
