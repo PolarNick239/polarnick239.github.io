@@ -1386,23 +1386,20 @@ var App = (function () {
             _this.loadAudioAndStart(audio.url);
         });
         this.PERMANENT_MENU_ITEMS = [
-            new MainMenuButton("Frozen Plasma - Murderous Trap").addOnClick(function (evt) {
-                _this.loadAudioAndStart("demos/webgl/1_frozen_plasma_murderous_trap.mp3");
-            }),
-            new MainMenuButton("Abney Park - She").addOnClick(function (evt) {
-                _this.loadAudioAndStart("demos/webgl/2_abney_park_she.mp3");
+            new MainMenuButton("Dr. Steel - We Decide").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/4_dr_steel_we_decide.mp3");
             }),
             new MainMenuButton("Oomph! - In deinen Huften").addOnClick(function (evt) {
                 _this.loadAudioAndStart("demos/webgl/3_oomph_in_deinen_huften.mp3");
-            }),
-            new MainMenuButton("Dr. Steel - We Decide").addOnClick(function (evt) {
-                _this.loadAudioAndStart("demos/webgl/4_dr_steel_we_decide.mp3");
             }),
             new MainMenuButton("Deine Lakaien - Generators").addOnClick(function (evt) {
                 _this.loadAudioAndStart("demos/webgl/5_deine_lakaien_generators.mp3");
             }),
             new MainMenuButton("Oomph! - Such Mich, Find Mich").addOnClick(function (evt) {
                 _this.loadAudioAndStart("demos/webgl/5_oomph_such_mich_find_mich");
+            }),
+            new MainMenuButton("Frozen Plasma - Murderous Trap").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/1_frozen_plasma_murderous_trap.mp3");
             }),
             new MainMenuButton("Diary Of Dreams - A Day In December").addOnClick(function (evt) {
                 _this.loadAudioAndStart("demos/webgl/6_diary_of_dreams_a_day_in_december.mp3");
@@ -1415,6 +1412,9 @@ var App = (function () {
             }),
             new MainMenuButton("Laibach - No History").addOnClick(function (evt) {
                 _this.loadAudioAndStart("demos/webgl/9_laibach_no_history.mp3");
+            }),
+            new MainMenuButton("Abney Park - She").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/2_abney_park_she.mp3");
             }),
             new MainMenuLabel("Drag-and-drop mp3 file here"),
             new MainMenuLabel("Move your head left and right"),
