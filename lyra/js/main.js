@@ -1200,6 +1200,9 @@ var game;
             }
         };
         Game.prototype.loop = function () {
+            if (this.getRelativeTime() >= 1.0) {
+                location.reload();
+            }
             this.makeFullscreen();
             this.getFreqs();
             this.initCamera();
