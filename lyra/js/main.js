@@ -1129,28 +1129,63 @@ var game;
             this.posRectBuf.uploadData(screenCorners);
             this.indRectBuf.uploadData(new Uint16Array([0, 1, 2, 0, 2, 3]));
             this.lightShader.vertexAttribute('aPosition', this.posRectBuf);
-            var lightPositions = [
-                [-0.5, 0.0],
-                [0.5, 0.0]
-            ];
             var lightColors = [
-                [0, 1, 0],
-                [1, 0, 0]
+                [1, 1, 0],
+                [1, 0, 1]
             ];
-            for (var i = 0; i < LIGHTS_COUNT; i++) {
-                this.lightShader.uniformF('uLightPosition[' + i.toString() + ']', lightPositions[i][0], lightPositions[i][1]);
-                this.lightShader.uniformF('uLightColor[' + i.toString() + ']', lightColors[i][0], lightColors[i][1], lightColors[i][2]);
-            }
+            that = this;
             for (var i = 0; i < FREQS_BINS_COUNT; i++) {
-                this.lightShader.uniformF('uFreqBins[' + i.toString() + ']', this.freqBins[i] / 255.0);
+                that.lightShader.uniformF('uFreqBins[' + i.toString() + ']', that.freqBins[i] / 255.0);
             }
-            this.lightShader.uniformF('uRatio', this.canvas.height / this.canvas.width);
             this.lightShader.uniformF('uTime', this.getAbsoluteTime());
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-            gl.enable(gl.BLEND);
-            gl.disable(gl.DEPTH_TEST);
-            this.lightShader.draw(this.canvas.width, this.canvas.height, gl.TRIANGLES, this.indRectBuf);
-            gl.disable(gl.BLEND);
+            var draw = function (width, x) {
+                that.lightShader.uniformF('uRatio', that.canvas.height / width);
+                gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+                gl.enable(gl.BLEND);
+                gl.disable(gl.DEPTH_TEST);
+                that.lightShader.draw(width, that.canvas.height, gl.TRIANGLES, that.indRectBuf, x);
+                gl.disable(gl.BLEND);
+            };
+            var setLightPoses = function(cameraMtx) {
+                var lightPositions = [
+                    [-1.0, 1.0, 0.0],
+                    [-1.0, -1.0, 0.0]
+                ];
+                for (var i = 0; i < LIGHTS_COUNT; i++) {
+                    var wldPos = mat4.multiplyVec3(that.planeModel, lightPositions[i]);
+                    var pos = mat4.multiplyVec3(cameraMtx, wldPos);
+                    pos[0] = pos[0] / pos[2];
+                    pos[1] = pos[1] / pos[2];
+                    var lightPositionX = pos[0];
+                    var lightPositionY = pos[1];
+                    that.lightShader.uniformF('uLightPosition[' + i.toString() + ']', lightPositionX, lightPositionY);
+                    that.lightShader.uniformF('uLightColor[' + i.toString() + ']', lightColors[i][0], lightColors[i][1], lightColors[i][2]);
+                }
+            };
+            if (this.anaglyph) {
+                var leftCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
+                gl.clear(gl.DEPTH);
+                gl.colorMask(1, 0, 0, 0);
+                setLightPoses(leftCameraMtx);
+                draw(this.canvas.width, 0);
+                gl.colorMask(0, 1, 1, 1);
+                gl.clear(gl.DEPTH_BUFFER_BIT);
+                setLightPoses(rightCameraMtx);
+                draw(this.canvas.width, 0);
+                gl.colorMask(1, 1, 1, 1);
+            }
+            else if (this.stereo) {
+                var leftCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, -EYE_SHIFT), rightCameraMtx = this.createCameraMtx(0.5*this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, EYE_SHIFT);
+                setLightPoses(leftCameraMtx);
+                draw(this.canvas.width / 2, 0);
+                setLightPoses(rightCameraMtx);
+                draw(this.canvas.width / 2, this.canvas.width / 2);
+            }
+            else {
+                var centerMatrix = this.createCameraMtx(this.canvas.width/this.canvas.height, this.eye, this.viewAngleVert, this.lookAt, 0);
+                setLightPoses(centerMatrix);
+                draw(this.canvas.width, 0);
+            }
         };
         Game.prototype.getFreqs = function () {
             this.analyser.getByteFrequencyData(this.freqData);
@@ -1172,7 +1207,7 @@ var game;
             this.renderMap();
             this.renderBlocks();
             this.renderPlane();
-            //this.renderLights();
+            this.renderLights();
             window.requestAnimationFrame(this.loop.bind(this));
         };
         return Game;
@@ -1351,12 +1386,42 @@ var App = (function () {
             _this.loadAudioAndStart(audio.url);
         });
         this.PERMANENT_MENU_ITEMS = [
-            new MainMenuButton("Play demo song").addOnClick(function (evt) {
-                _this.loadAudioAndStart("demos/webgl/metallica.mp3");
+            new MainMenuButton("Frozen Plasma - Murderous Trap").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/1_frozen_plasma_murderous_trap.mp3");
             }),
-            new MainMenuLabel("Or drag and drop mp3 file here"),
+            new MainMenuButton("Abney Park - She").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/2_abney_park_she.mp3");
+            }),
+            new MainMenuButton("Oomph! - In deinen Huften").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/3_oomph_in_deinen_huften.mp3");
+            }),
+            new MainMenuButton("Dr. Steel - We Decide").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/4_dr_steel_we_decide.mp3");
+            }),
+            new MainMenuButton("Deine Lakaien - Generators").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/5_deine_lakaien_generators.mp3");
+            }),
+            new MainMenuButton("Oomph! - Such Mich, Find Mich").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/5_oomph_such_mich_find_mich");
+            }),
+            new MainMenuButton("Diary Of Dreams - A Day In December").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/6_diary_of_dreams_a_day_in_december.mp3");
+            }),
+            new MainMenuButton("Diary of Dreams - The Luxury of Insanity").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/7_diary_of_dreams_the_luxury_ofinsanity.mp3");
+            }),
+            new MainMenuButton("Diorama - Child of Entertainment").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/8_diorama_child_of_entertainment.mp3");
+            }),
+            new MainMenuButton("Laibach - No History").addOnClick(function (evt) {
+                _this.loadAudioAndStart("demos/webgl/9_laibach_no_history.mp3");
+            }),
+            new MainMenuLabel("Drag-and-drop mp3 file here"),
+            new MainMenuLabel("Move your head left and right"),
             new MainMenuLabel("Press A key for anaglyph"),
-            new MainMenuLabel("Press S key for stereo (OculusRift or so)")
+            new MainMenuLabel("Press S key for stereo (OculusRift or so)"),
+            new MainMenuLabel("Repository: \u003ca href=\"https://github.com/lyra-team\"\u003eLyra team\u003ca\u005c\u003e"),
+            new MainMenuLabel("Hackday: \u003ca href=\"http://hackday.ru/hackday-36/projects#project-1121\"\u003eLyra project\u003ca\u005c\u003e")
         ];
         this.ANON_MENU_ITEMS = [
         ];
