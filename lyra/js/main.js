@@ -1200,18 +1200,22 @@ var game;
             }
         };
         Game.prototype.loop = function () {
-            if (this.getRelativeTime() >= 1.0) {
+            try {
+                if (this.getRelativeTime() >= 1.0) {
+                    location.reload();
+                }
+                this.makeFullscreen();
+                this.getFreqs();
+                this.initCamera();
+                this.renderBackground();
+                this.renderMap();
+                this.renderBlocks();
+                this.renderPlane();
+                this.renderLights();
+                window.requestAnimationFrame(this.loop.bind(this));
+            } catch(e) {
                 location.reload();
             }
-            this.makeFullscreen();
-            this.getFreqs();
-            this.initCamera();
-            this.renderBackground();
-            this.renderMap();
-            this.renderBlocks();
-            this.renderPlane();
-            this.renderLights();
-            window.requestAnimationFrame(this.loop.bind(this));
         };
         return Game;
     })();
