@@ -1,0 +1,1 @@
+tsc --out build/main.js src/gl.ts src/matrix.ts
