@@ -386,6 +386,7 @@ var matrix;
             this.fshader = matrix_fshader;
             this.fontsUrl = fontsUrl;
             this.fontsAreLoaded = false;
+            this.startTime = null;
         }
         MatrixDrawer.prototype.initialize = function () {
             this.glContext = new webgl.GLContext(this.canvas);
@@ -429,10 +430,13 @@ var matrix;
         };
         MatrixDrawer.prototype.loop = function () {
             if (this.fontsAreLoaded) {
+                if (!this.startTime) {
+                    this.startTime = new Date().getTime();
+                }
                 this.updateCanvasSize(this.canvas);
                 var gl = this.glContext.activate();
                 gl.clearColor(0.0, 0.0, 0.1, 1.0);
-                gl.clear(gl.COLOR_BUFFER_BIT);
+                this.shader.uniformF('uTime', (new Date().getTime() - this.startTime) / 1000.0);
                 this.shader.drawArrays(this.canvas.width, this.canvas.height, gl.TRIANGLE_FAN, 4);
                 this.glContext.deactivate();
             }
@@ -442,6 +446,9 @@ var matrix;
             if (canvas.width != canvas.clientWidth || canvas.height != canvas.clientHeight) {
                 canvas.width = canvas.clientWidth;
                 canvas.height = canvas.clientHeight;
+                this.glContext.activate();
+                this.shader.uniformF('uScreenSize', canvas.width, canvas.height);
+                this.glContext.deactivate();
             }
         };
         return MatrixDrawer;

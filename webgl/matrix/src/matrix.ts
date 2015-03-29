@@ -18,7 +18,10 @@ module matrix {
         glContext:webgl.GLContext;
         shader:webgl.Shader;
 
+        startTime:number;
+
         cornerPositionsBuf:webgl.ArrayBuffer;
+
         fontsTex:webgl.Texture2D;
         fontsAreLoaded:boolean;
 
@@ -28,6 +31,7 @@ module matrix {
             this.fshader = matrix_fshader;
             this.fontsUrl = fontsUrl;
             this.fontsAreLoaded = false;
+            this.startTime = null;
         }
 
         initialize() {
@@ -75,12 +79,15 @@ module matrix {
 
         loop() {
             if (this.fontsAreLoaded) {
+                if (!this.startTime) {
+                    this.startTime = new Date().getTime();
+                }
                 this.updateCanvasSize(this.canvas);
 
                 var gl = this.glContext.activate();
 
                 gl.clearColor(0.0, 0.0, 0.1, 1.0);
-                gl.clear(gl.COLOR_BUFFER_BIT);
+                this.shader.uniformF('uTime', (new Date().getTime() - this.startTime)/1000.0);
                 this.shader.drawArrays(this.canvas.width, this.canvas.height, gl.TRIANGLE_FAN, 4);
 
                 this.glContext.deactivate();
@@ -93,6 +100,9 @@ module matrix {
                 canvas.height != canvas.clientHeight) {
                 canvas.width = canvas.clientWidth;
                 canvas.height = canvas.clientHeight;
+                this.glContext.activate();
+                this.shader.uniformF('uScreenSize', canvas.width, canvas.height);
+                this.glContext.deactivate();
             }
         }
     }
