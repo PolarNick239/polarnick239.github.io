@@ -17,27 +17,35 @@
 </script>
 
 <script id="matrix_fshader" type="x-shader/x-fragment">
+    #line 20
     precision mediump float;
 
-    const float fontsXCount = 16.0;
-    const float fontsYCount = 5.0;
-    const float fontsWidth = (995.0/1024.0)/fontsXCount;
-    const float fontsHeight = (430.0/512.0)/fontsYCount;
+    const vec2 fontsTextureSize = vec2(2048.0, 1024.0);
+    const vec2 fontsCount = vec2(16.0, 5.0);
+    const vec2 fontsSize = vec2(60.0, 88.0);
+    const vec2 fontsStep = vec2(5.0, 24.0);
 
     uniform sampler2D uFonts;
 
     varying vec2 vPosition;
 
-    vec2 getFontCenter(float i, float j) {
-        return vec2(fontsWidth * (i + 0.5), fontsHeight * (j + 0.5));
+    vec4 sampleFont(vec2 ij, vec2 xy) {
+        xy.x = 1.0 - xy.x;
+        vec2 fontCorner = (fontsSize + fontsStep) * ij / fontsTextureSize;
+        vec2 uv = fontCorner + xy * fontsSize / fontsTextureSize;
+        return texture2D(uFonts, uv);
     }
 
     void main() {
         vec2 position = vPosition;
         position.y = 1.0 - position.y;
-        position = position * vec2(fontsWidth, fontsHeight) * vec2(fontsXCount, fontsYCount);
-        vec3 color = texture2D(uFonts, position).rgb;
-        gl_FragColor = vec4(color, 1.0);
+
+        vec2 ij = floor(position * fontsCount);
+        vec2 xy = fract(position * fontsCount);
+
+        vec3 color1 = sampleFont(ij, xy).rgb;
+        vec3 color2 = vec3(xy.x, xy.y, 0.0);
+        gl_FragColor = vec4((color1 + 2.0*color2) / 2.0, 1.0);
     }
 </script>
 
