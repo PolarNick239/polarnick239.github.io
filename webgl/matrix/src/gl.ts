@@ -298,7 +298,9 @@ module webgl {
         }
 
         locateAttribute(name) {
-            return gl.getAttribLocation(this.handle, name);
+            var location = gl.getAttribLocation(this.handle, name);
+            console.assert(location >= 0, 'Attribute with name ' + name + ' was not found!');
+            return location;
         }
 
         vertexAttribute(name, buffer:ArrayBuffer) {
