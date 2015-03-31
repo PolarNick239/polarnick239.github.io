@@ -319,6 +319,7 @@ module webgl {
             this.bind();
             gl.viewport(x, y, width, height);
             buffer.bind();
+            console.assert(buffer.getCount() < 65536);
             gl.drawElements(mode, buffer.getCount(), gl.UNSIGNED_SHORT, 0);
             buffer.unbind();
             this.unbind();

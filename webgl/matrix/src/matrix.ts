@@ -8,6 +8,27 @@ module matrix {
         window.requestAnimationFrame(drawer.loop.bind(drawer));
     }
 
+    class Strip {
+        columnX;
+        startTime;
+        startY;
+        endY;
+        traceLength;
+
+        constructor(columnX, startTime, startY, endY, traceLength) {
+            this.columnX = columnX;
+            this.startTime = startTime;
+            this.startY = startY;
+            this.endY = endY;
+            this.traceLength = traceLength;
+        }
+
+    }
+
+    function getRandomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
     class MatrixDrawer {
 
         canvas:HTMLCanvasElement;
@@ -31,10 +52,17 @@ module matrix {
         fontsTex:webgl.Texture2D;
         fontsAreLoaded:boolean;
 
+        symbolSizeX=5.0*2.0;
+        symbolSizeY=8.0*2.0;
+
         constructor(htmlCanvas:HTMLCanvasElement, matrix_vshader:string, matrix_fshader:string, fontsUrl:string) {
             this.canvas = htmlCanvas;
-            this.vshader = matrix_vshader;
-            this.fshader = matrix_fshader;
+            this.vshader = matrix_vshader
+                .split('SYMBOL_SIZE_X').join(this.symbolSizeX.toString())
+                .split('SYMBOL_SIZE_Y').join(this.symbolSizeY.toString());
+            this.fshader = matrix_fshader
+                .split('SYMBOL_SIZE_X').join(this.symbolSizeX.toString())
+                .split('SYMBOL_SIZE_Y').join(this.symbolSizeY.toString());
             this.fontsUrl = fontsUrl;
             this.fontsAreLoaded = false;
             this.startTime = null;
@@ -76,7 +104,7 @@ module matrix {
             var fontsImage = new Image();
             this.glContext.deactivate();
 
-            fontsImage.onload = function() {
+            fontsImage.onload = function () {
                 this.glContext.activate();
                 this.fontsTex.uploadImage(fontsImage);
                 this.fontsTex.bind();
@@ -90,58 +118,74 @@ module matrix {
         }
 
         updateUniforms() {
-            this.shader.uniformF('uTime', (new Date().getTime() - this.startTime)/1000.0);
+            this.shader.uniformF('uTime', (new Date().getTime() - this.startTime) / 1000.0);
         }
 
-        updateBuffers() {
-            var columnX = 1.0;
-            var startY = 0.0;
-            var startTime = 1.0;
-            var endY = 60.0;
-            var traceLength = 15.0;
-            var columnX2 = 6.0;
-            var startY2 = 0.0;
-            var startTime2 = 5.0;
-            var endY2 = 50.0;
-            var traceLength2 = 30.0;
-            this.stripesPositionsBuf.uploadData(new Float32Array([
-                columnX, startY,
-                columnX + 1.0, startY,
-                columnX, endY,
-                columnX + 1.0, endY,
-                columnX2, startY2,
-                columnX2 + 1.0, startY2,
-                columnX2, endY2,
-                columnX2 + 1.0, endY2
-            ]));
-            this.stripesStartTimeBuf.uploadData(new Float32Array([
-                startTime, startTime, startTime, startTime,
-                startTime2, startTime2, startTime2, startTime2
-            ]));
-            this.stripesStartYBuf.uploadData(new Float32Array([
-                startY, startY, startY, startY,
-                startY2, startY2, startY2, startY2
-            ]));
-            this.stripesEndYBuf.uploadData(new Float32Array([
-                endY, endY, endY, endY,
-                endY2, endY2, endY2, endY2
-            ]));
-            this.stripesTraceLengthBuf.uploadData(new Float32Array([
-                traceLength, traceLength, traceLength, traceLength,
-                traceLength2, traceLength2, traceLength2, traceLength2
-            ]));
-            this.stripesIndicesBuf.uploadData(new Uint16Array([
+        updateBuffers(strips) {
+            var n = strips.length;
+
+            var positions = new Float32Array(n * 4 * 2);
+            var startTimes = new Float32Array(n * 4);
+            var startYs = new Float32Array(n * 4);
+            var endYs = new Float32Array(n * 4);
+            var traceLengths = new Float32Array(n * 4);
+            var indices = new Uint16Array(n * 2 * 3);
+
+            var deltaIndices = [
                 0, 1, 2,
-                1, 2, 3,
-                4, 5, 6,
-                5, 6, 7
-            ]));
+                1, 2, 3
+            ];
+            for (var i = 0; i < n; i++) {
+                var stripe = strips[i];
+                var xys = [
+                    stripe.columnX, stripe.startY,
+                    stripe.columnX + 1.0, stripe.startY,
+                    stripe.columnX, stripe.endY,
+                    stripe.columnX + 1.0, stripe.endY
+                ];
+                for (var j = 0; j < 8; j++) {
+                    positions[i * 4 * 2 + j] = xys[j];
+                }
+                for (var j = 0; j < 4; j++) {
+                    startTimes[i * 4 + j] = stripe.startTime;
+                    startYs[i * 4 + j] = stripe.startY;
+                    endYs[i * 4 + j] = stripe.endY;
+                    traceLengths[i * 4 + j] = stripe.traceLength;
+                }
+                for (var j = 0; j < 6; j++) {
+                    indices[i * 6 + j] = i * 4 + deltaIndices[j];
+                }
+            }
+            this.stripesPositionsBuf.uploadData(positions);
+            this.stripesStartTimeBuf.uploadData(startTimes);
+            this.stripesStartYBuf.uploadData(startYs);
+            this.stripesEndYBuf.uploadData(endYs);
+            this.stripesTraceLengthBuf.uploadData(traceLengths);
+            this.stripesIndicesBuf.uploadData(indices);
+        }
+
+        generateStrips() {
+            var strips = [];
+            var rows = this.canvas.width / this.symbolSizeX;
+            var cols = this.canvas.height / this.symbolSizeY;
+            for (var x = 0; x < rows; x++) {
+                var count = getRandomInRange(15.0, 20.0);
+                for (var i = 0; i < count; i++) {
+                    var startTime = getRandomInRange(0.0, 239.0);
+                    var startY = 0.0;
+                    var endY = Math.round(cols * getRandomInRange(0.0, cols * 1.2));
+                    var traceLength = Math.round(getRandomInRange(10.0, 30.0));
+                    var strip = new Strip(x, startTime, startY, endY, traceLength);
+                    strips.push(strip);
+                }
+            }
+            return strips;
         }
 
         draw() {
             var gl = webgl.gl;
             gl.enable(gl.DEPTH_TEST);
-            gl.clearColor(0.0, 0.1, 0.0, 1.0);
+            gl.clearColor(0.0, 0.05, 0.0, 1.0);
             gl.clearDepth(1.0);
             gl.clear(gl.COLOR_BUFFER_BIT || gl.DEPTH_BUFFER_BIT);
 
@@ -154,9 +198,10 @@ module matrix {
                     this.startTime = new Date().getTime();
                 }
                 this.glContext.activate();
-                this.updateCanvasSize(this.canvas);
+                if (this.updateCanvasSize(this.canvas)) {
+                    this.updateBuffers(this.generateStrips());
+                }
                 this.updateUniforms();
-                this.updateBuffers();
                 this.draw();
                 this.glContext.deactivate();
             }
@@ -169,6 +214,9 @@ module matrix {
                 canvas.width = canvas.clientWidth;
                 canvas.height = canvas.clientHeight;
                 this.shader.uniformF('uScreenSize', canvas.width, canvas.height);
+                return true;
+            } else {
+                return false;
             }
         }
     }

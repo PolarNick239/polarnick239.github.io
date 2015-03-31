@@ -10,7 +10,7 @@
     precision mediump float;
 
     const vec2 fontsSize = vec2(55.0, 88.0);
-    const vec2 symbolSize = fontsSize / 6.0;
+    const vec2 symbolSize = vec2(SYMBOL_SIZE_X, SYMBOL_SIZE_Y);
 
     uniform vec2 uScreenSize;
 
@@ -48,10 +48,11 @@
     const vec2 fontsCount = vec2(16.0, 5.0);
     const vec2 fontsSize = vec2(55.0, 88.0);
     const vec2 fontsStep = vec2(10.0, 24.0);
+    const bool override = true;
 
     const float stepsPerSecond = 10.0;
 
-    const vec2 symbolSize = fontsSize / 4.0;
+    const vec2 symbolSize = vec2(SYMBOL_SIZE_X, SYMBOL_SIZE_Y);
 
     uniform sampler2D uFonts;
     uniform vec2 uScreenSize;
@@ -83,21 +84,26 @@
     void main() {
         float curY = floor(vPosition.y);
         float stepsPassed = floor((uTime - vStartTime) * stepsPerSecond);
+        float fractOfLastStep = fract((uTime - vStartTime) * stepsPerSecond);
         float leadY = vStartY + mod(stepsPassed, vEndY + vTraceLength - vStartY);
         if (curY > leadY || curY > vEndY || leadY - curY + 0.5 > vTraceLength) {
             discard;
         }
 
-        float symbolIntensity = sampleFont(curY+23.0, fract(vPosition));
-        if (symbolIntensity <= 0.1) {
+        float id = floor(curY * (vStartTime + stepsPerSecond) * 239.0);
+        float symbolIntensity = sampleFont(id, fract(vPosition));
+        if (!override && symbolIntensity <= 0.1) {
             discard;
         }
 
         vec3 color;
+        float attenuationTime = vTraceLength / stepsPerSecond;
+        float curTimePassed = (leadY + fractOfLastStep - curY) / stepsPerSecond;
+        float attenuation = 1.0 - curTimePassed / attenuationTime;
         if (curY == leadY) {
-            color = vec3(1.0);
+            color = vec3(0.0, 0.05, 0.0) + symbolIntensity * vec3(attenuation * attenuation, attenuation, attenuation * attenuation);
         } else {
-            color = vec3(0.0, 0.1, 0.0) + symbolIntensity * vec3(0.2, 0.9, 0.2) * (1.0 - (leadY - curY) / vTraceLength);
+            color = vec3(0.0, 0.05, 0.0) + symbolIntensity * vec3(0.0, 0.5 * attenuation, 0.0);
         }
 
         gl_FragColor = vec4(color, 1.0);
