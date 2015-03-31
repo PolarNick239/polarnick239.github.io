@@ -90,7 +90,7 @@
             discard;
         }
 
-        float id = floor(curY * (vStartTime + stepsPerSecond) * 239.0);
+        float id = floor((curY + 1.0) * (vStartTime + stepsPerSecond + floor(uTime * (curY + 1.0) * (vStartTime  + 1.0) / 23900.0)) * 239.0);
         float symbolIntensity = sampleFont(id, fract(vPosition));
         if (!override && symbolIntensity <= 0.1) {
             discard;
