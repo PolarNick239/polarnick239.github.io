@@ -1,2 +1,2 @@
-src/_site
-src/.sass-cache
+_site
+.sass-cache
