@@ -127,18 +127,17 @@
 }
 
 .footer-col-1 {
-    width: -webkit-calc(35% - (#{$spacing-unit} / 2));
-    width:         calc(35% - (#{$spacing-unit} / 2));
+    width: -webkit-calc(200px - (#{$spacing-unit} / 2));
+    width:         calc(200px - (#{$spacing-unit} / 2));
 }
 
 .footer-col-2 {
-    width: -webkit-calc(20% - (#{$spacing-unit} / 2));
-    width:         calc(20% - (#{$spacing-unit} / 2));
 }
 
 .footer-col-3 {
-    width: -webkit-calc(45% - (#{$spacing-unit} / 2));
-    width:         calc(45% - (#{$spacing-unit} / 2));
+    float: right;
+    width: -webkit-calc(300px - (#{$spacing-unit} / 2));
+    width:         calc(300px - (#{$spacing-unit} / 2));
 }
 
 @include media-query($on-laptop) {
