@@ -1,2 +1,9 @@
-_site
-.sass-cache
+.idea/
+
+_site/
+.sass-cache/
+
+src/greencode/build/
+static/greencode/
+shaders/greencode/
+js/greencode/

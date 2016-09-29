@@ -131,8 +131,8 @@ pre,
 code {
     font-size: 15px;
     border: 1px solid $grey-color-light;
-    border-radius: 3px;
-    background-color: #eef;
+    border-radius: 5px;
+    background-color: $code-background-color;
 }
 
 code {
@@ -156,19 +156,22 @@ pre {
  * Wrapper
  */
 .wrapper {
-    max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit} * 2));
-    max-width:         calc(#{$content-width} - (#{$spacing-unit} * 2));
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: $spacing-unit;
-    padding-left: $spacing-unit;
+    max-width:  -webkit-calc(#{$content-width});
+    max-width:          calc(#{$content-width});
+    margin-right:       auto;
+    margin-left:        auto;
+    background-color:   #{$background-color};
+    border-radius:      0 0 #{$wrapper-border-radius} #{$wrapper-border-radius};
+    border-style:       none solid solid solid;
+    border-width:       1px;
+
     @extend %clearfix;
 
     @include media-query($on-laptop) {
-        max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
-        max-width:         calc(#{$content-width} - (#{$spacing-unit}));
-        padding-right: $spacing-unit / 2;
-        padding-left: $spacing-unit / 2;
+        max-width: -webkit-calc(#{$content-width});
+        max-width:         calc(#{$content-width});
+        margin-right:      auto;
+        margin-left:       auto;
     }
 }
 
