@@ -11,7 +11,7 @@ all:
 	cat fshader.c >> build/shaders.ts
 	printf "\`;\n" >> build/shaders.ts
 
-	tsc --out ../../js/greencode/main.js main.ts
+	tsc --out ../../js/greencode.js main.ts
 
 	mkdir -p ../../static/greencode/
 	cp static/fonts.png ../../static/greencode/
