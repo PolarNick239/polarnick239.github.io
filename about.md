@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+I love Unicorns. My home in Saint-Petersburg, Russia. Here I am trying to do something interesting in Computer Vision.
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jglovier" %} /
-[jekyll-new](https://github.com/jglovier/jekyll-new)
+GPUs raw power impresses me - so my field of interest includes CG, OpenCL, raytracing and amazing magics from [Shadertoy](https://www.shadertoy.com/).
 
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)
+If you want to discuss something - my areas of expertise described in [CV](/old/cv/Polyarniy_CV.pdf).
