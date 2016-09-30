@@ -1,4 +1,4 @@
-#line 1
+#line 2
 precision mediump float;
 
 const vec2 fontsTextureSize = vec2(2048.0, 1024.0);
@@ -38,6 +38,10 @@ float sampleFont(float id, vec2 xy) {
     return 1.0 - dot(fontColor.rgb, vec3(1.0)) / 3.0;
 }
 
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
 void main() {
     float curY = floor(vPosition.y);
     float stepsPassed = floor((uTime - vStartTime) * stepsPerSecond);
@@ -47,11 +51,15 @@ void main() {
         discard;
     }
 
-    float id = floor((curY + 1.0) * (vStartTime + stepsPerSecond + floor(uTime * (curY + 1.0) * (vStartTime  + 1.0) / 23900.0)) * 239.0);
+    float id = floor((curY + 1.0 + rand(floor(vPosition))) * (vStartTime + stepsPerSecond + floor(uTime * (curY + 1.0) * (vStartTime  + 1.0) / 23900.0)) * 239.0);
     float symbolIntensity = sampleFont(id, fract(vPosition));
     if (!override && symbolIntensity <= 0.1) {
         discard;
     }
+
+    // Background should not distract - let's fade
+    float fadeSpeed = 1.0;
+    symbolIntensity *= min(1.0, 0.05 + 2.0 / (1.0 + uTime * fadeSpeed));
 
     vec3 color;
     float attenuationTime = vTraceLength / stepsPerSecond;

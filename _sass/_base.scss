@@ -111,7 +111,7 @@ a {
  */
 blockquote {
     color: $grey-color;
-    border-left: 4px solid $grey-color-light;
+    border-left: 4px solid $grey-color-dark;
     padding-left: $spacing-unit / 2;
     font-size: 18px;
     letter-spacing: -1px;
@@ -130,7 +130,7 @@ blockquote {
 pre,
 code {
     font-size: 15px;
-    border: 1px solid $grey-color-light;
+    border: 1px solid $grey-color-dark;
     border-radius: 5px;
     background-color: $code-background-color;
 }
@@ -160,10 +160,12 @@ pre {
     max-width:          calc(#{$content-width});
     margin-right:       auto;
     margin-left:        auto;
+    margin-bottom:      $spacing-unit;
     background-color:   #{$background-color};
     border-radius:      0 0 #{$wrapper-border-radius} #{$wrapper-border-radius};
     border-style:       none solid solid solid;
     border-width:       1px;
+    border-color:       $grey-color-dark;
 
     @extend %clearfix;
 

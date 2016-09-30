@@ -1,4 +1,4 @@
-#line 1
+#line 2
 precision mediump float;
 
 const vec2 fontsSize = vec2(55.0, 88.0);
