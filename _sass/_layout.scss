@@ -5,8 +5,11 @@
     border-top: 5px solid $grey-color-dark;
     border-bottom: 1px solid $grey-color-dark;
     min-height: 56px;
-    padding-right: $spacing-unit;
-    padding-left: $spacing-unit;
+
+    padding: 0 $spacing-unit;
+    @include media-query($on-palm) {
+        padding: 0 $spacing-unit / 2;
+    }
 
     // Positioning context for the mobile navigation icon
     position: relative;
@@ -101,9 +104,10 @@
  */
 .site-footer {
     border-top: 1px solid $grey-color-dark;
-    padding: $spacing-unit 0;
-    padding-right: $spacing-unit;
-    padding-left: $spacing-unit;
+    padding: $spacing-unit / 2 $spacing-unit;
+    @include media-query($on-palm) {
+        padding: $spacing-unit / 4 $spacing-unit / 2;
+    }
 }
 
 .footer-heading {
@@ -170,9 +174,11 @@
  * Page content
  */
 .page-content {
-    padding: $spacing-unit 0;
-    padding-right: $spacing-unit;
-    padding-left: $spacing-unit;
+    padding: $spacing-unit $spacing-unit;
+
+    @include media-query($on-palm) {
+        padding: $spacing-unit / 3 $spacing-unit / 3;
+    }
 }
 
 .page-heading {
@@ -219,6 +225,9 @@
 
 .post-content {
     margin: $spacing-unit / 2;
+    @include media-query($on-palm) {
+        margin: 0;
+    }
 
     h2 {
         font-size: 32px;
