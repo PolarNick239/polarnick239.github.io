@@ -156,8 +156,8 @@ pre {
  * Wrapper
  */
 .wrapper {
-    max-width:  -webkit-calc(#{80%});
-    max-width:          calc(#{80%});
+    max-width:  -webkit-calc(80%);
+    max-width:          calc(80%);
     margin-right:       auto;
     margin-left:        auto;
     margin-bottom:      $spacing-unit;
@@ -170,8 +170,8 @@ pre {
     @extend %clearfix;
 
     @include media-query($on-palm) {
-        max-width: -webkit-calc(#{90%});
-        max-width:         calc(#{90%});
+        max-width: -webkit-calc(90%);
+        max-width:         calc(90%);
     }
 }
 
@@ -201,5 +201,14 @@ pre {
         width: 16px;
         height: 16px;
         vertical-align: middle;
+    }
+}
+
+.header-icon {
+
+    > svg {
+        display: inline-block;
+        width: 35px;
+        height: 35px;
     }
 }
