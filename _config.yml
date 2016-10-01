@@ -17,5 +17,10 @@ vk_username:  PolarNick
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
 source: .
 exclude: [src]
+
+kramdown:
+  input: GFM
+  hard_wrap: false

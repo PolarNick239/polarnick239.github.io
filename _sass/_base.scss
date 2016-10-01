@@ -123,6 +123,13 @@ blockquote {
 }
 
 
+/**
+ * Math formatting
+ */
+.math {
+    color: $math-color;
+    font-size: 16px;
+}
 
 /**
  * Code formatting
