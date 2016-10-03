@@ -1,0 +1,72 @@
+/**
+ * intensedebate comments
+ */
+#idc-container-parent #idc-container {
+    width: 100%;
+    max-width: 100%;
+}
+#idc-container-parent #idc-container div {
+    font-size: $base-font-size !important;
+}
+
+#idc-container-parent #idc-container textarea.idc-text_noresize {
+    box-sizing: border-box;
+    width: 100% !important;
+
+    color: $text-color !important;
+    background: $code-background-color;
+
+    font-size: $base-font-size;
+    border: 1px solid $grey-color-dark;
+    border-radius: 5px;
+}
+
+#idc-container-parent #idc-container input.idc-text {
+    color: $text-color !important;
+    background: $code-background-color;
+
+    font-size: $base-font-size;
+    border: 1px solid $grey-color-dark;
+    border-radius: 5px;
+}
+
+#idc-container-parent #idc-container div.idc-right {
+    margin-right: 3.6%;
+}
+
+#idc-container-parent #idc-container #IDNewThreadSubmitLI span.idc-r {
+    color: $text-color;
+    background: $grey-color-dark;
+
+    font-size: $base-font-size !important;
+    border-radius:      0px 5px 5px 0px;
+    border-style:       solid solid solid none;
+    border-width:       1px;
+    border-color:       $grey-color-light;
+}
+
+#idc-container-parent #idc-container #IDNewThreadSubmitLI span {
+    background: $grey-color-dark;
+
+    border-radius:      5px 0px 0px 5px;
+    border-style:       solid none solid solid;
+    border-width:       1px;
+    border-color:       $grey-color-light;
+}
+
+#idc-container-parent #idc-container div#IDCColumnEmailLabel > label:after {
+    content: " (optional)";
+}
+
+#idc-container-parent #idc-container .idc-foot {
+    border-top: 0px;
+}
+
+#idc-container-parent #idc-container select#IDSubscribeToThis {
+    color: $text-color;
+    background: $code-background-color;
+
+    font-size: $base-font-size;
+    border: 1px solid $grey-color-dark;
+    border-radius: 5px;
+}
