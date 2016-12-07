@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Информатика и рофлы в 239</title>
+</head>
+<body>
+<div style="margin-left: auto;
+    margin-right: auto;
+    width: 60em;
+    vertical-align: middle">
+
+    <h2>Задание 1. Клеточный автомат на Android</h2>
+
+    <h3>Настройка окружения, Android Studio:</h3>
+    <ul>
+        <li>скачать Android Studio: <a href="https://developer.android.com/studio/index.html">https://developer.android.com/studio/index.html</a></li>
+        <li>установить, оставив все по дефолту (галочки стоят на всех трех пакетах)</li>
+        <li>Запустить Android Studio</li>
+        <li>"I do not have a previous version ..." -> Ok</li>
+        <li>"Standard" -> Next</li>
+        <li>галку на Android Virtual Device (если хочется эмулятор) -> Next</li>
+        <li>Finish, ждать пока грузится 600 Мб</li>
+    </ul>
+
+    <h3>Git:</h3>
+    <ul>
+        <li>скачать git клиент <a href="https://git-for-windows.github.io/">https://git-for-windows.github.io/</a></li>
+        <li>установить его (всё оставлять по умолчанию)</li>
+        <li>запустить Android Studio</li>
+        <li>открыть настройки Android Studio (либо Configure->Settings если вы видите маленькое окно, либо File->Settings если вы видите запущенную Android Studio)</li>
+        <li>в настройках Android Studio: Version Control -> Git</li>
+        <li>Path to Git executable: указать git.exe файл, который установлен примерно по такому пути: C:\Program Files\Git\bin\git.exe</li>
+        <li>Нажать справа кнопку "Test", должно показаться окно с версией git</li>
+        <li>Закрываем настройки, нажав Ok</li>
+    </ul>
+
+    <h3>Задание "Клеточный автомат"</h3>
+    <ul>
+        <li>Запустить Android Studio</li>
+        <li>Check out project from Version Control->Git (НЕ github)</li>
+        <li>Git repository URL: <a href="https://github.com/PolarNick239/AndroidBenchmarks">https://github.com/PolarNick239/AndroidBenchmarks</a></li>
+        <li>Если пишет красным "The parent path C:\...\StudioProjects must exist" - создайте такую папку, либо укажите другую Parent Directory</li>
+        <li>нажать Clone</li>
+        <li>would you like to create a Studio project for the sources you have been checked ...? -> нажать Yes</li>
+        <li>create project from existing sources -> Next -> и еще раз Next -> и еще раз Next -> и еще один терпеливый раз Next -> ну и чего уж там еще один Next -> вообщем Next до упора</li>
+        <li>закрываем окошко Tip of the day -> Close</li>
+    </ul>
+
+    <h3>Уровни сложности:</h3>
+    <ul>
+        <li>Easy (если обычно вас напрягает информатика, или сделать Medium вы не успеваете)</li>
+        <li>Medium (вариант по умолчанию, на другой уровень сложности в любой момент можно переключится, скопировав то что уже написали)</li>
+        <li>Nightmare (на самом деле это Medium, но еще одна сложная технически задачка добавлена, поэтому когда будет сделан Medium - можно попробовать Nightmare, скопировав уже сделанную часть</li>
+    </ul>
+
+    <h3>Настройка проекта:</h3>
+    <ul>
+        <li>Снизу слева нажать на "Unregistered VCS root detected" -> нажать синюю надпись Add Root</li>
+        <li>справа снизу нажать на "Git: master" -> origin/easy -> checkout as new loca branch -> Ok</li>
+        <li>Снизу нажав на TODO можно увидеть перечень заданий</li>
+    </ul>
+
+    <h3>Android NDK:</h3>
+    <ul>
+        <li>Скачать Android NDK:</li>
+        <li>либо Project Structure->SDK Location-> снизу нажать на "Download" Android NDK</li>
+        <li>либо руками скачать отсюда <a href="https://developer.android.com/ndk/downloads/index.html">https://developer.android.com/ndk/downloads/index.html</a> а затем в  Project Structure->SDK Location-> снизу указать путь на этот распакованный архив</li>
+    </ul>
+
+    <h3>Чтобы запускать:</h3>
+    <ul>
+        <li>Run->Edit configurations</li>
+        <li>Зеленый плюс->Android App</li>
+        <li>Module: выбрать main (единственный вариант)</li>
+        <li>Target: Emulator (тут можно указать USB, если захочется проверить на своем телефоне)</li>
+        <li>Prefer Android Virtual Device: выбрать "Nexus 5x ..." (единственный вариант)</li>
+        <li>Ok</li>
+        <li>теперь можно запускать сверху зеленым треугольником (как кнопка Play в плеерах)</li>
+    </ul>
+
+</div>
+</body>
+</html>
