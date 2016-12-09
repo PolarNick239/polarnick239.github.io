@@ -1,0 +1,20 @@
+---
+layout: 239post
+title:  "Задание 0. Вызываем Java-привыкание"
+date:   2016-12-05 02:39:00 +0300
+categories: 239 lesson school android java
+---
+
+Скоро появится, ориентировочно в субботу появится хоть что-то
+=============================================================
+
+Вот вам пока что единорог:
+
+<div class="sketchfab-embed-wrapper"><iframe width="100%" height="640" src="https://sketchfab.com/models/4e92bdbe7ee24dd888a56eb73fc66cfa/embed" frameborder="0" allowvr allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
+
+<p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
+    <a href="https://sketchfab.com/models/4e92bdbe7ee24dd888a56eb73fc66cfa?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Pen&amp;Paper Unicorn</a>
+    by <a href="https://sketchfab.com/PolarNick239?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">PolarNick239</a>
+    on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
+</p>
+</div>

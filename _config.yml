@@ -7,6 +7,7 @@
 
 # Site settings
 title: Blog of Polyarniy Nikolay
+title239: Информатика и рофлы в 239
 email: PolarNick239@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   My personal blog about computer vision, GPU coding and other stuff.
@@ -14,6 +15,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://polarnick239.github.io" # the base hostname & protocol for your site
 github_username:  PolarNick239
 vk_username:  PolarNick
+telegram_username:  PolarNick239
 
 # Build settings
 markdown: kramdown

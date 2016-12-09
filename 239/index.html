@@ -1,47 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Информатика и рофлы в 239</title>
-</head>
-<body>
-<div style="margin-left: auto;
-    margin-right: auto;
-    width: 60em;
-    vertical-align: middle">
+---
+layout: 239default
+---
 
-    <h3>Задание 0. Простое задание на Java (TODO: до позднего вечера воскресенья будет вывешено, но надеюсь что раньше)</h3>
-    <h3><a href="task1/">Задание 1. Клеточный автомат на Android</a></h3>
+<div class="home">
 
+    <h1 class="post-title">{% include icon-rss.html path="/feed239.xml" %} Задания:</h1>
 
-    <h3>Чтобы сохранить свои изменения (сгенерировать Patch):</h3>
-    <ul>
-        <li>снизу Version Control</li>
-        <li>правый клик по Default</li>
-        <li>Create Patch</li>
-        <li>убедиться что все изменения отмечены галочкой</li>
-        <li>заполнить короткое описание (для себя)</li>
-        <li>нажать Create Patch -> выбрать путь сохранения -> Ok</li>
+    <ul class="post-list">
+        {% for post in site.categories.lessons %}
+        <li>
+            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </li>
+        {% endfor %}
     </ul>
-
-    <h3>Чтобы отправить свое решение:</h3>
-    <ul>
-        <li>Сгенерировать Patch (читай выше)</li>
-        <li>Отправить письмо с патчем на PolarNick239@gmail.com:</li>
-        <li>ТЕМА ПИСЬМА (пожалуйста очень аккуратно соблюдайте этот формат): "Класс Задание N Имя Фамилия"</li>
-        <li>Например: "11-1 Задание 1 Николай Полярный"</li>
-        <li>Все дальнейшие обсуждения/отправления патча по этому заданию должны быть в рамках этой переписки, иначе я запутаюсь и потеряюсь</li>
-        <li>Пишите все свои вопросы/открытия/удивления/отзыв по заданию (норм/не норм/слишком сложное/слишком большое/слишком легкое)</li>
-    </ul>
-    <br/>
-    <br/>
-    <h3>Контактная информация:</h3>
-    Полярный Николай Вадимович<br/>
-    email: PolarNick239@gmail.com<br/>
-    телефон: +7 911 959 11 70<br/>
-    <br/>
-    быстро отвечаю в <a href="https://telegram.me/PolarNick239">telegram</a> (ответ может быть в стиле "вечером отвечу")<br/>
-    можно писать в <a href="https://vk.com/polarnick">VK</a>
 
 </div>
-</body>
-</html>
