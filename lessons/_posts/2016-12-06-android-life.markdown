@@ -11,6 +11,7 @@ categories: 239 lesson school android java
 2. установить, оставив все по дефолту (галочки стоят на всех трех пакетах)
 3. Запустить Android Studio
 4. "I do not have a previous version ..." -> Ok
+5. В случае 239 может потребоваться настроить прокси: host name: proxy.sch239.net + port number: 3128 -> Ok
 5. "Standard" -> Next
 6. галку на Android Virtual Device (если хочется эмулятор) -> Next
 7. Finish, ждать пока грузится 600 Мб
