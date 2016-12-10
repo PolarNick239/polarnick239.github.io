@@ -40,21 +40,26 @@ categories: 239 lesson school java
 
 Выкачать исходный код задания:
 ==============================
-1. Запустить Idea
-2. Check out project from Version Control->Git (НЕ github) (это если вы видите маленькое окошко, если видите большое - то сверху VCS->Checkout from version control->Git
+1. Запустить Idea (оставлять все по умолчанию, жать Ok/Next)
+1. Check out project from Version Control->Git (НЕ github) (это если вы видите маленькое окошко, если видите большое - то сверху VCS->Checkout from version control->Git
 1. Git repository URL: <a href="https://github.com/PolarNick239/JavaIntro">https://github.com/PolarNick239/JavaIntro</a>
-1. Если пишет красным "The parent path C:\...\StudioProjects must exist" - создайте такую папку, либо укажите другую Parent Directory
-1. нажать Clone
-1. would you like to create a project for the sources you have been checked ...? -> нажать Yes
+1. Нажать Clone
+1. would you like to create a project for the sources you have been checked ...? -> нажать Yes, затем жать Next пока не спросит про SDK:
+1. "No SDK Specified." "Do you want to create a project with no SDK assigned?" -> Cancel
+1. Зеленый плюсик сверху-слева -> JDK, указать путь установки Java JDK (ориентировочно C:\Program Files\Java\jdk1.8.0_111)
+1. Next и Finish
+1. Tip of the Day -> Close
+1. Кликнуть слева снизу на иконку, появится интерфейс, в нем:
+ - Project (`Alt+1`) - структура файлов проекта
+ - Version Control (`Alt+9`) - ваши изменения (там же генерировать патч)
+ - TODO (`Alt+6`) - части задания
+1. Несколько горячих кнопок работы в IDEA можно увидеть [тут.](/lessons/239/lesson/school/1914/08/18/IDEA-hotkeys.html)
 
 Процесс выполнения задания:
 ===========================
 1. В открытом проекте слева выбрать двойным кликом файл src/com/lessons/task1/Primitives.java
-2. Запустить его кнопками Ctrl+Shift+F10
-3. Выполнить все TODO указанные в коде (так же их можно посмотреть внизу по кнопке TODO)
+2. Запустить его (`Ctrl+Shift+F10`)
+3. Выполнить все TODO указанные в коде (так же их можно посмотреть внизу, нажав на TODO или `Alt+6`)
 4. Перейти ко второй части задание - открыть файл src/com/lessons/task2/Forum.java
 5. Запускать его, заполнять TODO, смотеть на соседние классы (ElephantsFan, Forum, Human, Terminator, UnicornsVisionary)
 6. [Сгенерировать патч](/lessons/239/lesson/school/1703/06/16/Patch.html), отправить мне на почту
-
-P.S. поздним вечером субботы я проверю инструкцию на Windows, и возможно что-нибудь уточню
-==========================================================================================
