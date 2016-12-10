@@ -7,14 +7,14 @@ categories: 239 lesson school android java
 
 Устанавливаете Java JDK (набор разработчика):
 =============================================
-1. Открыть <a href=http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a>
+1. Открыть <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a>
 2. Нужно под "Java SE Development Kit 8u111" нажать "Accept License Agreement"
 3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64)
 4. Установить
 
 Устанавливаете Intellij Idea Community Edition:
 ===============================================
-1. Открыть <a href=https://www.jetbrains.com/idea/#chooseYourEdition>https://www.jetbrains.com/idea/#chooseYourEdition</a>
+1. Открыть <a href="https://www.jetbrains.com/idea/#chooseYourEdition">https://www.jetbrains.com/idea/#chooseYourEdition</a>
 2. Нажать кнопку Download
 3. Скачать "Community" версию
 4. Установить
