@@ -1,26 +1,31 @@
 ---
 layout: 239post
 title:  "Задание 0. Вызываем Java-привыкание"
-date:   2016-12-05 02:39:00 +0300
-categories: 239 lesson school android java
+date:   2016-12-10 02:39:00 +0300
+categories: 239 lesson school java
 ---
 
-Устанавливаете Java JDK (набор разработчика):
-=============================================
+До ближайшего занятия требуется выполнить это задание максимально полно, возможно пропустив пару TODO в исходниках, если они долго не получаются.
+Если не выходит что-то с установкой ПО - спросите у друзей или пишите мне (максимально подробно, желательно со скриншотами).
+
+Жесткий дедлайн: 23 декабря (пятница).
+
+Установить Java JDK (набор разработчика):
+=========================================
 1. Открыть <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a>
 2. Нужно под "Java SE Development Kit 8u111" нажать "Accept License Agreement"
 3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64)
 4. Установить
 
-Устанавливаете Intellij Idea Community Edition:
-===============================================
+Установить Intellij Idea Community Edition:
+===========================================
 1. Открыть <a href="https://www.jetbrains.com/idea/#chooseYourEdition">https://www.jetbrains.com/idea/#chooseYourEdition</a>
 2. Нажать кнопку Download
 3. Скачать "Community" версию
 4. Установить
 
-Git:
-====
+Установить Git:
+===============
 1. Скачать git клиент <a href="https://git-for-windows.github.io/">https://git-for-windows.github.io/</a>
 1. Установить его (всё оставлять по умолчанию)
 1. Запустить Intellij Idea
