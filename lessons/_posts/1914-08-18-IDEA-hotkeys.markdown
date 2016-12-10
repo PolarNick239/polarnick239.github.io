@@ -1,7 +1,7 @@
 ---
 layout: 239post
 title:  "Intellij IDEA/CLion/PyCharm Mad Skillz (горячие кнопки и другие ритуалы)"
-date:   1914-08-18 02:39:00 +0300
+date:   1914-08-18 12:00:00 +0300
 categories: 239 lesson school
 ---
 

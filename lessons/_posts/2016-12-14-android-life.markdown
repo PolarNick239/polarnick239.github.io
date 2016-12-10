@@ -1,7 +1,7 @@
 ---
 layout: 239post
 title:  "Задание 1. Андроиды и электроовцы с клеточными автоматами"
-date:   2016-12-10 02:39:01 +0300
+date:   2016-12-10 12:00:00 +0300
 categories: 239 lesson school android java
 ---
 
