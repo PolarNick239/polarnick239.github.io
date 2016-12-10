@@ -5,16 +5,49 @@ date:   2016-12-05 02:39:00 +0300
 categories: 239 lesson school android java
 ---
 
-Скоро появится, ориентировочно в субботу появится хоть что-то
-=============================================================
+Устанавливаете Java JDK (набор разработчика):
+=============================================
+1. Открыть <a href=http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a>
+2. Нужно под "Java SE Development Kit 8u111" нажать "Accept License Agreement"
+3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64)
+4. Установить
 
-Вот вам пока что единорог:
+Устанавливаете Intellij Idea Community Edition:
+===============================================
+1. Открыть <a href=https://www.jetbrains.com/idea/#chooseYourEdition>https://www.jetbrains.com/idea/#chooseYourEdition</a>
+2. Нажать кнопку Download
+3. Скачать "Community" версию
+4. Установить
 
-<div class="sketchfab-embed-wrapper"><iframe width="100%" height="640" src="https://sketchfab.com/models/4e92bdbe7ee24dd888a56eb73fc66cfa/embed" frameborder="0" allowvr allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" onmousewheel=""></iframe>
+Git:
+====
+1. Скачать git клиент <a href="https://git-for-windows.github.io/">https://git-for-windows.github.io/</a>
+1. Установить его (всё оставлять по умолчанию)
+1. Запустить Intellij Idea
+1. Открыть настройки Idea (либо Configure->Settings если вы видите маленькое окно, либо File->Settings если вы видите запущенную Idea)
+1. В настройках Idea: Version Control -> Git
+1. Path to Git executable: указать git.exe файл, который установлен примерно по такому пути: C:\Program Files\Git\bin\git.exe
+1. Нажать справа кнопку "Test", должно показаться окно с версией git
+1. Закрываем настройки, нажав Ok
 
-<p style="font-size: 13px; font-weight: normal; margin: 5px; color: #4A4A4A;">
-    <a href="https://sketchfab.com/models/4e92bdbe7ee24dd888a56eb73fc66cfa?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Pen&amp;Paper Unicorn</a>
-    by <a href="https://sketchfab.com/PolarNick239?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">PolarNick239</a>
-    on <a href="https://sketchfab.com?utm_medium=embed&utm_source=website&utm_campain=share-popup" target="_blank" style="font-weight: bold; color: #1CAAD9;">Sketchfab</a>
-</p>
-</div>
+Выкачать исходный код задания:
+==============================
+1. Запустить Idea
+2. Check out project from Version Control->Git (НЕ github) (это если вы видите маленькое окошко, если видите большое - то сверху VCS->Checkout from version control->Git
+1. Git repository URL: <a href="https://github.com/PolarNick239/JavaIntro">https://github.com/PolarNick239/JavaIntro</a>
+1. Если пишет красным "The parent path C:\...\StudioProjects must exist" - создайте такую папку, либо укажите другую Parent Directory
+1. нажать Clone
+1. would you like to create a project for the sources you have been checked ...? -> нажать Yes
+
+Процесс выполнения задания:
+===========================
+1. В открытом проекте слева выбрать двойным кликом файл src/com/lessons/task1/Primitives.java
+2. Запустить его кнопками Ctrl+Shift+F10
+3. Выполнить все TODO указанные в коде (так же их можно посмотреть внизу по кнопке TODO)
+4. Перейти ко второй части задание - открыть файл src/com/lessons/task2/Forum.java
+5. Запускать его, заполнять TODO, смотеть на соседние классы (ElephantsFan, Forum, Human, Terminator, UnicornsVisionary)
+6. Сгенерировать патч, отправить мне на почту
+
+P.S. поздним вечером субботы я проверю инструкцию на Windows, и возможно что-нибудь уточню
+==========================================================================================
+Дедлайн - к следующему занятию вы должны успеть сделать хоть какую-то часть заданий (чем больше - тем лучше) и отправить решение мне.
