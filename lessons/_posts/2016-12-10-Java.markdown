@@ -53,7 +53,7 @@ categories: 239 lesson school java
  - Project (`Alt+1`) - структура файлов проекта
  - Version Control (`Alt+9`) - ваши изменения (там же генерировать патч)
  - TODO (`Alt+6`) - части задания
-1. Несколько горячих кнопок работы в IDEA можно увидеть [тут.](/lessons/239/lesson/school/1914/08/18/IDEA-hotkeys.html)
+1. Несколько горячих кнопок работы в IDEA можно увидеть [тут.](/lessons/239/lesson/school/1914/08/17/IDEA-hotkeys.html)
 
 Процесс выполнения задания:
 ===========================
