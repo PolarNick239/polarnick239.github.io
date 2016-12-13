@@ -15,21 +15,21 @@ P.S. все программное обеспечение указанное н�
 
 Установить Java JDK (набор разработчика):
 =========================================
-1. Открыть <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a>
+1. Открыть [http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 2. Нужно под "Java SE Development Kit 8u111" нажать "Accept License Agreement"
 3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64)
 4. Установить
 
 Установить Intellij Idea Community Edition:
 ===========================================
-1. Открыть <a href="https://www.jetbrains.com/idea/#chooseYourEdition">https://www.jetbrains.com/idea/#chooseYourEdition</a>
+1. Открыть [https://www.jetbrains.com/idea/#chooseYourEdition](https://www.jetbrains.com/idea/#chooseYourEdition)
 2. Нажать кнопку Download
 3. Скачать "Community" версию
 4. Установить
 
 Установить Git:
 ===============
-1. Скачать git клиент <a href="https://git-for-windows.github.io/">https://git-for-windows.github.io/</a>
+1. Скачать git клиент [https://git-for-windows.github.io/](https://git-for-windows.github.io/)
 1. Установить его (всё оставлять по умолчанию)
 1. Запустить Intellij Idea
 1. Открыть настройки Idea (либо Configure->Settings если вы видите маленькое окно, либо File->Settings если вы видите запущенную Idea)
@@ -42,7 +42,7 @@ P.S. все программное обеспечение указанное н�
 ==============================
 1. Запустить Idea (оставлять все по умолчанию, жать Ok/Next)
 1. Check out project from Version Control->Git (НЕ github) (это если вы видите маленькое окошко, если видите большое - то сверху VCS->Checkout from version control->Git
-1. Git repository URL: <a href="https://github.com/PolarNick239/JavaIntro">https://github.com/PolarNick239/JavaIntro</a>
+1. Git repository URL: [https://github.com/PolarNick239/JavaIntro](https://github.com/PolarNick239/JavaIntro)
 1. Нажать Clone
 1. would you like to create a project for the sources you have been checked ...? -> нажать Yes, затем жать Next пока не спросит про SDK:
 1. "No SDK Specified." "Do you want to create a project with no SDK assigned?" -> Cancel

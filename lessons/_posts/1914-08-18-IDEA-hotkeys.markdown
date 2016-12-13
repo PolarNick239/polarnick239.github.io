@@ -7,11 +7,14 @@ categories: 239 lesson school
 
 Горячие кнопки:
 ===============
- - `Ctrl+F` - поиск по файлу
- - `Ctrl+Shift+F` - поиск по всем файлам
  - `Ctrl+Space` - автодополнение кода
  - `Ctrl+Q` - показать документацию метода под курсором
  - `Ctrl+F12` - показать все функции и классы текущего файла
+ - `Ctrl+Alt+Left Arrow` - вернуться назад (на прошлую позицию курсора)
+ - `Ctrl+Alt+Right Arrow` - вернуться назад (на прошлую позицию курсора)
+ - `Alt+F7` - поиск использований метода под курсором
+ - `Ctrl+F` - поиск по файлу
+ - `Ctrl+Shift+F` - поиск по всем файлам
  - `Ctrl+N` - переход по названию класса
  - `Ctrl+Shift+N` - переход по названию файла
  - `Ctrl+Shift+Alt+N` - переход по названию символа
@@ -19,3 +22,7 @@ categories: 239 lesson school
  - `Ctrl+Shift+F10` - запустить текущий открытый файл
  - `Ctrl+F10` - запустить последний вариант запуска
  - `Ctrl+F9` - запустить под отладкой (чтобы поставить точку остановки (breakpoint) достаточно кликнуть на серое поле слева от интересующей строчки)
+ 
+Более полный перечень горячих кнопок можно найти здесь:
+ - [https://resources.jetbrains.com/assets/products/intellij-idea/IntelliJIDEA_ReferenceCard.pdf](для Windows/Linux)
+ - [https://resources.jetbrains.com/assets/products/intellij-idea/IntelliJIDEA_ReferenceCard_mac.pdf](для Mac)
