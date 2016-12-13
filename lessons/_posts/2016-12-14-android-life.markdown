@@ -33,7 +33,8 @@ categories: 239 lesson school android java
 1. Git repository URL: <a href="https://github.com/PolarNick239/AndroidBenchmarks">https://github.com/PolarNick239/AndroidBenchmarks</a>
 1. Если пишет красным "The parent path C:\...\StudioProjects must exist" - создайте такую папку, либо укажите другую Parent Directory
 1. Нажать Clone
-1. would you like to create a Studio project for the sources you have been checked ...? -> нажать Yes
+1. Would you like to create a Studio project for the sources you have been checked ...? ИЛИ You have checked out ... Would you like to open it? -> нажать Yes
+1. Если спрашивает Import Project from Gradle - нажать Ok
 1. Create project from existing sources -> Next -> и еще раз Next -> и еще раз Next -> и еще один терпеливый раз Next -> ну и чего уж там еще один Next -> вообщем Next до упора
 1. Закрыть окошко Tip of the day -> Close
 
