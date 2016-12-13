@@ -24,5 +24,5 @@ categories: 239 lesson school
  - `Ctrl+F9` - запустить под отладкой (чтобы поставить точку остановки (breakpoint) достаточно кликнуть на серое поле слева от интересующей строчки)
  
 Более полный перечень горячих кнопок можно найти здесь:
- - [https://resources.jetbrains.com/assets/products/intellij-idea/IntelliJIDEA_ReferenceCard.pdf](для Windows/Linux)
- - [https://resources.jetbrains.com/assets/products/intellij-idea/IntelliJIDEA_ReferenceCard_mac.pdf](для Mac)
+ - [для Windows/Linux](https://resources.jetbrains.com/assets/products/intellij-idea/IntelliJIDEA_ReferenceCard.pdfсофт пишут?)
+ - [для Mac](https://resources.jetbrains.com/assets/products/intellij-idea/IntelliJIDEA_ReferenceCard_mac.pdf)
