@@ -46,7 +46,8 @@ P.S. в какой-то момент (ориентировочно до вече
 Android NDK:
 ============
 1. Скачать Android NDK:
-1. Либо Project Structure->SDK Location-> снизу нажать на "Download" Android NDK
+1. Либо File->Project Structure->SDK Location-> снизу нажать на "Download" Android NDK
+1. Либо если этого пункта не видно, то Tools->Android->SDK manager->SDK tools->Отметить NDK->Ok
 1. Либо руками скачать отсюда <a href="https://developer.android.com/ndk/downloads/index.html">https://developer.android.com/ndk/downloads/index.html</a> а затем в  Project Structure->SDK Location-> снизу указать путь на этот распакованный архив
 
 Уровни сложности:
