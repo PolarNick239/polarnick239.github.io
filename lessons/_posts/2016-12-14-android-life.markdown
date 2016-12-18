@@ -28,7 +28,7 @@ categories: 239 lesson school android java
 
 Настройка окружения, Android Studio:
 ====================================
-1. Скачать Android Studio: [https://developer.android.com/studio/index.html](https://developer.android.com/studio/index.html)
+1. Скачать Android Studio: [https://developer.android.com/studio/index.html](https://developer.android.com/studio/index.html) (Includes Android SDK (recommended), 1,674 MB)
 2. Установить, оставив все по дефолту (галочки стоят на всех трех пакетах)
 3. Запустить Android Studio
 4. "I do not have a previous version ..." -> Ok
