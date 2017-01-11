@@ -35,4 +35,4 @@ categories: 239 lesson school java swing game snake
 
 Общая архитектура выглядит примерно так:
 
-TODO (здесь будет картинка архитектуры, вечером среды выложу)
+![Diagram photo](/static/snake/photo_diagram.jpg)

@@ -81,7 +81,7 @@ categories: 239 lesson school java swing game snake
  
 Для этого сначала надо создать пакет ```logic``` в пакете ```snake```, который лежит в пакете ```com```:
 
-Правой кнопкой по ```com.snake.logic``` -> New -> Package -> "logic" -> Ok
+Правой кнопкой по ```com.snake``` -> New -> Package -> "logic" -> Ok
 
 Теперь надо создать класс ```TilePosition```:
 
