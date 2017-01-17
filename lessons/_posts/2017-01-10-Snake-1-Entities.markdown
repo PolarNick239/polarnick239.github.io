@@ -5,9 +5,10 @@ date:   2017-01-10 12:00:01 +0300
 categories: 239 lesson school java swing game snake
 ---
 
-Общее описание игры - [здесь](/lessons/239/lesson/school/java/swing/game/snake/2017/01/10/Snake-overview.html).
+Общее описание игры [здесь](/lessons/239/lesson/school/java/swing/game/snake/2017/01/10/Snake-overview.html). Вторая часть игры [условие](/lessons/239/lesson/school/java/swing/game/snake/2017/01/17/Snake-2-Rendering.html).
 
 Дедлайны:
+---------
 
  - 9-1: 25 января
  - 10-1: 21 января
