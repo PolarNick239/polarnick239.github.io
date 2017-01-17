@@ -1,7 +1,7 @@
 ---
 layout: 239post
 title:  "> Задание 32. Змейка и Мухоморы: визуализация"
-date:   2017-01-17 12:00:01 +0300
+date:   2017-01-17 12:00:00 +0300
 categories: 239 lesson school java swing game snake
 ---
 
