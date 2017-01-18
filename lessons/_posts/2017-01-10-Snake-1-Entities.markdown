@@ -5,7 +5,7 @@ date:   2017-01-10 12:00:01 +0300
 categories: 239 lesson school java swing game snake
 ---
 
-Общее описание игры [здесь](/lessons/239/lesson/school/java/swing/game/snake/2017/01/10/Snake-overview.html). Вторая часть игры [условие](/lessons/239/lesson/school/java/swing/game/snake/2017/01/17/Snake-2-Rendering.html).
+Общее описание игры [здесь](/lessons/239/lesson/school/java/swing/game/snake/2017/01/10/Snake-overview.html). Вторая часть игры [условие](/lessons/239/lesson/school/java/swing/game/snake/2017/01/17/Snake-2-Rendering.html). Третья часть [здесь](/lessons/239/lesson/school/java/swing/game/snake/2017/01/18/Snake-3-Final.html).
 
 Коротко про [классы в Java](/lessons/239/school/java/base/2017/01/09/Java-classes.html). (пишите/говорите мне, если еще что-то надо описать, или что-то описано плохо/поверхностно)
 
