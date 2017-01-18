@@ -257,7 +257,7 @@ public class UpdateLoop {
             // world.update();
         
             // Если холст для рисования еще не готов или его размер отличается от размера окна - создаем новый холст (BufferedImage)
-            if (img == null || img.getWidth() != frame.getWidth() || img.getHeight() != frame.getHeight()) {
+            if (img == null || img.getWidth() != frame.getContentPane().getWidth() || img.getHeight() != frame.getContentPane().getHeight()) {
                 img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
             }
 
