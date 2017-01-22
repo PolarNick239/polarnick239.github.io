@@ -1,6 +1,6 @@
 ---
 layout: 239post
-title:  "Классы в Java (щас бы после многопоточности классы описывать)"
+title:  "Тутор: классы в Java"
 date:   2017-01-09 12:00:00 +0300
 categories: 239 school java base
 ---
