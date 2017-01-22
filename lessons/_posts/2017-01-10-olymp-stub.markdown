@@ -1,6 +1,6 @@
 ---
 layout: 239post
-title:  "Пример ввода-вывода на Java (для олимпиад)"
+title:  "Тутор: ввода-вывод на Java (для олимпиад)"
 date:   2017-01-10 11:59:00 +0300
 categories: 239 school java olymp
 ---
