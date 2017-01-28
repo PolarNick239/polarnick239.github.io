@@ -12,7 +12,7 @@ categories: 239 lesson school java swing game snake
 Дедлайны:
 ---------
 
- - 9-1: 25 января
+ - 9-1: 31 января
  - 10-1: 21 января
  - 11-1: 21 января
 
