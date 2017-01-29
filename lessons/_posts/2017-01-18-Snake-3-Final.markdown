@@ -1,6 +1,6 @@
 ---
 layout: 239post
-title:  "Задание 33. Змейка и Мухоморы: финальные штрихи"
+title:  "> Задание 33. Змейка и Мухоморы: финальные штрихи"
 date:   2017-01-18 12:00:00 +0300
 categories: 239 lesson school java swing game snake
 ---
