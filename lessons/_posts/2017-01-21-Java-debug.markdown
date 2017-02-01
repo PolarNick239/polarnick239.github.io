@@ -83,7 +83,7 @@ for (int x = 0; x < w; ++x) {
 
 ![Breakpoints on any exception](/static/debug/screen_breakpoints_exception.png)
 
-Поставить галочки на:
+Кликнуть левой кнопкой на ```Java Exception Breakpoints```->```Any exception``` и Поставить галочки на:
 
  - ```Java Exception Breakpoints```
  - ```Any exception```
