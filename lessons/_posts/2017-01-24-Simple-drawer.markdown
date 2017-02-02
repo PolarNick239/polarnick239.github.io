@@ -21,10 +21,11 @@ categories: 239 lesson school java paint swing
 
 Создаем класс ```MainFrame```, который как и в самом начале задания отрисовки змейки ([в задании 32](/lessons/239/lesson/school/java/swing/game/snake/2017/01/17/Snake-2-Rendering.html)) является окном, а значит должен быть отнаследован от ```JFrame``` (т.е. ```class MainFrame extends JFrame {```).
 
-В конструкторе ```MainFrame``` нам достаточно указать какой-нибудь разумный размер окна, сказать что мы хотим завершать исполнение программы по нажатию на крестик и сделать окно видимым (все это аналогично тому, что мы делали [в задании 32](/lessons/239/lesson/school/java/swing/game/snake/2017/01/17/Snake-2-Rendering.html)):
+В конструкторе ```MainFrame``` нам достаточно указать какой-нибудь разумный размер окна, попросить окно принять этот размер (```pack()```), сказать что мы хотим завершать исполнение программы по нажатию на крестик и сделать окно видимым (все это аналогично тому, что мы делали [в задании 32](/lessons/239/lesson/school/java/swing/game/snake/2017/01/17/Snake-2-Rendering.html)):
 
 ```java
 setPreferredSize(new Dimension(800, 600));
+pack();
 setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 setVisible(true);
 ```
