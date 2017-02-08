@@ -134,7 +134,7 @@ Socket socketToClient = serverDoorMan.accept();
 ```java
 String host = "127.0.0.1";
 int port = 2391;
-ServerSocket socketToServer = new Socket(host, port);
+Socket socketToServer = new Socket(host, port);
 ```
 
 Как и у сервера код работающий с потоками такой же как и при работе с консольным вводом-выводом. Методы получения потоков у ```socketToServer``` такие же как и у ```socketToClient```, который обсуждался выше. Только теперь ```getInputStream``` - канал от сервера к нам (т.е. к клиенту), а ```getOutputStream``` - от нас к серверу: 
