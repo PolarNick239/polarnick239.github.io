@@ -77,7 +77,9 @@ public class StreamWorker implements Runnable, Closeable {
 
     // Это метод отправки сообщения
     public void sendMessage(String text) {
-        out.println(text);
+        synchronized (out) {
+            out.println(text);
+        }
     }
 
     // Это метод, реализовать который StreamWorker обязуется в связи с реализацией интерфейса Closeable (т.к. выше написано StreamWorker implements Closeable)
@@ -125,5 +127,45 @@ public class MyMessageListener extends MessageListener {
     void messageReceived(String text) {
         System.out.println("Message received: " + text);
     }
+}
+```
+
+Пример класса ```Message``` - описывающего сообщение:
+
+```java
+public class Message {
+
+    private final String userName;
+    private final String text;
+
+    public Message(String userName, String text) {
+        this.userName = userName;
+        this.text = text;
+    }
+
+    // Это функция, которая по строке - конструирует новый объект данного типа
+    // Обратите внимание на ключевое слово static - оно говорит о том, что это "глобальная функция", и ее можно вызвать от класса Message
+    // Т.е. не треубется обратиться к существующему конкретному объекту типа Message - достаточно вызвать Message.parseMessage(...)
+    public static Message parseMessage(String s) {
+        // Ищем первое вхождение пробела
+        int firstSpace = s.indexOf(' ');
+        if (firstSpace == -1) {
+            throw new IllegalArgumentException("Некорректная строка: '" + s + "', ожидалась строка формата: '<userName> <text>'.");
+        }
+
+        // Вытаскиваем подстроку - префикс вплоть до пробела
+        String user = s.substring(0, firstSpace);
+        // Вытаскиваем подстроку - суффикс сразу после пробела
+        String messageText = s.substring(firstSpace + 1, s.length());
+        return new Message(user, messageText);
+    }
+
+    // Эта функция симметрична функции parseMessage - она представляет текущий объект ввиде строки такого формата,
+    // чтобы parseMessage по этой строке мог восстановить объект
+    @Override
+    public String toString() {
+        return userName + " " + text;
+    }
+
 }
 ```
