@@ -16,7 +16,7 @@ P.S. все программное обеспечение указанное н�
 Установить Java JDK (набор разработчика):
 =========================================
 1. Открыть [http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-2. Нужно под "Java SE Development Kit 8u111" нажать "Accept License Agreement"
+2. Нужно под "Java SE Development Kit" нажать "Accept License Agreement"
 3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64)
 4. Установить
 
