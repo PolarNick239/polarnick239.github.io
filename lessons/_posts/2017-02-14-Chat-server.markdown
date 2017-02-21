@@ -65,10 +65,10 @@ public class StreamWorker implements Runnable, Closeable {
     // private  - означает, что до этого поля нельзя дотянуться извне, ведь напрямую с ним никто другой кроме данного класса работать не должен
     // final    - означает, что этот объект всегда будет один и тот же (почти то же самое, что и const), т.е. что это финальный объект
 
-    private final Object outputLock = new Object();
-    private final Object listenerLock = new Object();
-
     private final MessageListener listener; // Обработчик входящих собщений
+    
+    private final Object outputLock = new Object();   // Не обращайте внимания, эти два объекта
+    private final Object listenerLock = new Object(); // используются в synchronized-блоках
 
     public StreamWorker(InputStream input, OutputStream output, MessageListener listener) {
         this.listener = listener;
