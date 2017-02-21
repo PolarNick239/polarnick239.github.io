@@ -1,29 +1,31 @@
 ---
 layout: 239post
-title:  "Задание 41. Чат"
+title:  "Задание 41. Многопользовательские чат и рисовалка"
 date:   2017-02-14 12:00:00 +0300
 categories: 239 lesson school java socket
 ---
 
 Это задание является последней частью мультиплеерного Paint.
 
-Как более простой вариант мультипользовательского приложения в рамках этого задания будет подробно описано как сделать чат.
+Как более простой вариант многопользовательского приложения ниже описано как сделать чат.
 
-Вы на примере этого чата должны будете самостоятельно сделать мультиплеерный Paint.
+Сделав чат по предложенной инструкции, вы по аналогии должны будете самостоятельно сделать мультиплеерный Paint.
+
+Обратите внимание, что несмотря на то, что клиент и сервер - являются двумя разными программами, удобно их реализовывать в рамках одного проекта. Просто в двух разных классах (например это могут быть классы ```MainClient``` и ```MainServer```) будет две ```main```-функции.
 
 Дедлайн:
 --------
 
  - 9-1: когда-нибудь не скоро
  - 10-1: ведь еще не задано
- - 11-1: так что можете игнорировать это задание
+ - 11-1: так что можете игнорировать это задание (или не можете, если я явно так скажу)
 
-0) Про задание
---------------
+0) Про чат
+----------
 
 В этом задании рассматриваются две программы: сервер и клиент.
 
-В помощь вам предложена простая библиотечка, которая возьмет на себя задачу создания потока на каждого подключенного клиент, и получение/отправку сообщений от этого/этому клиенту.
+В помощь вам предложена простая библиотечка, которая возьмет на себя задачу создания потока на каждого подключенного клиента, и задачу получения/отправки сообщений от этого/этому клиенту. Аналогично эту библиотечку удобно использовать для клиента, чтобы получать оповещения о входящих сообщениях со стороны сервера. Ниже подробно изложено, как на основе этого сделать чат. После чата аналогично, но уже самостоятельно, вам надо будет сделать мультиплеерную рисовалку.
 
 ```Задача клиента:``` подключиться к серверу и отправлять ему сообщения которые вводит пользователь в консоли. При получении сообщения от сервера - печатать его в консоль.
  
@@ -32,7 +34,21 @@ categories: 239 lesson school java socket
 1) Библиотечка
 --------------
 
-Класс ```StreamWorker```, который будет заниматься тем, чтобы получать новые сообщения от клиента, начиная с момента его подключения:
+Обрабатывающий потоки данных класс должен как-то оповещать о событиях (новых сообщениях). Раньше мы уже использовали ```KeyListener``` и ```MouseListener``` для обработки событий нажатия кнопок и мышки. В данном случае используется аналогичный механизм, но абстрактный класс ```MessageListener``` подходящий под наши нужды выглядит например так:
+
+```java
+public abstract class MessageListener {
+
+    abstract void messageReceived(String text);
+
+    void onException(Exception e) {
+        e.printStackTrace();
+    }
+
+}
+```
+
+Класс ```StreamWorker```, который будет заниматься тем, чтобы получать новые сообщения из входного потока данных (поток может быть как от клиента, так и от сервера):
 
 ```java 
 import java.io.*;
@@ -92,40 +108,62 @@ public class StreamWorker implements Runnable, Closeable {
 }
 ```
 
-В нем используется абстрактный класс ```MessageListener```:
+Соответственно простейший клиент похожий на клиент из [Задания 40](/lessons/239/lesson/school/java/socket/2017/01/25/Simple-echo-server.html), но реализованный на базе этого класса ```StreamWorker``` выглядит примерно так:
 
 ```java
-public abstract class MessageListener {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
-    abstract void messageReceived(String text);
+public class ChatClient extends MessageListener { // Наследуемся от MessageListener, чтобы обрабатывать входящие сообщения
 
-    void onException(Exception e) {
-        e.printStackTrace();
+    public static void main(String[] args) throws IOException {
+        ChatClient client = new ChatClient("127.0.0.1", 2391);
+        client.run();
     }
 
-}
-```
+    private final String host;
+    private final int port;
 
-Соответственно простейший сервер похожий на сервер из ```Задания 39```, но поддерживающий множественных клиентов выглядит примерно так:
+    public ChatClient(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
 
-```java
-ServerSocket socket = new ServerSocket(port);
-while (true) {
-    Socket client = socket.accept();
-    StreamWorker worker = new StreamWorker(client.getInputStream(), client.getOutputStream(), new MyMessageListener());
-    worker.start(); // Запускаем в отдельном потоке обработку для этого клиента (т.е. ожидаение и получение новых сообщений)
-}
-```
+    public void run() throws IOException {
+        System.out.println("Connecting to " + this.host + ":" + this.port + "...");
+        // Устанавливаем соединение с сервером
+        Socket socket = new Socket(this.host, this.port);
+        System.out.println("Connected!");
 
-Где ```MyMessageListener``` - ваш класс обработки входящих сообщений. Т.е. он наследуется от ```MessageListener```, и тем самым берет на себя обязательство реализовать метод ```messageReceived```.
+        // Создаем почтальона, который будет оповещать нас (за счет передачи себя - this третьим аргументом под MessageListener listener)
+        StreamWorker postman = new StreamWorker(socket.getInputStream(), socket.getOutputStream(), this);
+        // Запускаем почтальона, он начнет в отдельном потоке ожидать входящие строки текста
+        postman.start();
 
-Тривиальнейший пример:
+        // Создаем объект, позволяющий считывать строка за строкой ввод из консоли
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        // Ожидаем ввод строки в консоль
+        String userInput = in.readLine();
+        // Пока считанная строка не null (пустая строка - тоже строка, а вот null означает о том, что поток данных из консоли был закрыт)
+        while (userInput != null) {
+            // Отправляем через почтальона сообщение серверу (будет использоваться поток данных переданный почтальону вторым аргументом)
+            postman.sendMessage(userInput);
+            // Ожидаем ввод строки в консоль
+            userInput = in.readLine();
+        }
 
-```java
-public class MyMessageListener extends MessageListener {
+        System.out.println("Closing...");
+        in.close();
+        postman.close();
+        System.out.println("Finish!");
+    }
+
     @Override
-    void messageReceived(String text) {
-        System.out.println("Message received: " + text);
+    void messageReceived(String text) { // Реализуем метод, обрабатывающий входящие сообщения
+        // Печатаем входящее сообщение в консоль:
+        System.out.println("Message from server: " + text);
     }
 }
 ```
