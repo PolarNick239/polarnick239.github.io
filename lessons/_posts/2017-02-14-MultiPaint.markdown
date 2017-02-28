@@ -234,7 +234,8 @@ while (true) {
     // Дожидаемся очередного гостя
     Socket client = server.accept();
     // Создаем почтальона, который будет ожидать входящие сообщения от данного пользователя, и оповещать о них нас - сервер
-    StreamWorker postman = new StreamWorker(client.getInputStream(), client.getOutputStream(), this);
+    StreamWorker postman = new StreamWorker(client.getInputStream(), client.getOutputStream());
+    postman.addListener(this);
     // Поток, следящий за входными строчками от этого клиента запускается:
     postman.start();
     // Запоминаем почтальона, выделенного данному клиенту в перечне всех почтальонов
