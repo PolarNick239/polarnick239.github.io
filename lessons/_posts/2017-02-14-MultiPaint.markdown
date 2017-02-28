@@ -54,6 +54,8 @@ public abstract class MessageListener {
 }
 ```
 
+Создаете новый класс (правый клик по ```src```, там ```New->Java Class```) с названием ```MessageListener``` и копируете в этот файл приведенный выше код.
+
 Класс ```StreamWorker```, который будет заниматься тем, чтобы получать новые сообщения из входного потока данных (поток может быть как от клиента, так и от сервера):
 
 ```java 
@@ -67,15 +69,18 @@ public class StreamWorker implements Runnable, Closeable {
     // private  - означает, что до этого поля нельзя дотянуться извне, ведь напрямую с ним никто другой кроме данного класса работать не должен
     // final    - означает, что этот объект всегда будет один и тот же (почти то же самое, что и const), т.е. что это финальный объект
 
-    private final MessageListener listener; // Обработчик входящих собщений
+    private final List<MessageListener> listeners = new ArrayList<>(); // Зарегистрированные обработчики входящих собщений
     
     private final Object outputLock = new Object();   // Не обращайте внимания, эти два объекта
     private final Object listenerLock = new Object(); // используются в synchronized-блоках
 
-    public StreamWorker(InputStream input, OutputStream output, MessageListener listener) {
-        this.listener = listener;
+    public StreamWorker(InputStream input, OutputStream output) {
         this.in = new BufferedReader(new InputStreamReader(input));
         this.out = new PrintWriter(output, true); // true - флаг autoFlush, он приводит к тому, что буфер будет отправляться сразу - на каждое сообщение
+    }
+
+    public void addListener(MessageListener listener) {
+        this.listeners.add(listener);
     }
 
     // Это метод, который StreamWorker обязался реализовать в связи с реализацией интерфейса Runnable (т.к. выше написано StreamWorker implements Runnable)
@@ -88,30 +93,38 @@ public class StreamWorker implements Runnable, Closeable {
             while ((s = in.readLine()) != null) {
                 // Отдаем полученное сообщение на обработку
                 synchronized (listenerLock) {
-                    this.listener.onMessage(s);
+                    for (MessageListener listener : listeners) {
+                        listener.onMessage(s);
+                    }
                 }
             }
         } catch (SocketException e) {
             if (e.getMessage().equals("Connection reset")) {
                 // Если случившаяся исключительная ситуация - разрыв соединения, то вызываем соответствующую обработку события
                 synchronized (listenerLock) {
-                    this.listener.onDisconnect();
+                    for (MessageListener listener : listeners) {
+                        listener.onDisconnect();
+                    }
                 }
             } else {
                 // Иначе - просто обрабатываем ошибку
                 synchronized (listenerLock) {
-                    this.listener.onException(e);
+                    for (MessageListener listener : listeners) {
+                        listener.onException(e);
+                    }
                 }
             }
         } catch (IOException e) {
             // Провоцируем обработку случившейся исключительной ситуации (например клиент разорвал соединение)
             synchronized (listenerLock) {
-                this.listener.onException(e);
+                for (MessageListener listener : listeners) {
+                    listener.onException(e);
+                }
             }
         }
     }
 
-    // Этот метод запускает цикл в методе run(), который будет считывать входящие сообщения и отдавать их на обработку в listener
+    // Этот метод запускает цикл в методе run(), который будет считывать входящие сообщения и отдавать их на обработку в listeners
     public void start() {
         Thread thread = new Thread(this, "StreamWorker");
         thread.start();
@@ -134,83 +147,77 @@ public class StreamWorker implements Runnable, Closeable {
 }
 ```
 
+Создаете новый класс (правый клик по ```src```, там ```New->Java Class```) с названием ```StreamWorker``` и копируете в этот файл приведенный выше код.
+
 2) Пример использования библиотеки для реализации чата
 ------------------------------------------------------
 
 2.1) Клиент чата
 ----------------
 
-Соответственно простейший клиент похожий на клиент из [Задания 40](/lessons/239/lesson/school/java/socket/2017/01/25/Simple-echo-server.html), но реализованный на базе этого класса ```StreamWorker``` выглядит примерно так:
+Теперь на базе скопированного обработчика входящих сообщений (почтальона) достаточно просто можно реализовать клиент.
+
+Создайте класс ```ChatClient```. Т.к. это будет исполняемая программа - надо определить точку входа - создать ```main```-функцию внутри класса ```ChatClient```:
 
 ```java
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-
-public class ChatClient extends MessageListener { // Наследуемся от MessageListener, чтобы обрабатывать входящие сообщения
-
     public static void main(String[] args) throws IOException {
-        ChatClient client = new ChatClient("127.0.0.1", 2391);
-        client.run();
+        // TODO
     }
+```
 
-    private final String host;
-    private final int port;
-    private boolean isDisconnected;
+На этапе запуска программы разумно создать объект типа ```ChatClient``` и вызвать у него метод ```start``` (который мы тут же и реализуем):
 
-    public ChatClient(String host, int port) {
-        this.host = host;
-        this.port = port;
-        this.isDisconnected = false;
+```java
+    public static void main(String[] args) throws IOException {
+        ChatClient chatClient = new ChatClient();
+        chatClient.start();
     }
-
-    @Override
-    void onMessage(String text) { // Реализуем метод, обрабатывающий входящие сообщения
-        // Печатаем входящее сообщение в консоль:
-        System.out.println("Message from server: " + text);
+    
+    public void start() throws IOException {
+        // TODO
     }
+```
 
-    @Override
-    void onDisconnect() { // Реализуем метод, обрабатывающий событие "соединение разорвано"
-        // Например можно напечатать, что соединение с сервером было разорвано
-        System.out.println("Disconnected from server!");
-        this.isDisconnected = true;
+Теперь устанавливаем соединение с сервером аналогично тому как это было сделано в предыдущем задании:
+
+```java
+    public void start() throws IOException {
+        Socket socket = new Socket(...);
+        // TODO
     }
+```
 
-    public void run() throws IOException {
-        System.out.println("Connecting to " + this.host + ":" + this.port + "...");
-        // Устанавливаем соединение с сервером
-        Socket socket = new Socket(this.host, this.port);
-        System.out.println("Connected!");
+Для получения и отправки сообщений серверу можно воспользоваться ```StreamWorker```, дав ему входной и выходной поток данных - полученных от установленного соединения с сервером, и запустив его:
 
-        // Создаем почтальона, который будет оповещать нас (за счет передачи себя - this третьим аргументом под MessageListener listener)
-        StreamWorker postman = new StreamWorker(socket.getInputStream(), socket.getOutputStream(), this);
-        // Запускаем почтальона, он начнет в отдельном потоке ожидать входящие строки текста
-        postman.start();
+```java
+StreamWorker postman = new StreamWorker(socket.getInputStream(), socket.getOutputStream());
+postman.start();
+```
 
-        // Создаем объект, позволяющий считывать строка за строкой ввод из консоли
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        // Ожидаем ввод строки в консоль
-        String userInput = in.readLine();
-        // Пока считанная строка не null (пустая строка - тоже строка, а вот null означает о том, что поток данных из консоли был закрыт)
-        while (userInput != null) {
-            if (this.isDisconnected) {
-                System.out.println("Can't send message: disconnected from server!");
-                userInput = null;
-            } else {
-                // Отправляем через почтальона сообщение серверу (будет использоваться поток данных переданный почтальону в конструктор вторым аргументом)
-                postman.sendMessage(userInput);
-                // Ожидаем ввод строки в консоль
-                userInput = in.readLine();
-            }
-        }
+Аналогично тому как обрабатывались нажатия кнопок в змейке и движения мышки в рисовалке нужно подписаться на обработку сообщений у почтальона (```StreamWorker```):
 
-        System.out.println("Closing...");
-        in.close();
-        postman.close();
-        System.out.println("Finish!");
-    }
+ - Наследовать ```ChatClient``` от MessageListener
+ - Реализовать (через ```Alt+Enter```) методы: ```onMessage```, ```onDisconnect```
+ - Добавить текущий объект как обработчик входящих сообщений к "почтальону": ```postman.addListener(this)```
+
+Итого получается что-то вроде:
+
+```java
+StreamWorker postman = new StreamWorker(socket.getInputStream(), socket.getOutputStream());
+postman.addListener(this);
+postman.start();
+// TODO: считываем сообщения из консоли и отправляем их
+postman.close();
+```
+
+Чтобы отправлять сообщения можно воспользоваться методом ```sendMessage(String text)```:
+
+```java
+BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+String userInput = in.readLine();
+while (userInput != null) {
+    postman.sendMessage(userInput);
+    userInput = in.readLine();
 }
 ```
 
