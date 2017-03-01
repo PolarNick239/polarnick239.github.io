@@ -43,11 +43,11 @@ categories: 239 lesson school java socket
 ```java
 public abstract class MessageListener {
 
-    abstract void onMessage(String text);
+    public abstract void onMessage(String text);
 
-    abstract void onDisconnect();
+    public abstract void onDisconnect();
 
-    void onException(Exception e) {
+    public void onException(Exception e) {
         e.printStackTrace();
     }
 
