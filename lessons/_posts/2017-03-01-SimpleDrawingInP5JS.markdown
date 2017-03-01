@@ -86,7 +86,7 @@ function drawHuman(x, y) {
 
 Давайте теперь нарисуем такое дерево-фрактал:
 
-![Fractal tree](/static/fractal_tree.gif)
+![Fractal tree](/static/fractal_tree.png)
 
 Функция отрисовки такого дерева - рекурсивная, она должна делать следующее:
 
