@@ -251,7 +251,7 @@ while (true) {
 
 ```java
 // Пробегаем по всем почтальонам
-for (int i = 0; i < workers.size(); i++) {
+for (int i = 0; i < postmans.size(); i++) {
     StreamWorker postman = postmans.get(i);
     // Шлем полученное сообщение каждому клиенту (включая клиента являющегося оригинальным отправителем):
     postman.sendMessage(text);
