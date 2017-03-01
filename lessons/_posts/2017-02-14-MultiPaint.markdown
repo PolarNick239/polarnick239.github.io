@@ -7,9 +7,9 @@ categories: 239 lesson school java socket
 
 Это задание является последней частью мультиплеерного Paint.
 
-Как более простой вариант многопользовательского приложения ниже описано как сделать чат.
+Как более простой вариант многопользовательского приложения ниже описано как сделать чат. ```Для получения четверки``` достаточно отправить многопользовательский чат.
 
-Сделав чат по предложенной инструкции, вы по аналогии должны будете самостоятельно сделать мультиплеерный Paint.
+Сделав чат по предложенной инструкции, вы по аналогии сможете сделать мультиплеерный Paint (взяв готовую рисовалку и добавив в ней функционал отправки отрезков как сообщений). ```Для получения пятерки``` необходимо сделать многопользовательский пейнт.
 
 Обратите внимание, что несмотря на то, что клиент и сервер - являются двумя разными программами, удобно их реализовывать в рамках одного проекта. Например можно это сделать в двух разных классах (это могут быть классы ```ChatClient``` и ```ChatServer```) с двумя ```main```-функциями.
 
@@ -206,13 +206,17 @@ postman.start();
 StreamWorker postman = new StreamWorker(socket.getInputStream(), socket.getOutputStream());
 postman.addListener(this);
 postman.start();
+
 // TODO: считываем сообщения из консоли и отправляем их
-postman.close();
 ```
 
 Чтобы отправлять сообщения можно воспользоваться методом ```sendMessage(String text)```:
 
 ```java
+StreamWorker postman = new StreamWorker(socket.getInputStream(), socket.getOutputStream());
+postman.addListener(this);
+postman.start();
+
 BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 String userInput = in.readLine();
 while (userInput != null) {
