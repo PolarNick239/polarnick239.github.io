@@ -28,7 +28,7 @@ categories: 239 lesson school java telegram
 Дедлайн:
 --------
 
-```TBA```
+``` TBA ```
 
 1) Про ботов
 ------------
