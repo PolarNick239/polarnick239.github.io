@@ -131,8 +131,8 @@ function updateBird() {
 
 ```javascript
 function updateWall() {
-    if (координата x стены вышла за пределы экрана) {
-        nextWallX = крайнее правое положение;
+    if (x < ...) {          // Если координата x стены вышла за пределы экрана
+        nextWallX = ...;    // крайнее правое положение
         nextHoleY = 50.0 + Math.random() * 240.0;
     } else {
         nextWallX -= wallSpeed; // двигаем стену влево
