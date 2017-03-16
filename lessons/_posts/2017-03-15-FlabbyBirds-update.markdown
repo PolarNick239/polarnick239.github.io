@@ -12,6 +12,7 @@ categories: 239 lesson school p5js game
 
  - [Единорог](/static/flabby_bird/results/savon/index.html)
  - [Космонавт](/static/flabby_bird/results/aroniya/index.html)
+ - [Flabby bird](/static/flabby_bird/results/sahno/index.html)
 
 Ниже предложены некоторые идеи для развития [Задания 52](/lessons/239/lesson/school/p5js/game/2017/03/08/FlabbyBirds.html).
 
