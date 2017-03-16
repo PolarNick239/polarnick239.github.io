@@ -1,11 +1,19 @@
 ---
 layout: 239post
-title:  "Мини-задание 52. Flabby bird (дополнения)"
+title:  "Мини-задание 52. Flabby bird (дополнения и результаты)"
 date:   2017-03-15 12:00:00 +0300
 categories: 239 lesson school p5js game
 ---
 
-Здесь предложены некоторые идеи для развития [Задания 52](/lessons/239/lesson/school/p5js/game/2017/03/08/FlabbyBirds.html).
+Примеры
+=======
+
+Несколько примеров:
+
+ - [Единорог](/static/flabby_bird/results/savon/index.html)
+ - [Космонавт](/static/flabby_bird/results/aroniya/index.html)
+
+Ниже предложены некоторые идеи для развития [Задания 52](/lessons/239/lesson/school/p5js/game/2017/03/08/FlabbyBirds.html).
 
 Картинка вместо эллипса
 =======================
