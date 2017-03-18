@@ -39,7 +39,7 @@ function setup() {
     holeX = width/2-5;
     constWallSpeed = 6;
     wallSpeed = constWallSpeed;
-    bird = loadImage("bird2.png");  // Load the image
+    bird = loadImage("bird2.png"); // Load the image
     back = loadImage("fon2.png");
     tubeUp = loadImage("tubeUp.png");
     tubeDown = loadImage("tubeDown.png");
