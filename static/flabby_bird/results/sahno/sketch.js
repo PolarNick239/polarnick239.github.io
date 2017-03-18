@@ -1,5 +1,7 @@
 var width;
+var width2;
 var height;
+var height2;
 var holeX;
 var bird1;
 var bird2;
@@ -7,23 +9,38 @@ var bird2;
 var bird;
 var imBirdHeight = 60;
 var imBirdWidth = 70;
-var background;
+var imBirdDelta = 10;
+var back;
 var tubeUp;
 var tubeDown;
+var constWallSpeed;
 
 var points;
+var recordPoints;
 var flag;
 var flag2;
 
 function setup() {
     points = 0;
-    width = 480;
-    height = 640;
+    recordPoints = 0;
+    height = windowHeight;//750;
+    width2 = 560/750 * height;
+    if (windowWidth >= width2) width = width2;
+    if (windowWidth <= width2)
+    {
+        width = windowWidth;
+        height2 = 750/560 * windowWidth;
+        if (height >= height2) height = height2;
+        if (height <= height2) height = windowHeight;
+    }
+
     bird1 = color(255, 255, 255);
     bird2 = color(0, 0, 0);
     holeX = width/2-5;
-    bird = loadImage("bird.png");  // Load the image
-    background = loadImage("fon2.png");
+    constWallSpeed = 6;
+    wallSpeed = constWallSpeed;
+    bird = loadImage("bird2.png");  // Load the image
+    back = loadImage("fon2.png");
     tubeUp = loadImage("tubeUp.png");
     tubeDown = loadImage("tubeDown.png");
     flag = false;
@@ -42,54 +59,61 @@ function draw() {
     if (flag2 == false)
     {
         //background(54, 187, 205);            // Указываем цвет фона
-        image(background, 0, 0, width, height);
+        image(back, 0, 0, width, height);
 
         translate(width/2, height/2);        // Смещаем центр системы координат в центр экрана
-
-        drawBird(birdHeight);
-        updateBird();
 
         drawWall(holeX, holeY);
         updateWall();
 
+        drawBird(birdHeight);
+        updateBird();
+
         textSize(32);
         textStyle(BOLD);
         fill(255, 255, 255);
         text(points, 0, -height/2+50);
+        text("Record: " + recordPoints, -width/2, -height/2+50);
     }
 
-    if (flag2 == true)
+    else if (flag2 == true)
     {
-        image(background, 0, 0, width, height);
+        image(back, 0, 0, width, height);
 
-        push();
         translate(width/2, height/2);        // Смещаем центр системы координат в центр экрана
+
+        drawWall(holeX, holeY);
+        updateWall();
 
         drawBird(birdHeight);
         updateBird();
 
-        drawWall(holeX, holeY);
-
         textSize(32);
         textStyle(BOLD);
         fill(255, 255, 255);
         text(points, 0, -height/2+50);
+        text("Record: " + recordPoints, -width/2, -height/2+50);
 
         if (birdHeight >= (height/2 - imBirdHeight))
         {
             translate(-width/2, -height/2);        // Смещаем центр системы координат в центр экрана
-            image(background, 0, 0, width, height);
+            image(back, 0, 0, width, height);
             translate(width/2, height/2);
 
-            textSize(60);
+            textSize(32);
             textStyle(BOLD);
             fill(255, 255, 255);
-            text(points, -20, 0);
+            text("Your points: " + points, -50, 0);
+            textSize(32);
+            text("Record: " + recordPoints, -width/2, -height/2+50);
 
-            textSize(30);
+            textSize(32);
             textStyle(BOLD);
             fill(255, 255, 255);
-            text("Нажмите Enter...", -20, 40);
+            text("Replay?", -50, 50);
+            textSize(20);
+            text("Computer: Enter/ Mouse", -50, 80);
+            text("Phone: TAP", -50, 110);
         }
     }
 }
@@ -99,13 +123,14 @@ function drawBird(birdHeight)
 {
     var Y = birdHeight+height/2;
     var X = -width/4 - imBirdWidth/2;
-    if  ( ((X+imBirdWidth) > holeX) && (X < (holeX+holeWidth)) )
+    if  ( ((X + imBirdWidth - 2) > holeX) && (X < (holeX+holeWidth)) )
     {
         if (  ( ((Y+imBirdHeight) > holeY) && ((Y+imBirdHeight) < (holeY+holeHeight)) ) && ( (Y > holeY) && (Y < (holeY+holeHeight)) )  )
         {
             if (flag == false)
             {
                 points = points + 1;
+                if (recordPoints < points) recordPoints = points;
                 flag = true;
             }
         }
@@ -117,6 +142,8 @@ function drawBird(birdHeight)
                 flag = true;
         }
     }
+
+    if (birdHeight >= height/2 - imBirdHeight -2) birdHeight = height/2 - imBirdHeight - 2;
 
     image(bird, X, birdHeight, imBirdWidth, imBirdHeight);
     //ellipse(X, birdHeight, 20, 20);
@@ -133,18 +160,36 @@ function keyPressed() {
     if ((keyCode === enterKeyCode) && (flag2 == true) && (flag == true)) {
         flag = false;
         flag2 = false;
+        if (recordPoints < points) recordPoints = points;
         birdHeight = 0.0;
         birdVerticalSpeed = 0.0;
         gravityAcceleration = 0.25;
         holeX = width/2-5;
         holeY = holeHeight;
-        wallSpeed = 5;
+        wallSpeed = constWallSpeed;
+        points = 0;
+    }
+}
+
+function mousePressed() {
+    if (flag2 == false) {
+        birdVerticalSpeed = constSpeed;
+    }
+    if ((flag2 == true) && (flag == true)) {
+        flag = false;
+        flag2 = false;
+        birdHeight = 0.0;
+        birdVerticalSpeed = 0.0;
+        gravityAcceleration = 0.25;
+        holeX = width/2-5;
+        holeY = holeHeight;
+        wallSpeed = constWallSpeed;
         points = 0;
     }
 }
 
 function updateBird() {
-    if (birdHeight <= (height/2-65))
+    if (birdHeight <= (height/2 - imBirdHeight))
     {
         birdHeight = birdHeight + birdVerticalSpeed;
         birdVerticalSpeed += gravityAcceleration;
@@ -153,7 +198,7 @@ function updateBird() {
     {
         if (birdVerticalSpeed == constSpeed)
         {
-            birdHeight = height/2-65 - 2;
+            birdHeight = height/2 - imBirdHeight - 2;
             //birdHeight = birdHeight + birdVerticalSpeed;
             //birdVerticalSpeed += gravityAcceleration;
         }
@@ -164,8 +209,8 @@ function updateBird() {
 var holeHeight = 180;
 var holeWidth = 80;
 var holeY = holeHeight;
-var wallSpeed = 5;
-var delta = 20;
+var wallSpeed;
+var delta = 40;
 
 function updateWall() {
     if (holeX <= -width) {          // Если координата x стены вышла за пределы экрана
