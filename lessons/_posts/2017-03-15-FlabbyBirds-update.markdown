@@ -11,6 +11,7 @@ categories: 239 lesson school p5js game
 Несколько примеров:
 
  - [Единорог](/static/flabby_bird/results/savon/index.html)
+ - [Единорог 2](/static/flabby_bird/results/savon/index2.html)
  - [Космонавт](/static/flabby_bird/results/aroniya/index.html)
  - [Flabby bird](/static/flabby_bird/results/sahno/index.html)
 

@@ -4,11 +4,10 @@ var img2;
 var img0;
 
 function setup() {
-    img0 = loadImage("ree.jpg");
+    img0 = loadImage("elven_castle.jpg");
     createCanvas(windowWidth, windowHeight);     // Указываем размер холста
     background(54, 187, 205);   // Указываем цвет фона
     frameRate(25);
-    image(img0, 0, 0 , windowWidth, windowHeight);
     img = loadImage("unicorn.png ");  // Load the image
     img1 = loadImage("hghghfgvtyety.png");
     img2 = loadImage("hghghfgv.png");
@@ -31,7 +30,13 @@ function draw() {
             timer -= 1;
             }
     else{
-        image(img0, 0, 0 , windowWidth, windowHeight);
+        backSize = windowWidth;
+        if (windowWidth > windowHeight*1920/895) {
+            backSize = windowWidth;
+        } else {
+            backSize = windowHeight*1920/895;
+        }
+        image(img0, 0, 0, backSize, windowHeight);
         image(img, windowWidth/3, birdHeight, img.width/2, img.height/2);
         updateBird();
         updateWall();
