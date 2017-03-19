@@ -14,6 +14,7 @@ categories: 239 lesson school p5js game
  - [Единорог 2](/static/flabby_bird/results/savon/index2.html)
  - [Космонавт](/static/flabby_bird/results/aroniya/index.html)
  - [Flabby bird](/static/flabby_bird/results/sahno/index.html) (обратите внимание на бесшовный фон и случайный цвет птички!)
+ - [Vector bird](/static/flabby_bird/results/ivanova/index.html)
 
 Ниже предложены некоторые идеи для развития [Задания 52](/lessons/239/lesson/school/p5js/game/2017/03/08/FlabbyBirds.html).
 
