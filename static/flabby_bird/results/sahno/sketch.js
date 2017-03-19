@@ -3,83 +3,133 @@ var width2;
 var height;
 var height2;
 var holeX;
+
 var bird1;
 var bird2;
+var bird3;
 
 var bird;
-var imBirdHeight = 60;
-var imBirdWidth = 70;
-var imBirdDelta = 10;
+
+var imBirdHeight;
+var imBirdWidth ;
+var imBirdDelta ;
+var constSpeed;
+
 var back;
+
 var tubeUp;
 var tubeDown;
+
 var constWallSpeed;
+var holeHeight;
+var holeWidth;
+var holeY = holeHeight;
+var wallSpeed;
+var delta;
+
+var birdHeight = 0.0;
+var birdVerticalSpeed = 0.0;
+var gravityAcceleration;
 
 var points;
 var recordPoints;
 var flag;
 var flag2;
+var coeff = 1.0;
+var tubeNumber = 1;
+var backX;
+var backY;
+
+var rand;
 
 function setup() {
     points = 0;
     recordPoints = 0;
     height = windowHeight;//750;
-    width2 = 560/750 * height;
+    width2 = 565/755 * height;
+
     if (windowWidth >= width2) width = width2;
     if (windowWidth <= width2)
     {
         width = windowWidth;
-        height2 = 750/560 * windowWidth;
+        height2 = 755/565 * windowWidth;
+
         if (height >= height2) height = height2;
         if (height <= height2) height = windowHeight;
     }
 
-    bird1 = color(255, 255, 255);
-    bird2 = color(0, 0, 0);
+    coeff = height/755;
+
+    imBirdHeight = 60 * coeff;
+    imBirdWidth = 70 * coeff;
+    imBirdDelta = 10 * coeff;
+
     holeX = width/2-5;
-    constWallSpeed = 6;
+
+    constWallSpeed = width/100;
     wallSpeed = constWallSpeed;
-    bird = loadImage("bird2.png"); // Load the image
-    back = loadImage("fon2.png");
+    gravityAcceleration = 0.25 * coeff;
+    holeHeight = 180 * coeff;
+    holeWidth = 100 * coeff;
+    delta = 50 * coeff;
+    holeY = holeHeight;
+
+    backX = 0;
+    backY = 0;
+
+    constSpeed = -6.5 * coeff;
+
+    bird1 = loadImage("bird1.png");  // Load the image
+    bird2 = loadImage("bird2.png");
+    bird3 = loadImage("bird3.png");
+
+    rand = getRandomInt(1,3);
+
+    if (rand == 1) bird = bird1;
+    if (rand == 2) bird = bird2;
+    if (rand == 3) bird = bird3;
+
+    back = loadImage("fon3.png");
     tubeUp = loadImage("tubeUp.png");
     tubeDown = loadImage("tubeDown.png");
     flag = false;
-    flag2 = false
+    flag2 = false;
     createCanvas(width, height);     // Указываем размер холста
     frameRate(50);
 }
 
-var birdHeight = 0.0;
-var birdVerticalSpeed = 0.0;
-var gravityAcceleration = 0.25;
-
-
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function draw() {
     if (flag2 == false)
     {
         //background(54, 187, 205);            // Указываем цвет фона
-        image(back, 0, 0, width, height);
+        //image(back, 0, 0, width, height);
+        updateBack();
+        drawBack();
 
         translate(width/2, height/2);        // Смещаем центр системы координат в центр экрана
 
-        drawWall(holeX, holeY);
         updateWall();
+        drawWall(holeX, holeY);
 
         drawBird(birdHeight);
         updateBird();
 
-        textSize(32);
+        textSize(32 * coeff);
         textStyle(BOLD);
         fill(255, 255, 255);
-        text(points, 0, -height/2+50);
-        text("Record: " + recordPoints, -width/2, -height/2+50);
+        text(points, 0, -height/2 + 30 * coeff);
+        text("Record: " + recordPoints, -width/2, -height/2 + 30 * coeff);
     }
 
     else if (flag2 == true)
     {
-        image(back, 0, 0, width, height);
-
+        //image(back, 0, 0, width, height);
+        drawBack();
+        //update
         translate(width/2, height/2);        // Смещаем центр системы координат в центр экрана
 
         drawWall(holeX, holeY);
@@ -88,36 +138,36 @@ function draw() {
         drawBird(birdHeight);
         updateBird();
 
-        textSize(32);
+        textSize(32 * coeff);
         textStyle(BOLD);
         fill(255, 255, 255);
-        text(points, 0, -height/2+50);
-        text("Record: " + recordPoints, -width/2, -height/2+50);
+        text(points, 0, -height/2+30 * coeff);
+        text("Record: " + recordPoints, -width/2, -height/2+30 * coeff);
 
         if (birdHeight >= (height/2 - imBirdHeight))
         {
             translate(-width/2, -height/2);        // Смещаем центр системы координат в центр экрана
-            image(back, 0, 0, width, height);
+            //image(back, 0, 0, width, height);
+            drawBack();
             translate(width/2, height/2);
 
-            textSize(32);
+            textSize(32 * coeff);
             textStyle(BOLD);
             fill(255, 255, 255);
             text("Your points: " + points, -50, 0);
-            textSize(32);
-            text("Record: " + recordPoints, -width/2, -height/2+50);
+            textSize(32 * coeff);
+            text("Record: " + recordPoints, -width/2, -height/2+30 * coeff);
 
-            textSize(32);
+            textSize(32 * coeff);
             textStyle(BOLD);
             fill(255, 255, 255);
-            text("Replay?", -50, 50);
-            textSize(20);
-            text("Computer: Enter/ Mouse", -50, 80);
-            text("Phone: TAP", -50, 110);
+            text("Replay?", -50, 50 * coeff);
+            textSize(20 * coeff);
+            text("Computer: Enter/ Mouse", -50, 80 * coeff);
+            text("Phone: TAP", -50, 110 * coeff);
         }
     }
 }
-
 
 function drawBird(birdHeight)
 {
@@ -149,7 +199,6 @@ function drawBird(birdHeight)
     //ellipse(X, birdHeight, 20, 20);
 }
 
-var constSpeed = -6.5;
 function keyPressed() {
     var spaceKeyCode = 32;          // Это кодовое число соответствующее кнопке пробел
     var enterKeyCode = 13;
@@ -163,11 +212,17 @@ function keyPressed() {
         if (recordPoints < points) recordPoints = points;
         birdHeight = 0.0;
         birdVerticalSpeed = 0.0;
-        gravityAcceleration = 0.25;
+        gravityAcceleration = 0.25 * coeff;
         holeX = width/2-5;
         holeY = holeHeight;
         wallSpeed = constWallSpeed;
         points = 0;
+
+        rand = getRandomInt(1,3);
+
+        if (rand == 1) bird = bird1;
+        if (rand == 2) bird = bird2;
+        if (rand == 3) bird = bird3;
     }
 }
 
@@ -180,11 +235,17 @@ function mousePressed() {
         flag2 = false;
         birdHeight = 0.0;
         birdVerticalSpeed = 0.0;
-        gravityAcceleration = 0.25;
+        gravityAcceleration = 0.25 * coeff;
         holeX = width/2-5;
         holeY = holeHeight;
         wallSpeed = constWallSpeed;
         points = 0;
+
+        rand = getRandomInt(1,3);
+
+        if (rand == 1) bird = bird1;
+        if (rand == 2) bird = bird2;
+        if (rand == 3) bird = bird3;
     }
 }
 
@@ -206,16 +267,11 @@ function updateBird() {
         //else fill(bird1);
 }
 
-var holeHeight = 180;
-var holeWidth = 80;
-var holeY = holeHeight;
-var wallSpeed;
-var delta = 40;
-
 function updateWall() {
-    if (holeX <= -width) {          // Если координата x стены вышла за пределы экрана
+    if (holeX <= -width/2 - holeWidth - 1) {// Если координата x стены вышла за пределы экрана
         holeX = width/2;  // крайнее правое положение
-        holeY = delta + Math.random() * (height-holeHeight-delta);
+        holeY = delta + Math.random() * (height-holeHeight-2*delta);
+        tubeNumber = tubeNumber+1;
         flag = false;
     } else {
         holeX -= wallSpeed;           // двигаем стену влево
@@ -224,6 +280,8 @@ function updateWall() {
 
 function drawWall(fromX, fromY)
 {
+    pop();
+
     push();
     translate(0, -height/2);
     image(tubeDown, fromX, fromY+holeHeight, holeWidth, height);
@@ -235,4 +293,16 @@ function drawWall(fromX, fromY)
     fill(0, 0, 0, 0);
     rect(fromX, fromY, holeWidth, holeHeight);
     pop();*/
+}
+
+
+function updateBack() {
+    if  ((backX) >= (-width)) backX -= wallSpeed
+    else backX = backX + width;
+}
+
+function drawBack() {
+    image(back, backX, 0, width, height);
+    image(back, backX + width, 0, width, height);
+    image(back, backX + 2*width, 0, width, height);
 }
