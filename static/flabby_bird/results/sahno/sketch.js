@@ -295,14 +295,14 @@ function drawWall(fromX, fromY)
     pop();*/
 }
 
-
+var coeffBack = 1.5;
 function updateBack() {
-    if  ((backX) >= (-width)) backX -= wallSpeed
-    else backX = backX + width;
+    if  ((backX) >= (-width)) backX -= wallSpeed/coeffBack;
+    else backX = (backX + width) - wallSpeed/coeffBack;
 }
 
 function drawBack() {
     image(back, backX, 0, width, height);
     image(back, backX + width, 0, width, height);
-    image(back, backX + 2*width, 0, width, height);
+    //image(back, backX + 2*width, 0, width, height);
 }
