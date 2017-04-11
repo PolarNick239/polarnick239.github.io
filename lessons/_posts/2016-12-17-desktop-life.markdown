@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Задание 1*. Настольная альтернатива с клеточным автоматами"
 date:   2016-12-17 12:00:00 +0300
 categories: 239 lesson school java swing

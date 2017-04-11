@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Тутор: классы в Java"
 date:   2017-01-09 12:00:00 +0300
 categories: 239 school java base

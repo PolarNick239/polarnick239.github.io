@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Змейка и Мухоморы: Общее описание задания"
 date:   2017-01-10 12:00:00 +0300
 categories: 239 lesson school java swing game snake

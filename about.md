@@ -1,11 +1,11 @@
 ---
-layout: page
+layout: main/default
 title: About
 permalink: /about/
+lang: en
+id: about
 ---
 
-My home is in Saint-Petersburg, Russia. Here I am trying to do something interesting in Computer Vision.
+I live in Saint-Petersburg, Russia. I am working in computer vision and GPGPU fields. Teaching in PML №230.
 
-GPUs raw power impresses me - so my field of interest includes CG, OpenCL, raytracing and amazing magics from [Shadertoy](https://www.shadertoy.com/).
-
-Most part of my professional experience described in my [CV](/old/cv/Polyarniy_CV.pdf).
+My professional experience described in [CV](/cv/Polyarniy_CV.pdf).

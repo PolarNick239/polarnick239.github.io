@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Задание 41. Многопользовательские чат и рисовалка"
 date:   2017-02-14 12:00:00 +0300
 categories: 239 lesson school java socket

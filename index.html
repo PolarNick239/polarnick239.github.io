@@ -1,18 +1,22 @@
----
-layout: default
----
-
-<div class="home">
-
-  <h1 class="post-title">{% include icon-rss.html path="/feed.xml" %} Posts</h1>
-
-  <ul class="post-list">
-    {% for post in site.categories.blog %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-
-</div>
+<!DOCTYPE html>
+<html>
+    <script>
+        function onLoad() {
+            var hostname = window.location.hostname;
+            if (hostname == "localhost") {
+                window.location = '/index_manual.html';
+            } else if (hostname.endsWith("ru")) {
+                window.location = "/index_ru.html";
+            } else {
+                window.location = "/index_en.html";
+            }
+        }
+    </script>
+    <head>
+        <meta http-equiv="refresh" content="0; url=/index_en.html" />
+    </head>
+    <body onload="onLoad();">
+        <p><a href="/index_en.html">Open english version</a></p>
+        <p><a href="/index_ru.html">Открыть русскую версию</a></p>
+    </body>
+</html>

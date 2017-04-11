@@ -12,7 +12,8 @@ email: PolarNick239@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   My personal blog about computer vision, GPU coding and other stuff.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://polarnick239.github.io" # the base hostname & protocol for your site
+url_en: "http://polarnick.com"
+url_ru: "http://polarnick.ru"
 github_username:  PolarNick239
 vk_username:  PolarNick
 telegram_username:  PolarNick239

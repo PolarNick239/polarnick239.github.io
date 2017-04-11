@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Мини-задание 51. Фрактальные деревья"
 date:   2017-03-01 12:00:00 +0300
 categories: 239 lesson school p5js

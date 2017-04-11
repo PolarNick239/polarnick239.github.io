@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Тутор: многопоточность в Java"
 date:   2016-12-25 12:00:00 +0300
 categories: 239 lesson school java multithreading

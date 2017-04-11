@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Тутор: горячие кнопки"
 date:   1914-08-18 12:00:00 +0300
 categories: 239 lesson school

@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Тутор: ввода-вывод на Java (для олимпиад)"
 date:   2017-01-10 11:59:00 +0300
 categories: 239 school java olymp

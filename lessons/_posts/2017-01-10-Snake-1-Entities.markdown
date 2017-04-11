@@ -1,5 +1,5 @@
 ---
-layout: 239post
+layout: ru/239/201612/post
 title:  "Задание 31. Змейка и Мухоморы: начало"
 date:   2017-01-10 12:00:01 +0300
 categories: 239 lesson school java swing game snake

@@ -1,0 +1,22 @@
+---
+layout: ru/blogs/other/default
+lang:   ru
+id:     blogs_other_index
+---
+
+<div class="home">
+
+  <h1 class="post-title">{% include /commons/icon-rss.html path="feed_ru.xml" %} Случайные посты на случайные темы</h1>
+
+  <ul class="post-list">
+    {% for post in site.categories.other %}
+      {% if post.lang == page.lang %}
+        <li>
+          <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+</div>
