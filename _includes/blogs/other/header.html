@@ -24,8 +24,8 @@
         {% endfor %}
 
         {% assign posts=site.posts | where:"id", page.id | sort: 'lang' %}
-        {% for post in posts %}
-          <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
+        {% for that_post in posts %}
+          <a href="{{ that_post.url }}" class="{{ that_post.lang }}">{{ that_post.lang }}</a>
         {% endfor %}
 
         {% assign pages=site.pages | where:"id", page.id | sort: 'lang' %}
