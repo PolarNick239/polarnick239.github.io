@@ -1,13 +1,14 @@
 function setup() {
     createCanvas(1370, 710);
-    frameRate(10);
+    frameRate(framerate);
 }
 
+var framerate = 30;
 var birdHeight = 0.0;
 var birdVerticalSpeed = 0.0;
-var gravityAcceleration = 10.0;
-var wallSpeed = 28;
-var wallGravity = 0.05;
+var gravityAcceleration = 10.0*10.0/framerate;
+var wallSpeed = 28*10.0/framerate;
+var wallGravity = 0.05*10.0/framerate;
 var holeWidth = 100.0;
 var holeHeight = 200.0;
 var holeX1 = 1370.0;
@@ -50,7 +51,7 @@ function drawBird() {
     if (color == 1) {
         birdHeight = 0.0;
         birdVerticalSpeed = 0.0;
-        gravityAcceleration = 10.0;
+        gravityAcceleration = 10.0*10.0/framerate;
         holeWidth = 100.0;
         holeHeight = 200.0;
         holeX1 = 1370.0;
@@ -58,8 +59,8 @@ function drawBird() {
         holeX3 = 1370 + 980;
         x = 485;
         y = 355;
-        wallSpeed = 28;
-        wallGravity = 0.05;
+        wallSpeed = 28*10.0/framerate;
+        wallGravity = 0.05*10.0/framerate;
         color = 0;
         random1 = Math.random();
         random2 = Math.random();
@@ -114,7 +115,7 @@ function drawBird() {
 }
 
 function updateBird() {
-    birdHeight = birdHeight + birdVerticalSpeed;
+    birdHeight = birdHeight + birdVerticalSpeed*10.0/framerate;
     birdVerticalSpeed += gravityAcceleration;
 }
 
