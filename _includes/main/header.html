@@ -23,11 +23,6 @@
           {% endif %}
         {% endfor %}
 
-        {% assign posts=site.posts | where:"id", page.id | sort: 'lang' %}
-        {% for post in posts %}
-          <a href="{{ post.url }}" class="{{ post.lang }}">{{ post.lang }}</a>
-        {% endfor %}
-
         {% assign pages=site.pages | where:"id", page.id | sort: 'lang' %}
         {% for page in pages %}
           <a href="{{ page.url }}" class="{{ page.lang }}">{{ page.lang }}</a>
