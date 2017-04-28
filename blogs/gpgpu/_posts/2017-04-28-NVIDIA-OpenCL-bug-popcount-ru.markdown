@@ -25,4 +25,4 @@ ptxas fatal : Ptx assembly aborted due to errors
 );
 ```
 
-```Workaround:``` Если заменить вызовы функции [popcount](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/popcount.html) (появившейся с OpenCL 1.2) на вызовы самописной popcount (на базе битовых операций) - проблема решается для GTX 580 (этот странный блок кода исчезает из ассемблера), но скорость работы падает в два-три раза.
+```Workaround:``` Если заменить вызовы функции [popcount](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/popcount.html) на вызовы самописной popcount (на базе битовых операций) - проблема решается для GTX 580 (этот странный блок исчезает из ассемблера), но скорость работы падает в два-три раза.

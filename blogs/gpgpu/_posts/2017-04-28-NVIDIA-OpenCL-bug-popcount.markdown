@@ -25,4 +25,4 @@ NVIDIA firstly generates intermediate ptx-assembly, and then compiles it. So it 
 );
 ```
 
-```Workaround:``` If all [popcount](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/popcount.html) calls (it appeared in OpenCL 1.2) will be replaced with manually implemented popcount (based on bit-operations) - problem fixes for GTX 580 (these strange assembly block dissapear), but speed drops two-three times.
+```Workaround:``` If all [popcount](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/popcount.html) calls will be replaced with manually implemented popcount (based on bit-operations) - problem fixes for GTX 580 (this strange assembly block dissapear), but speed drops two-three times.
