@@ -12,3 +12,7 @@ categories: 239 lesson school p5js game
  - [Космонавт](/static/flabby_bird/results/aroniya/index.html)
  - [Flabby bird](/static/flabby_bird/results/sahno/index.html)
  - [Vector bird](/static/flabby_bird/results/ivanova/index.html)
+ 
+Другие игры учеников 239:
+
+ - [Волейбол](/static/239_games/novikova_volleyball/index.html) (управление: ```Z, X, C``` и ```B, N, M```)
