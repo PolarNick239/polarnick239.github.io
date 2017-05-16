@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/gpgpu/post
-title:  "NVIDIA OpenCL bug: Ptx assembly aborted due to errors"
+title:  "NVidia OpenCL bug: Ptx assembly aborted due to errors"
 date:   2017-04-28 21:30:00 +0300
 categories: gpu opencl nvidia
 lang:   ru
