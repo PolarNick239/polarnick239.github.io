@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/gpgpu/post
 title:  "[NVidia] Про OpenCL багтрекер"
-date:   2017-05-13 21:30:00 +0300
+date:   2017-05-16 21:30:00 +0300
 categories: gpu opencl nvidia
 lang:   ru
 id:     4_nvidia_opencl_bugreport
