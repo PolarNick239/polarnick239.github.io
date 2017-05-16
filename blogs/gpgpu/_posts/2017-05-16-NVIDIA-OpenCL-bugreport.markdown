@@ -24,3 +24,5 @@ The bug is not important, but the history of reporting is quite interesting:
  - ```03.05.2017``` I got email notification about ticket update, but I couldn't find any changes in letter or in ticket.
  - ```16.05.2017``` Ticket status updated from ```Open - Requested more info from customer``` to ```Open - in progress```
  - ```To be continued...```
+ 
+![Druzhko about NVidia bugtracker](/static/2017/05/13/good_bugtracker_ru.jpg)
