@@ -25,4 +25,4 @@ id:     4_nvidia_opencl_bugreport
  - ```16.05.2017``` Тикет перешел из статуса ```Open - Requested more info from customer``` в ```Open - in progress```
  - ```Продолжение следует...```
 
-![Дружко о NVidia багтрекере](/static/2017/05/13/good_bugtracker_en.jpg)
+![Дружко о NVidia багтрекере](/static/2017/05/13/good_bugtracker_ru.jpg)
