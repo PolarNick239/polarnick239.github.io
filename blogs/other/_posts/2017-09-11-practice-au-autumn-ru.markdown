@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "Презентация летних практик в АУ от Agisoft"
+title:  "Презентация осенних практик в АУ от Agisoft"
 date:   2017-09-11 21:30:00 +0300
 categories: practice
 lang:   ru
