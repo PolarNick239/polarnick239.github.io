@@ -1,5 +1,5 @@
 ---
-layout: ru/blogs/gpgpu/post
+layout: blogs/gpgpu/post
 title:  "[NVidia] About OpenCL bugtracker"
 date:   2017-05-16 21:30:00 +0300
 categories: gpu opencl nvidia

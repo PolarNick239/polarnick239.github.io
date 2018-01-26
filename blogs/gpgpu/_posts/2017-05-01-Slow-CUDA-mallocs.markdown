@@ -1,5 +1,5 @@
 ---
-layout: ru/blogs/gpgpu/post
+layout: blogs/gpgpu/post
 title:  "CUDA allocations takes up to 600 ms"
 date:   2017-05-13 21:30:00 +0300
 categories: gpu cuda nvidia
