@@ -29,12 +29,12 @@ id:     11_ambient_occlusion_xnormal
 
 ## Notes about NVidia Geforce and Titan:
 
-5) Geforce driver doesn't work if it detects virtualization. It checks hypervisor signature in CPUID. So in case of KVM ```kvm_hidden=on``` option required
+5) Geforce driver doesn't work if it detects virtualization. It checks hypervisor signature in CPUID. So ```kvm_hidden=on``` option required in case of KVM
    (see [devtalk](https://devtalk.nvidia.com/default/topic/957757/cuda-setup-and-installation/gtx-1080-amp-kvm-pci-passthrough-to-guest/post/5092622/#5092622),
         [askubuntu](https://askubuntu.com/questions/939351/virt-install-with-kvm-off-option/939632#939632),
         [detecting virtualization](http://linuxmogeb.blogspot.ru/2013/06/detecting-virtualization.html)).
 
-6) It is not allowed to use Geforce and Titan driver (w.r.t. [its EULA](http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us&type=GeForce)):
+6) It is not allowed to use Geforce and Titan driver in datacenter (w.r.t. [its EULA](http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us&type=GeForce)):
 
 ```
 No Datacenter Deployment. The SOFTWARE is not licensed for datacenter deployment, except that blockchain processing in a datacenter is permitted.
