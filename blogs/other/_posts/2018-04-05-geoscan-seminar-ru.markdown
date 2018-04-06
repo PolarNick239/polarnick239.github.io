@@ -1,8 +1,7 @@
 ---
 layout: ru/blogs/other/post
 title:  "Семинар GeoScan. PhotoScan: новая функциональность"
-date:   2018-02-12 21:30:00 +0300
-categories: practice
+date:   2018-04-05 21:30:00 +0300
 lang:   ru
 id:     14_geoscan_seminar
 ---
