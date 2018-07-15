@@ -6,4 +6,6 @@ lang:   ru
 id:     14_geoscan_seminar
 ---
 
-[Семинар GeoScan. PhotoScan: новая функциональность.](/static/presentations/Agisoft. 2018. Семинар GeoScan.pdf)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xaxw4E7om68?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+[Слайды.](/static/presentations/Agisoft. 2018. Семинар GeoScan.pdf)
