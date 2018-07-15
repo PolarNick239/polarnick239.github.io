@@ -5,13 +5,20 @@ layout: ru/239/201612/default
 <div class="home">
     <h1 class="post-title">{% include /commons/icon-rss.html path="feed.xml" %} Замещения у 9-1, 10-1, 11-1 зимой 2016/2017:</h1>
 
-    <ul class="post-list">
+    <table class="post-list">
         {% for post in site.categories.lessons %}
-        <li>
-            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </li>
+        <tr>
+            <td>
+                <span class="post-meta">{{ post.date | date: "%b %-d," }}</span>
+            </td>
+            <td>
+                <span class="post-meta">{{ post.date | date: "%Y" }}</span>
+            </td>
+            <td>
+                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
 
 </div>
