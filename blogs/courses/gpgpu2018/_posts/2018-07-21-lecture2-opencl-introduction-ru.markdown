@@ -40,7 +40,7 @@ void solve() {
 
 void solvePart(int partId) {
     // Вычисляем долю работы каждого потока
-    int workPart = n / partsNumber; // на самом деле здесь нужно округление вверх
+    int workPart = roundUp(n / partsNumber); // округление вверх
     // Вычисляем в каком диапазоне наша часть работы
     int from = partId * workPart;
     int to = min((partId + 1) * workPart, n);
@@ -184,7 +184,7 @@ int localSum   [workSize];
 int solve() {
     // В каждом work-item хотим обработать workPart значений массива
     // поэтоме рабочий размер пространства в workPart меньше, чем массив
-    workSize = n / workPart; // Округление должно быть вверх
+    workSize = roundUp(n / workPart);
     driver.launchKernel(
         NDRange = (x=workSize, y=1, z=1),
         kernel  = kernelLocalPrefix
@@ -232,7 +232,7 @@ int nextLocalSum   [...];
 
 int solve() {
     while (n > 1) {
-        workSize    = n / workPart;
+        workSize    = roundUp(n / workPart);
         localResult = new int[workSize];
         localSum    = new int[workSize];
 
