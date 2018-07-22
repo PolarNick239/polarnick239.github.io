@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "[Computer Science Center] Семинар по 3D реконструкции"
+title:  "[CSC] Семинар по 3D реконструкции"
 date:   2017-12-22 21:30:00 +0300
 categories: practice
 lang:   ru

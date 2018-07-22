@@ -1,0 +1,4 @@
+
+https://support.amd.com/en-us/kb-articles/Pages/OpenCL2-Driver.aspx
+
+https://software.intel.com/en-us/intel-opencl
