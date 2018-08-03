@@ -262,8 +262,8 @@ void kernelLocalPrefix(int partId) {
         local_result = max(local_result, local_current_prefix + localResult[i]); 
         local_current_prefix += localSum[i];
     }
-    localResult[partId] = local_result;
-    localSum   [partId] = local_current_prefix;
+    nextLocalResult[partId] = local_result;
+    nextLocalSum   [partId] = local_current_prefix;
 }
 ```
 
@@ -325,18 +325,18 @@ __kernel void aplusb(__global const float* a,
 Теперь есть OpenCL-контекст в котором могут существовать аллоцированные в видеопамяти массивы данных, скомпилированные ``kernel``-функции и т.п..
 
 Все команды для выполнения на устройстве (такие как выполнение ``kernel``-функции, копирование данных из оперативной памяти в видеопамять, кпирование результатов вычислений из видеопамяти в оперативную память и т.п.) делаются
-через очередь задач к отдельному устройству. Поэтому в рамках контекста для каждого рабочего устройства требуется создать очередь через [clCreateCommandQueue](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clCreateCommandQueue.html).
+через очередь задач к отдельному устройству. Поэтому в рамках контекста для каждого рабочего устройства требуется создать очередь команд через [clCreateCommandQueue](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/clCreateCommandQueue.html).
 
 Дальше остается создать ``kernel``-функцию в рамках созданного контекста (компиляция будет произведена драйвером на лету), аллоцировать рабочие массивы данных в видеопамяти, прогрузить данные, выполнить ``kernel``-функцию, и выгрузить результат из видеопамяти в оперативную память.
  
-Все эти функции не нужно использовать напрямую, достаточно один раз написать обертку над ними, и дальше работать с удобной оберткой. В рамках курса будет предложена готовая обертка, 
+Все эти OpenCL-API вызовы не нужно использовать напрямую, достаточно один раз написать обертку над ними и дальше работать с удобной оберткой. В рамках курса будет предложена готовая обертка, 
 но нужно уметь работать с этими функциями напрямую, и это возможно благодаря отличной [документации](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/). Так же может быть удобна [эта шпаргалка](https://www.khronos.org/files/opencl-1-2-quick-reference-card.pdf).
 
 # Домашнее задание 0 ``TODO``.
 
 # Следующая лекция 3 ``TODO``.
 
-## Ссы лки:
+## Ссылки:
 
 - [https://www.khronos.org/files/opencl-1-2-quick-reference-card.pdf](https://www.khronos.org/files/opencl-1-2-quick-reference-card.pdf)
 - [https://www.khronos.org/registry/OpenCL/specs/opencl-1.2.pdf](https://www.khronos.org/registry/OpenCL/specs/opencl-1.2.pdf)
