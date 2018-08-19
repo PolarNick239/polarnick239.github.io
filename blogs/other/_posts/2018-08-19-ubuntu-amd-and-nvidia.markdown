@@ -1,5 +1,5 @@
 ---
-layout: ru/blogs/other/post
+layout: blogs/other/post
 title:  "AMD and NVidia GPUs on Ubuntu at the same time"
 date:   2018-08-19 21:30:00 +0300
 lang:   en
