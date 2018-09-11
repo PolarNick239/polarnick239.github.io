@@ -6,6 +6,9 @@ lang:   ru
 id:     19_gpgpu2018_lecture1
 ---
 
+В первой вводной лекции будет рассказано как наряду с центральными процессорами в конце 90-х появились видеокарты,
+ которые затем стали гибко программируемыми, что привело к появлению множества API для вычислений общего назначения на видеокартах.
+
 ## Процессоры
 
 Долго процессоры были одноядерными, и тактовая частота была их основной характеристикой.
@@ -82,6 +85,8 @@ id:     19_gpgpu2018_lecture1
 <img alt="CPU clock speed graph" src="/static/courses/gpgpu2018/lecture1/cpu_gpu_gflops.png"/>
 
 <img alt="CPU clock speed graph" src="/static/courses/gpgpu2018/lecture1/cpu_gpu_memory_bandwidth.png"/>
+
+# [Задание 0](https://github.com/GPGPUCourse2018/Task0EnumDevices): поднять окружение, перечислить доступные OpenCL-устройства.
 
 # Следующая [лекция 2. Введение в OpenCL](/blogs/courses/gpgpu2018/2018/07/21/lecture2-opencl-introduction-ru.html).
 
