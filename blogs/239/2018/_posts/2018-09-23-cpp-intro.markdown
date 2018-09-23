@@ -1,0 +1,37 @@
+---
+layout: ru/blogs/239/2018/post
+title:  "[C++] Установка окружения"
+date:   2018-09-23 12:00:00 +0300
+lang:   ru
+categories: school239_105_2018_2019
+---
+
+Установить Visual Studio
+========================
+1. Открыть [https://visualstudio.microsoft.com/](https://visualstudio.microsoft.com/)
+2. Под ```Visual Studio IDE``` -> ```Download for Windows``` -> ```Community 2017```
+3. Установить
+
+Установить MinGW
+================
+1. Открыть [https://sourceforge.net/projects/mingw/files/Installer/](https://sourceforge.net/projects/mingw/files/Installer/)
+2. Скачать кликнув на ``mingw-get-setup.exe``
+3. Запустить, при установке нужно сделать ``Mark for installation`` таким образом:
+![MinGW marked for installation](/static/2018/09/mingw_installation_screen.jpg)
+4. Затем ``Installation`` -> ``Apply changes`` -> ``Apply``
+
+Установить CLion
+================
+1. Открыть [https://www.jetbrains.com/clion/download](https://www.jetbrains.com/clion/download)
+2. Нажать кнопку Download
+3. Установить
+4. Запросить ученическую лицензию:
+ - Открыть [https://www.jetbrains.com/shop/eform/students](https://www.jetbrains.com/shop/eform/students)
+ - Выбрать ``OFFICIAL DOCUMENT``, ``I'm a student``, ввести имя и фамилию на английском
+ - Ввести свой email адрес про который вы уверены что вы можете получать на него письма, читать их и писать новые
+ - Country: ``Russian Federation``
+ - Name of your academic institution: ``Presidential Physics and Mathematics Lyceum №239``
+ - Website of your academic institution: ``http://www.239.ru/``
+ - Поставить галочку на ``The educational program that I am enrolled in takes one or more years of full-time study to complete``
+ - ADD DOCUMENT - добавить фотографию студенческого чтобы были видны ваши имя, фамилия, название школы и год продления
+5. Пока вы не получите лицензию - можете использовать ``CLion`` дома в demo-режиме 30 дней, если в течение недели вы не получили лицензию - скажите мне
