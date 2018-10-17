@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/239/2018/post
-title:  "[Java] Классы и методы"
+title:  "[Java] Классы и методы 1. Прямоугольник"
 date:   2018-10-09 12:03:00 +0300
 lang:   ru
 categories: school239_105_2018_2019
