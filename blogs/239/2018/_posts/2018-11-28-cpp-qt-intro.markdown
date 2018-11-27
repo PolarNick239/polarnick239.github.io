@@ -15,7 +15,7 @@ categories: school239_105_2018_2019
 
 ```
 mkdir qthelloworld
-cd QtHelloWorld
+cd qthelloworld
 gedit CMakeLists.txt
 gedit main.cpp
 mkdir build
