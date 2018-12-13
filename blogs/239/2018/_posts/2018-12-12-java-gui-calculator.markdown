@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/239/2018/post
 title:  "[Java] Swing GUI: калькулятор"
-date:   2018-11-28 0:02:39 +0300
+date:   2018-12-12 0:02:39 +0300
 lang:   ru
 categories: school239_105_2018_2019
 ---
