@@ -26,6 +26,15 @@ int sum = a[0] + a[9];
 double[] c = {42.1, 2.5, 7.3}; // Массив размера 3 инициализированный значениями в скобочках 
 ```
 
+Динамический массив:
+```java
+ArrayList<Integer> xs = new ArrayList<Integer>();
+xs.add(1);
+xs.add(2);
+int firstValue = xs.get(0);
+int size = xs.size();
+```
+
 Комментирование кода:
 
 ```java
