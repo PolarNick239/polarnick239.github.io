@@ -15,9 +15,9 @@ categories: school239_105_2018_2019
 
 1) Загрузить на диск из интернета какую-нибудь картинку, например [эту](/static/unicorn.png).
 
-2) Добавить поле ```Image unicornImage;``` в класс ```MyPanel```.
+2) Добавить поле ```BufferedImage unicornImage;``` в класс ```MyPanel```.
 
-3) Инициализировать его в конструкторе, загрузив картинку с диска, например так: ```this.unicornImage = ImageIO.read(new File("C:\\downloads\\unicorn.png"));```
+3) Инициализировать его в конструкторе MyPanel, загрузив картинку с диска, например так: ```this.unicornImage = ImageIO.read(new File("C:\\downloads\\unicorn.png"));```
 
 4) Не забыть сделать все импорты всех новых классов через Alt+Enter.
 
@@ -34,6 +34,7 @@ double locationX = unicornImage.getWidth() / 2;
 double locationY = unicornImage.getHeight() / 2;
 AffineTransform tx = AffineTransform.getRotateInstance(angleInRadians, locationX, locationY);
 AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
 g.drawImage(op.filter(unicornImage, null), 100, 100, null);
 ```
 
