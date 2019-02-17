@@ -8,9 +8,9 @@ categories: school239_105_2018_2019
 
 Использовать ключевое слово ```static``` **запрещено везде** за исключением случаев когда я явно разрешил и декларации main-функции: ```public static void main(String[] args)```.
 
-Одним из формальных критериев является Code Style.
+К четвергу вам надо избавиться от всех использований ```static``` и исправить свой Code Style, который является одним из формальных критериев проекта.
 
-В случае Java существует стандартный Code Style - [Google Java Style](https://google.github.io/styleguide/javaguide.html).
+В случае Java существует стандартный Code Style - [Google Java Style](https://google.github.io/styleguide/javaguide.html) (именно он используется в IDEA по умолчанию, в частности при нажатии ```Ctrl+Alt+L```).
 
 Коротко основные моменты:
 
