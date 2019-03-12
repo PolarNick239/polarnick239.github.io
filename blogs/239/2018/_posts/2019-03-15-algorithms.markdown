@@ -22,7 +22,7 @@ categories: school239_105_2018_2019
 
 7) Динамическое программирование (сумма на подотрезке, максимум на подотрезке, наибольшая возрастающая подпоследовательность)
 
-Хорошая книга по алгоритмам - (https://alexanderskulikov.github.io/files/algorithms_href.pdf)[Алгоритмы (С. Дасгупта, Х. Пападимитриу, У. Вазирани)].
+Хорошая книга по алгоритмам - (Алгоритмы (С. Дасгупта, Х. Пападимитриу, У. Вазирани))[https://alexanderskulikov.github.io/files/algorithms_href.pdf].
 
 Часть алгоритмов представлена ввиде проверяемых онлайн задач здесь - [https://informatics.msk.ru/moodle/](https://informatics.msk.ru/moodle/).
 
