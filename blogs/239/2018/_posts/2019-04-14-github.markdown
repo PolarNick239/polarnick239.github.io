@@ -21,7 +21,9 @@ categories: school239_105_2018_2019
 =======
 
 1) Открываете проект в IDEA
+
 2) Жмете сверху VCS -> Import into Version Control -> Share project on GitHub
+
 3) Например:
 
 ```
@@ -32,22 +34,29 @@ Description: Игра про стрельбу птицами по свиньям
 ```
 
 4) Если снизу справа появилась ошибка "Can't finish GitHub sharing process ... initial push failed", то:
+
 5) VCS -> Git -> Remotes
+
 6) Нажмите справа на карандашик и замените URL на ```https://USERNAME:PASSWORD@github.com/USERNAME/REPOSITORYNAME.git``` (поправив USERNAME, PASSWORD и REPOSITORYNAME)
+
 7) Теперь сделайте ```push``` еще раз: VCS -> Git -> Push... -> ```Push```
 
 Сохраняйте в репозитории новые изменения (коммитьте их)
 =======
 
 1) VCS -> ```Commit...```
+
 2) Жмите не на ```Commit```, а на стеролчку справа и там - ```Commit and Push...```
+
 3) Если вы все же сделали обычный ```Commit```, то просто выполните еще и это: VCS -> Git -> Push... -> ```Push```
 
 Чтобы посмотреть изменения которые вы ранее делали
 =======
 
 1) Снизу слева жмете "9: Version Control"
+
 2) Чуть повыше жмете ```Log``` (правее от Version Control: Local Changes Console)
+
 3) Можете выбрать любой коммит, справа выбрать файл и нажав на него правой кнопкой и там ```Show Diff``` - увидите изменения в файле
 
 А чтобы посмотреть какие локальные изменения вы сделали до сих пор - вместо ```Log``` вам нужно нажать на ```Local Changes```
