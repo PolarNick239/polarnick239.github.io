@@ -15,7 +15,7 @@ categories: school239_105_2018_2019
 Регистрируетесь
 =======
 
-Регистрируетесь на [https://github.com/](GitHub.com)
+Регистрируетесь на [GitHub.com](https://github.com/)
 
 Публикуете проект
 =======
