@@ -75,7 +75,7 @@ Description: Игра про стрельбу птицами по свиньям
 Сделайте описание вашего проекта
 -----------------------
 
-Чтобы сделать описание вашего проекта например в таком стиле - после публикации и изначального ```push```-а:
+Чтобы сделать описание вашего проекта например в [таком](https://github.com/wozniakty/PuzzleDash) стиле - после публикации и изначального ```push```-а:
 
 1) Откройте ваш репозиторий на [GitHub.com](https://github.com/) в браузере
 
@@ -130,14 +130,14 @@ Description: Игра про стрельбу птицами по свиньям
 
 Несколько примеров с неплохим описанием из которых можно вдохновиться хорошими идеями и примерами Markdown-разметки:
 
- - [https://github.com/wozniakty/PuzzleDash](https://github.com/wozniakty/PuzzleDash) - [README.md](https://github.com/wozniakty/PuzzleDash/master/README.md)
+ - [https://github.com/wozniakty/PuzzleDash](https://github.com/wozniakty/PuzzleDash) - [README.md](https://raw.githubusercontent.com/wozniakty/PuzzleDash/master/README.md)
 
- - [https://github.com/RothschildGames/release-cycles](https://github.com/RothschildGames/release-cycles) - [README.md](https://github.com/RothschildGames/release-cycles/master/README.md)
+ - [https://github.com/RothschildGames/release-cycles](https://github.com/RothschildGames/release-cycles) - [README.md](https://raw.githubusercontent.com/RothschildGames/release-cycles/master/README.md)
 
- - [https://github.com/sdrdis/hotfix](https://github.com/sdrdis/hotfix) - [README.md](https://github.com/sdrdis/hotfix/master/README.md)
+ - [https://github.com/sdrdis/hotfix](https://github.com/sdrdis/hotfix) - [README.md](https://raw.githubusercontent.com/sdrdis/hotfix/master/README.md)
 
- - [https://github.com/Nurgak/Cube-engine](https://github.com/Nurgak/Cube-engine) - [README.md](https://github.com/Nurgak/Cube-engine/master/README.md)
+ - [https://github.com/Nurgak/Cube-engine](https://github.com/Nurgak/Cube-engine) - [README.md](https://raw.githubusercontent.com/Nurgak/Cube-engine/master/README.md)
 
  - [https://github.com/lutzroeder/digger](https://github.com/lutzroeder/digger) - [README.md](https://raw.githubusercontent.com/lutzroeder/digger/master/README.md)
 
- - [https://github.com/hughsk/ludum-dare-27](https://github.com/hughsk/ludum-dare-27) - [README.md](https://github.com/hughsk/ludum-dare-27/master/README.md)
+ - [https://github.com/hughsk/ludum-dare-27](https://github.com/hughsk/ludum-dare-27) - [README.md](https://raw.githubusercontent.com/hughsk/ludum-dare-27/master/README.md)
