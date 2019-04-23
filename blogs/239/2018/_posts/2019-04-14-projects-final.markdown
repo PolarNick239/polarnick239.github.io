@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/239/2018/post
-title:  "Защита проектов"
+title:  "[Проект] Защита проектов"
 date:   2019-04-14 1:02:39 +0300
 lang:   ru
 categories: school239_105_2018_2019
