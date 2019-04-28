@@ -219,3 +219,18 @@ pre {
         height: 35px;
     }
 }
+
+
+
+/**
+ * Table
+ *
+ * See https://stackoverflow.com/a/36719802
+ */
+.mbtablestyle {
+    border-collapse: collapse;
+
+    > table, td, th {
+        border: 1px solid black;
+    }
+}
