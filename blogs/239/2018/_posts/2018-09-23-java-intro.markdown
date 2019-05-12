@@ -10,7 +10,7 @@ categories: school239_105_2018_2019
 =========================================
 1. Открыть [http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 2. Нужно под "Java SE Development Kit" нажать "Accept License Agreement"
-3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64)
+3. Затем скачать по ссылке ниже то, что подходит под вашу операционную систему (Windows x64) (если вас попросили залогиниться, то вы либо можете зарегистрироваться, либо воспользоваться [этим](http://bugmenot.com/view/oracle.com))
 4. Установить
 
 Установить Intellij Idea Community Edition:
