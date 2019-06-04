@@ -9,9 +9,14 @@ id:     23_gpgpu2018_lecture1
 [Слайды](/static/courses/gpgpu2018/lecture2/2018_09_17_video_cards_computation_2018_autumn.pdf)
 =======
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/0VQDmB8rtQQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+Описание
+=======
 
-[Практическое задание](https://github.com/GPGPUCourse2018/Task1AplusB)
+Warps/Wavefronts, code divergence, occupancy, registry spilling, coalesced memory access, banks conflicts.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/?listType=playlist&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ&index=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+[Практическое задание 2: сложение двух массивов](https://github.com/GPGPUCourse2018/Task1AplusB)
 =======
 
 Теоретическое задание

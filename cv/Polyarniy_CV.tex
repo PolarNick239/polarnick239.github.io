@@ -6,33 +6,37 @@
 
 \usepackage{graphicx}
 \usepackage{wrapfig}
+\usepackage[absolute,overlay]{textpos}
 \graphicspath{ {imgs/} }
 
 \newcommand{\hhref}[2]{\href{#1}{\color{blue}#2}}
- 
+
 \begin{document}
 
+\begin{textblock}{7}(11,1)
+    \includegraphics[scale=0.4]{photo.png}
+\end{textblock}
 
 \begin{center}
 	{\huge Polyarniy Nikolay}
 \end{center}
 
-
 \vspace{-9pt}
 \section*{\textbf{Work Experience}}
 \vspace{-9pt}
 
+
 \begin{description}
   \item[ - Agisoft] \hfill \\
     \textbf{Since April 2016}
-  
-    \textbf{Mathematician-Programmer}
-    
-    Metashape developer (former \hhref{https://en.wikipedia.org/wiki/PhotoScan}{PhotoScan}, see \hhref{http://www.agisoft.com/community/showcase/}{showcase} and \hhref{http://www.agisoft.com/community/blog/}{blog}).
-    Mentor of students internship.
-    Currently focused on detailed, fast and scalable polygonal model reconstruction.
 
-    Computer vision, OpenCL and CUDA, computational geometry.
+    \textbf{Mathematician-Programmer}
+
+    \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Metashape} developer (former PhotoScan, see \hhref{http://www.agisoft.com/community/showcase/}{showcase} and \hhref{http://www.agisoft.com/community/blog/}{blog}).
+    Currently focused on detailed, fast and scalable polygonal model reconstruction.
+    Mentor of students internship.
+
+    Computer vision, computational geometry, OpenCL and CUDA.
   \item[ - Transas] \hfill \\
     \textbf{October 2014 - March 2016}
 
@@ -55,13 +59,13 @@
 
 \begin{itemize}
     \item{\textbf{Computer Vision}}: structure from motion, multiple view geometry, magic (like  \hhref{http://www.agisoft.com/index.php?id=49}{masks transfering}).
-    Better than state of the art results in 3D polygonal surface reconstruction.
+    Better than state of the art 3D polygonal surface reconstruction.
     Fast and occlusion-aware depth maps reconstruction.
     Dense point cloud classification: ground/road/building/vegetation/car.
 
     \item{\textbf{Computational geometry, CGAL}}: computations with absolute accuracy, algorithms and structures like Delaunay triangulation
 
-    \item{\textbf{OpenCL, CUDA, OpenGL, WebGL}}: GPGPU computations, modern shaders, ray tracing. Can configure: GPU-passthrough in KVM, OpenGL in headless servers like EC2 g2/g3/p2/p3, simultaneous usage of NVIDIA+AMD.
+    \item{\textbf{OpenCL, CUDA, OpenGL, WebGL}}: GPGPU computations, shaders, ray tracing
 
     \item{\textbf{C++, Python, Java}}
 \end{itemize}
@@ -72,13 +76,13 @@
 \vspace{-9pt}
 
 \begin{itemize}
-    \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/2018-autumn/classes/}{course} in CSC. Video recordings available on \hhref{https://www.youtube.com/watch?v=L79PgDOcVfw&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ}{youtube}, tasks available on \hhref{https://github.com/GPGPUCourse2018}{github}.
+    \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/2018-autumn/classes/}{course} in CSC. Video recordings available on \hhref{https://www.youtube.com/watch?v=L79PgDOcVfw&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ}{youtube}, tasks available on \hhref{https://github.com/GPGPUCourse2018/Tasks}{github}.
 
-    \item{\textbf{Open-source}: OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{modification} of EDISON mean shift segmentation. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus. Was a developer of \hhref{http://jtalks.org/}{jtalks.org} project (administration control component)}.
+    \item{\textbf{Open-source}: \hhref{https://github.com/PolarNick239/ExternalSortingOnGPU}{Out-of-core merge sort} with GPU acceleration. \hhref{https://gist.github.com/PolarNick239/7819fb7722fab09b37ecaee77c82cf58}{96-bit 3D Morton code}. OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{modification} of EDISON mean shift segmentation. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus.}.
 
     \item{\textbf{Hackathons}}: four awards on hackatons. Third place on \hhref{https://career.luxoft.com/lp/hack-cv/}{HackCV} (traffic signs recognition), \hhref{http://hackday.ru/sciencehackday-2/projects\#project-1400}{Science Hackday \#2} (Startup nomination), \hhref{http://hackday.ru/hackday-36/projects\#project-1121}{Hackday\#36} (Autodesk 3D-web nomination), \hhref{https://www.hackerleague.org/hackathons/jetbrains-edtech-hackathon/blogposts/53655896e24d32cfbd000006}{HackEdu} by JetBrains (third place). Participation in \hhref{http://www.hackjunction.com/}{Junction 2016, 2017}.
 
-    \item{\textbf{Conferences}}: participated in \hhref{http://3dv18.uniud.it/}{3DV 2018}, will participate in \hhref{http://www.3d-arch.org/}{3D-ARCH 2019}.
+    \item{\textbf{Conferences}}: participated in \hhref{http://3dv18.uniud.it/}{3DV 2018} and \hhref{http://www.3d-arch.org/}{3D-ARCH 2019}.
 
     \item{\textbf{Magister Ludi}}: \hhref{http://239.ru}{PML №239} programming teacher. \hhref{http://polarnick.com/blogs/239/2018/index_ru.html}{10-5} since september 2018. \hhref{http://polarnick239.github.io/239/201612}{9-1, 10-1, 11-1} in winter 2016/2017.
 
@@ -113,13 +117,11 @@
     \item{\textbf{\hhref{http://polarnick239.github.io/index_ru.html}{PolarNick.ru}}}
 
     \item{\textbf{\hhref{https://github.com/PolarNick239}{GitHub}}}
-    
+
     \item{\textbf{\hhref{https://www.linkedin.com/in/nickolay-polyarniy-61393b7b}{LinkedIn}}}
-    
-    
-    
+
 \end{itemize}
 
-Last updated: 20.01.2019
+Last updated: 04.06.2019
 
 \end{document}
