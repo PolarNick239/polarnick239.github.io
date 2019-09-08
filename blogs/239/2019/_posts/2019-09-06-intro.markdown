@@ -1,5 +1,5 @@
 ---
-layout: ru/blogs/239/2018/post
+layout: ru/blogs/239/2019/post
 title:  "План на год и первое задание"
 date:   2019-09-06 12:03:00 +0300
 lang:   ru
