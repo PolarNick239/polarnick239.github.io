@@ -125,21 +125,19 @@ static class Edge {
 
 public static void main {
     // ...
-    // создаем массив размером N, где graph[u] - это список ребер исходящих из вершины u
-    ArrayList<Edge>[] graph = new ArrayList[N];  
+    // создаем список списков, в котором будет так что graph.get(u) - это список ребер исходящих из вершины u
+    ArrayList<ArrayList<Edge>> graph = new ArrayList<ArrayList<Edge>>();  
     for (int u = 0; u < N; ++u) {
         // создаем пока что пустой список ребер исходящих из вершины u
-        // если этого не делать, то вместо ArrayList для каждой вершины будет храниьтся null
-        // и вы встретите NullPointerException
-        graph[u] = new ArrayList<Edge>();
+        graph.add(new ArrayList<Edge>());
     }
     for (int e = 0; e < E; ++e) {
         int u = scanner.nextInt();
         int v = scanner.nextInt();
         int time = scanner.nextInt();
         // данный пример для неориентированного графа, поэтому ребро идет в обе стороны:
-        graph[u].add(new Edge(v, time)); // u -> v
-        graph[v].add(new Edge(u, time)); // v -> u
+        graph.get(u).add(new Edge(v, time)); // u -> v
+        graph.get(v).add(new Edge(u, time)); // v -> u
     }
 }
 ```
@@ -164,11 +162,11 @@ Java требует это сформулировать ввиде функци�
 Итого чтобы отсортировать ребра исходящие из каждой вершины достаточно написать так:
 
 ```java
-ArrayList<Edge>[] graph = new ArrayList[N];
+ArrayList<ArrayList<Edge>> graph = new ArrayList<ArrayList<Edge>>();
 // ...
 for (int u = 0; u < n; ++u) {
-    // Сортируем список
-    graph[u].sort(new Comparator<Edge>() {
+    // Сортируем список для вершины номер u, т.е. graph.get(u) возвращает список ребер ArrayList<Edge>
+    graph.get(u).sort(new Comparator<Edge>() {
         @Override
         public int compare(Edge a, Edge b) {
             return a.to - b.to; // заметьте что таким образом мы очень легко реализовали требуемую функцию
