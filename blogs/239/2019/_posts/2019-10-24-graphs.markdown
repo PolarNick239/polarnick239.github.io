@@ -74,6 +74,8 @@ for (int u = 0; u < N; ++u) {
     graph[u] = new int[N];
 }
 
+// ... не забудьте заполнить бесконечностями и нулями ...
+
 for (int u = 0; u < N; ++u) {
     for (int v = 0; v < N; ++v) {
         graph[u][v] = scanner.nextInt(); // считываем длину ребра u<->v
