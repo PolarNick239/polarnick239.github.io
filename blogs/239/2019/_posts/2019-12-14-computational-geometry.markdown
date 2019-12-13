@@ -125,12 +125,7 @@ for (int i = 0; i < vectors.length; ++i) {
 
 ```Опр``` Пусть $$A, B, C$$ - некотрые двухмерные точки, тогда
 
-$$\operatorname{LeftTurn}(A, B, C) =\left\{
-                                         \begin{array}{rl}
-                                         1, if \vec{AB}\times\vec{AC} > 0\\
-                                         -1, if \vec{AB}\times\vec{AC} < 0\\
-                                         0, if \vec{AB}\times\vec{AC} ~= 0
-                                         \end{array}$$ - предикат левого поворота.
+$$\operatorname{LeftTurn}(A, B, C) =\left\{\begin{array}{rl} 1 &, if \vec{AB}\times\vec{AC} > 0 \\ -1 &, if \vec{AB}\times\vec{AC} < 0 \\ 0 &, if \vec{AB}\times\vec{AC} ~= 0\end{array}$$ - предикат левого поворота.
 
 ![Предикат левого поворота](/static/2019/12/left_turn.png)
 
@@ -167,7 +162,7 @@ $$\operatorname{LeftTurn}(A, B, C) =\left\{
 
 Давайте теперь научимся проверять отрезки на пересечение:
 
-```Утв 3``` $$\operatorname{isIntersected}(AB, CD) = (\operatorname{LeftTurn}(A, B, C) != \operatorname{LeftTurn}(A, B, D)) and (\operatorname{LeftTurn}(C, D, A) != \operatorname{LeftTurn}(C, D, B))$$
+```Утв 3``` $$\operatorname{isIntersected}(AB, CD) = (\operatorname{LeftTurn}(A, B, C) != \operatorname{LeftTurn}(A, B, D))$$ И $$(\operatorname{LeftTurn}(C, D, A) != \operatorname{LeftTurn}(C, D, B))$$
 
 Заметьте что это утверждение **неверно** в случае если отрезки лежат на одной прямой.
 
