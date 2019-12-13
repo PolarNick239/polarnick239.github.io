@@ -120,12 +120,16 @@ for (int i = 0; i < vectors.length; ++i) {
  
  - Посчитайте руками по явной формуле векторного произведение ожидаемый результат например перемножения ```upRight45``` и ```left``` и сверьте полученный результат с выведенным результатом программы
 
+```Утв``` Заметьте что теперь формулу синуса угла между векторами можно легко вывести из формулы $$\vec{u} \times \vec{v} = |\vec{u}| \cdot |\vec{v}| \cdot sin(a) = u.x \cdot v.y - u.y \cdot v.x$$:
+
+$$sin(a) = (\vec{u} \times \vec{v}) / (|\vec{u}| \cdot |\vec{v}|) = (u.x \cdot v.y - u.y \cdot v.x) / (|\vec{u}| \cdot |\vec{v}|)$$
+
 Предикат левого поворта
 -----
 
 ```Опр``` Пусть $$A, B, C$$ - некотрые двухмерные точки, тогда
 
-$$\operatorname{LeftTurn}(A, B, C) =\left\{\begin{array}{rl} 1 &, if \vec{AB}\times\vec{AC} > 0 \\ -1 &, if \vec{AB}\times\vec{AC} < 0 \\ 0 &, if \vec{AB}\times\vec{AC} ~= 0\end{array}}$$ - предикат левого поворота.
+$$\operatorname{LeftTurn}(A, B, C) = \begin{array}{rl} 1 &, if \vec{AB}\times\vec{AC} > 0 \\ -1 &, if \vec{AB}\times\vec{AC} < 0 \\ 0 &, if \vec{AB}\times\vec{AC} ~= 0\end{array}$$ - предикат левого поворота.
 
 ![Предикат левого поворота](/static/2019/12/left_turn.png)
 
