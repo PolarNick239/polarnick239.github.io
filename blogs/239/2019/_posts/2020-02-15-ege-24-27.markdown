@@ -1,0 +1,17 @@
+---
+layout: ru/blogs/239/2019/post
+title:  "ЕГЭ: задания 24-27"
+date:   2020-02-15 00:03:00 +0300
+lang:   ru
+categories: school239_115_2019_2020
+---
+
+Ссылки на задания:
+
+ - [24. Исправление ошибок в программе](https://yandex.ru/tutor/subject/tag/problems/?ege_number_id=362&tag_id=19)
+
+ - [25. Алгоритм обработки массивов](https://yandex.ru/tutor/subject/tag/problems/?ege_number_id=363&tag_id=19)
+
+ - [26. Выигрышная стратегия](https://yandex.ru/tutor/subject/tag/problems/?ege_number_id=364&tag_id=19)
+
+ - [27. Программирование](https://yandex.ru/tutor/subject/tag/problems/?ege_number_id=365&tag_id=19)
