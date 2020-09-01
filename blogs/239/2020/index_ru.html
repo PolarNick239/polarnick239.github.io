@@ -1,0 +1,31 @@
+---
+layout: ru/blogs/239/20/default
+lang:   ru
+id:     239_2020_10_5
+---
+
+<div class="home">
+
+  <h1 class="post-title">{% include /commons/icon-rss.html path="feed_ru.xml" %} Задания для 11-5. ФМЛ №239. 2019/2020</h1>
+
+  <table class="post-list">
+    {% for post in site.categories.school239_115_2019_2020 %}
+      {% if post.lang == page.lang %}
+        <tr>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%b %-d," }}</span>
+          </td>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%Y" }}</span>
+          </td>
+          <td>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+
+  <a class="post-link" href="/blogs/239/2018/index_ru.html">Материалы за прошлый год (10-5, 2018/2019)</a>
+
+</div>
