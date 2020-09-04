@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "[АУ] Презентация летних практик от Agisoft"
+title:  "[АУ] Презентация летних практик от Agisoft (запекание геометрии, векторизация зданий)"
 date:   2018-05-25 21:30:00 +0300
 categories: practice
 lang:   ru

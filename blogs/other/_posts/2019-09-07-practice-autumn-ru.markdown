@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "Презентация осенник практик от Agisoft"
+title:  "Презентация осенник практик от Agisoft (3D-линии, подразбиение геометрии)"
 date:   2019-09-07 21:30:00 +0300
 categories: practice
 lang:   ru

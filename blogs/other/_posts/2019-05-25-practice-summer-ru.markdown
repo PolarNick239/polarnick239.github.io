@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "Презентация летних практик от Agisoft"
+title:  "Презентация летних практик от Agisoft (BoW, оптический поток)"
 date:   2019-05-25 21:30:00 +0300
 categories: practice
 lang:   ru

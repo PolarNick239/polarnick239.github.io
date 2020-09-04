@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "[ВШЭ+ИТМО] Презентация осенник практик от Agisoft"
+title:  "[ВШЭ+ИТМО] Презентация осенник практик от Agisoft (планирование облета)"
 date:   2018-09-07 21:30:00 +0300
 categories: practice
 lang:   ru

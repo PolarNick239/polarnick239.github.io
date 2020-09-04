@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "[АУ] Презентация весенних практик от Agisoft"
+title:  "[АУ] Презентация весенних практик от Agisoft (бесшовная ортомозаика, сегментация фона, VR)"
 date:   2018-02-12 21:30:00 +0300
 categories: practice
 lang:   ru

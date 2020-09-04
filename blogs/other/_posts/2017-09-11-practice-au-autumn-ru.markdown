@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/other/post
-title:  "[АУ] Презентация осенних практик от Agisoft"
+title:  "[АУ] Презентация осенних практик от Agisoft (маркеры на пленке, удаление освещения)"
 date:   2017-09-11 21:30:00 +0300
 categories: practice
 lang:   ru
