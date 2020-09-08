@@ -31,7 +31,9 @@ import java.util.Scanner; // эту строчку надо написать в�
 ```
 ```java
 Scanner scanner = new Scanner(System.in);
-int a = scanner.nextInt();
+int a = scanner.nextInt();        // считать целое число
+double b = scanner.nextDouble();  // считать вещественное число
+String line = scanner.nextLine(); // считать строку
 ```
 
 Работа со строками:
