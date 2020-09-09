@@ -1,5 +1,5 @@
 ---
-layout: ru/blogs/239/2018/post
+layout: ru/blogs/239/2020/post
 title:  "[Java] Введение в базовый синтаксис"
 date:   2020-09-01 12:04:00 +0300
 lang:   ru
