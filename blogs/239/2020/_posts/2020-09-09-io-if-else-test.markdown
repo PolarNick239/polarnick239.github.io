@@ -1,10 +1,52 @@
 ---
 layout: ru/blogs/239/2020/post
-title:  "[Java] Задание на Input/Output и if-else"
+title:  "[Java] Input/Output и if-else"
 date:   2020-09-09 12:04:00 +0300
 lang:   ru
 categories: school239_105_2020_2021
 ---
+
+**Покрытые темы**
+====
+
+```java
+System.out.print("text");
+int x;
+System.out.print(x);
+System.out.println("x=" + x);
+System.out.println();
+
+Scanner scanner = new Scanner(System.in);
+int years = scanner.nextInt();
+String name = scanner.nextLine();
+
+if (years < 0) {
+    System.out.println("Отрицательный возраст!? :O");
+} else {
+    System.out.println("С введенным возрастом все в порядке! :)");
+}
+
+double weightOfStone = scanner.nextDouble();
+if ((weightOfStone > 10.0) && (weightOfStone < 20.0)) {              // это логическое И
+    System.out.println("Вес камня находится между 10 и 20 кг");
+} else if ((weightOfStone < 0.0) || (weightOfStone > 10000000.0)) { // это логическое ИЛИ
+    System.out.println("Вес камня крайне подозрительный! (отрицательный или очень большой)");
+} else {
+    System.out.println("Вес камня попал в остальные случаи которые мы не разобрали: " + weightOfStone);
+}
+```
+
+Так же есть разные другие логические операции которые часто пригодятся в **if**-условиях:
+
+ - ```!КакоеТоЛогическоеУсловие``` - логическое отрицание того что после восклицательного знака (знака логического отрицания)
+ 
+ - ```> < ==``` - знаки меньше, больше и равенства (**обратите внимание что здесь ДВА знака равно**)
+ 
+ - ```>= <= !=``` - знаки больше или равно, меньше или равно и неравенства
+
+
+**Задание**
+====
 
 Задание на уроке и затем дома к утру вторника 15 сентября - выполнить задачки в [http://mdl.sch239.net/](http://mdl.sch239.net/) :
 
