@@ -9,7 +9,7 @@ categories: school239_105_2020_2021
 **Покрытые темы**
 ====
 
-Таблица ASCII кодов - https://ru.wikipedia.org/wiki/ASCII
+Таблица ASCII кодов - [https://ru.wikipedia.org/wiki/ASCII](https://ru.wikipedia.org/wiki/ASCII)
 
 ```java
 String name = scanner.nextLine(); // String - строка, по сути это массив состоящий из символов
