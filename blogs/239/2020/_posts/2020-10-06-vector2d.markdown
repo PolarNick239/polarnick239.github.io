@@ -42,3 +42,44 @@ categories: school239_105_2020_2021
 =========
 
 Добавьте метод ```dot``` который принимает аргументом второй вектор и возвращает скалярное произведение.
+
+Выполненное задание 1:
+
+Класс Vec2d:
+
+```java
+public class Vec2d {
+
+    public double x;
+    public double y;
+
+    public Vec2d(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void print() {
+        System.out.println("Vec2d {x=" + x + ", y=" + y + "}");
+    }
+
+    public double length() {
+        return Math.sqrt(x * x + y * y);
+    }
+
+}
+```
+
+Класс с main-функцией для тестирования нашего вектора:
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        Vec2d a = new Vec2d(10.5, 20);
+        a.print();
+        double length = a.length();
+        System.out.println("length=" + length);
+    }
+
+}
+```
