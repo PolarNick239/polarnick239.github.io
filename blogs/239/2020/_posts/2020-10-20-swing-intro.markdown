@@ -71,3 +71,8 @@ categories: school239_105_2020_2021
 Или полет сквозь звезды (точки или отрезки удаляющиеся от центра от времени, тоже с помощью косинусов и синусов):
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/aTt_hWASKbs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+Записи с доски
+==============
+
+![ООП, GUI](/static/2020/10/board_oop_swing.png)
