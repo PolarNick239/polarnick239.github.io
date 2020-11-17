@@ -10,11 +10,11 @@ categories: school239_105_2020_2021
 
 Цель - реализовать игру **Flappy Bird**:
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=fQoJZuBwrkU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fQoJZuBwrkU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Если вы ее уже делали или это слишком просто - делайте **Arkanoid** (платформой управление мышкой - какая координата мыши по оси X - такое положение у платформы, блоки должны быть хотя бы двух-трех цветов соответствующие разной прочности, хорошо бы чтобы блоки начинали трескаться после первого удара, хорошо бы чтобы были редкие бонус из разбитых блоков - например дающие расширение платформы если его поймать):
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=tn6-zcSxrO4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tn6-zcSxrO4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 **Домашнее задание**: доделать **Flappy Bird** (или **Arkanoid** если вы делаете его). Пожалуйста не стесняйтесь спрашивать меня в телеграмме если на чем-то застряли, вы в т.ч. поможете другим - т.к. если у вас общий вопрос - то я дополню эту страницу и остальным тоже будет проще.
 
