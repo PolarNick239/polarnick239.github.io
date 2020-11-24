@@ -1,6 +1,6 @@
 ---
 layout: ru/239/201612/post
-title:  "Задание 39. Простая программа рисования"
+title:  "Задание 39. Простой программа рисования"
 date:   2017-01-24 12:00:00 +0300
 categories: 239 lesson school java paint swing
 ---
