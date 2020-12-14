@@ -129,7 +129,7 @@ public class MainFrame extends JFrame implements MouseListener, MouseMotionListe
 
 1) Указать число буферов для стратегии буферизации - ```createBufferStrategy(2);``` (например вызвав в конце конструирования окна)
 
-2) В методе ```paint``` удалить вызов ```super.paint(g)```
+2) В методе ```paint``` в самом начале сделать вызов ```super.paint(g)```
 
 3) В самом начале метода ```paint``` написать следующий код:
  
