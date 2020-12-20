@@ -14,8 +14,6 @@ categories: school239_105_2020_2021
 
 Картинка персонажа и анимация скачаны с сайта [craftpix.net](https://craftpix.net/freebies/free-3-character-sprite-sheets-pixel-art/) (нужно зарегистрироваться, например через google аккаунт). Этот сайт нашел по запросу в гугле "game animation sprite", затем среди картинок из поисковой выдачи (вместо обычного поиска страниц) нашел подходящую картинку и перешел на сайт. 
 
-Звук бега скачан с [freesound.org](https://freesound.org/people/Fabrizio84/sounds/460919/) (сайт нашел по запросу в гугле "game sounds running").
-
 1) Рисуем персонажа с простым управлением
 ===============
 
@@ -195,7 +193,7 @@ public class Animation {
         BufferedImage allFrames = ImageIO.read(new File(path));
         int allFramesWidth = allFrames.getWidth();
         if (allFramesWidth % numberOfFrames != 0) {
-            throw new RuntimeException("Ширина картинки хранящей анимации=" + allFramesWidth + ", но он должен быть кратен числу кадров " + numberOfFrames + "!");
+            throw new RuntimeException("Ширина картинки хранящей анимации=" + allFramesWidth + ", но она должна быть кратна числу кадров " + numberOfFrames + "!");
         }
 
         this.frameWidth = allFramesWidth / numberOfFrames;
@@ -249,8 +247,8 @@ public class Man {
     private Animation animationRun;
 
     public Man(double x) throws IOException {
-        woodcutterImage = ImageIO.read(new File("C:\\Users\\PolarNick\\IdeaProjects\\AnimationTest\\src\\Woodcutter.png"));
-        animationRun = new Animation("C:\\Users\\PolarNick\\IdeaProjects\\AnimationTest\\src\\Woodcutter_run.png", 6, 60);
+        woodcutterImage = ImageIO.read(new File("...\\Woodcutter.png"));
+        animationRun = new Animation("...\\Woodcutter_run.png", 6, 60);
 
         // ...
     }
