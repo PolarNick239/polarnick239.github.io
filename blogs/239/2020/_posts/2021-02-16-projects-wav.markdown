@@ -98,7 +98,33 @@ public class MakeSound {
 ```java
 public class Main {
     public static void main(String[] args) {
+        System.out.println("Start...");
+
         new MakeSound().playSound("bip.wav");
+
+        System.out.println("main() finished!");
     }
 }
 ```
+
+5) Обратите внимание что вызов проигрывания музыки - блокирующий, пока файл не проиграется до конца - код не пойдет выполняться дальше.
+Другая сторона этой проблемы - невозможно проиграть два аудиофайла одновременно, но решение есть!
+
+6) Нужно выполнить этот код из другого потока, тогда основная программа продолжит исполнение команд дальше - а аудиофайл проиграется из метода ```playSound(...)``` выполняемого параллельно - в параллельном вычислительном потоке:
+
+```java
+public class Main {
+    public static void main(String[] args){
+        System.out.println("Start...");
+
+        new Thread(() -> {
+            new MakeSound().playSound("bip.wav");
+            System.out.println("audio file finished!");
+        }).start();
+
+        System.out.println("main() finished!");
+    }
+}
+```
+
+Заметьте что теперь ```main() finished!``` печатается в консоль сразу после начала проигрывания музыки (не дожидаясь ее окончания), а это значит что основная программа продолжает выполняться независимо от проигрывания звука, ведь этим занимается специально созданный независимый поток.
