@@ -32,8 +32,9 @@ categories: school239_105_2020_2021
  
 [Критерии и ориентиры](/blogs/239/2020/school239_105_2020_2021/2021/03/15/conference-docs.html), [примеры пояснительных записок](/blogs/239/2018/school239_105_2018_2019/2019/05/23/projects-result.html).
 
+<!---
 [описание](/static/2021/04/projects/docs/)
-    [описание](/static/2021/04/projects/docs/Astray.pdf)
+-->
  
 | Автор     | Название            | Описание                                   | Проект               | Поясн. зап. | Презентация | [Запускаемый jar](/blogs/239/2018/school239_105_2018_2019/2019/04/15/jar-packaging.html) | [Выложено на github](/blogs/239/2020/school239_105_2020_2021/2021/03/01/github.html) |
 | Ай. А.    | Giraffe Octavian faces the adult world | Point and click adventure (жираф в баре)   | Основной функционал готов, дальше рисовать картинки | [описание](/static/2021/04/projects/docs/Giraffe Octavian faces the adult world.pdf) | 60% | потом | потом |
@@ -42,7 +43,7 @@ categories: school239_105_2020_2021
 | Би. Г.    | Бильярд             | Бильярд                                    | 70% готово, дальше кий отпускается при втором клике, исчезает при первом соударении | [описание](/static/2021/04/projects/docs/Бильярд.pdf) | 20% | потом | потом |
 | Ви. Д.    | AstraCommotor       | Физический движок (планеты)                | 50% готово, бага с траекторией, дальше подгрузка коорд. и скоростей, потенциально сверка результата симуляции с поздним состоянием координат, картинки | [описание](/static/2021/04/projects/docs/AstraCommotor.pdf) | 20% | потом | потом |
 | Го. Ю.    | Astray              | Сюжетная аркада (Unity)                    | Осн. функ. готов, переложить чертежи 2 и 3 уровня, картинки под вопросом | [описание](/static/2021/04/projects/docs/Astray.pdf) | 30% | .exe | не будет |
-| Гр. И.    |                     | Манчкин                                    | Осн. функ. готов, доделываются удобства | ? |  |  |  |
+| Гр. И.    | Bloody path to peace| Был Манчкин, стал экшн                     | Осн. функ. готов, доделываются удобства | [описание](/static/2021/04/projects/docs/Bloody path to peace.pdf) |  |  |  |
 | Гу. Я.    | Marauder’s Map      | Лабиринт с заданиями                       | Осн. функ. готов, дальше картинки пола, стен, дверей/живых картин, генератор лабиринта? | [описание](/static/2021/04/projects/docs/Marauder’s Map.pdf) | 30% презентация | потом | потом |
 | Гу. Ив.   | Картоха Engine (физика) | 3D движок (физика)                     | Осн. функ. готов, нужны красивые технодемки | [описание](/static/2021/04/projects/docs/Картоха Engine физика.pdf) |  | [.jar](https://github.com/VanyaXIII/3DPhysicalEngine/tree/master/out/artifacts/3DPhysicalEngine_jar) | [Engine](https://github.com/VanyaXIII/Engine), [3DPhysicalEngine](https://github.com/VanyaXIII/3DPhysicalEngine) |
 | Гу. Ин.   | Point-and-Click Detective | Point and click adventure            | Осн. функ. готов, доделывается сюжет | [описание](/static/2021/04/projects/docs/Point-and-Click_Detective.pdf) |  |  |  |
@@ -53,13 +54,13 @@ categories: school239_105_2020_2021
 | ______ | ______ | ______ | ______ | ______ | ______ | ______ | ______ |
 | Ка. Е.    | Raskolnikov Click and Point Adventure | Раскольников, защита от полиции | Осн. функ. готов, остался финал и рисунки | [описание](/static/2021/04/projects/docs/Raskolnikov Click and Point Adventure.pdf) | 70% | потом | потом |
 | Ма. Е.    | Решатель японских кроссвородов | Решатель японских кроссвородов  | 50% готово, доводка алгоритма | [описание](/static/2021/04/projects/docs/Решение японских кроссвордов.pdf) | 0% | потом | потом |
-| Ос. И.    |                     | Вид сбоку, воин с мечом                    | Осн. функ. готов, финальные штрихи | ? |  |  |  |
+| Ос. И.    | Desolate Dungeons   | Вид сбоку, воин с мечом                    | Осн. функ. готов, финальные штрихи | [описание](/static/2021/04/projects/docs/Desolate_Dungeons.pdf) |  |  |  |
 | Ру. В.    | Tank Wars           | Тачики с пошаговой пристрелкой (аля Worms) | 50% готово, базовые механики доделать и ландшафт | [описание](/static/2021/04/projects/docs/Tank Wars.pdf) | 20% | потом | потом |
 | Са. Л.    |                     | Among us                                   | 50% готово, стрельба почти, позже мины | ? | 0% | потом | потом |
 | Се. А.    | Картоха Engine (отрисовка)| 3D движок (GPGPU рендеринг)                | Осн. функ. готов, нужны красивые технодемки | [описание](/static/2021/04/projects/docs/Картоха Engine отрисовка.pdf) |  |  |  |
 | Сл. К.    | Загадки Хогвартса   | Настолка про Гарри Поттера                 | Осн. функ. готов, дальше картинки | [описание](/static/2021/04/projects/docs/Загадки Хогвартса.pdf) | 60% | потом | потом |
 | Та. Л.    | Adventure Seeker    | Аркада (аля Mario)                         | Осн. функ. готов, финальные штрихи | [описание](/static/2021/04/projects/docs/Adventure Seeker.pdf) | 40% | потом | [github](https://github.com/just-4-name/myArcade) |
-| Тр. А.    |                     | Прыгающий динозаврик из хром браузера      | 70% готово, добавить интересностей | ? |  |  |  |
+| Тр. А.    | Полет Греты Тунберг и бутылки | Прыгающий динозаврик из хром браузера | 70% готово, добавить интересностей | [описание](/static/2021/04/projects/docs/Полет Греты Тунберг и бутылки.pdf) |  |  |  |
 | Фа. М.    | ГИС "Атом"          | Карта мира (OSM, wikimapia)                | Осн. функ. готов, добавляет клики по домам | [описание](/static/2021/04/projects/docs/ГИС Атом.pdf) | 5% | потом | [github](https://github.com/Visualprogrammer/Wikimapia_client) |
 | Че. Ал.   | HeadSoccer          | Футбол 1 на 1, хотсит (HeadBall)           | 60% готово, дальше ворота, картинки, меню, звуки | [описание](/static/2021/04/projects/docs/HeadSoccer.pdf) | 30% | потом | потом |
 | Че. Ан.   | Worms Armageddon    | Worms                                      | Осн. функ. готов, финальные штрихи | [описание](/static/2021/04/projects/docs/Worms.pdf) | 90% | потом | [WormsGeniusly](https://github.com/TushaChesnokova/WormsGeniusly) |
