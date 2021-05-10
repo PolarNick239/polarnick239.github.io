@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/239/2020/post
-title:  "[Проект] Таблица состояния"
-date:   2021-04-06 0:02:39 +0300
+title:  "[Проект] Результаты"
+date:   2021-04-27 0:02:39 +0300
 lang:   ru
 categories: school239_105_2020_2021
 ---
@@ -59,7 +59,7 @@ categories: school239_105_2020_2021
 | Са. Л.    |                     | Among us                                                      | [описание](/static/2021/04/projects/docs/AmoguS.pdf) | 0% | потом | потом | II степень | 5 | 1 |
 | Се. А.    | Картоха Engine (отрисовка)| 3D движок (GPGPU рендеринг)                             | [описание](/static/2021/04/projects/docs/Картоха Engine отрисовка.pdf) |  |  | [3DPhysicalEngine](https://github.com/VanyaXIII/3DPhysicalEngine), [3D отрисовка](https://github.com/spyteamalex/KartohaEngine) | I степень | 5+ | 5 |
 | Сл. К.    | Загадки Хогвартса   | Настолка про Гарри Поттера                                    | [описание](/static/2021/04/projects/docs/Загадки Хогвартса.pdf) | 60% | потом | потом | Участника | 4 | 1 |
-| Та. Л.    | Adventure Seeker    | Аркада (аля Mario)                                            | [описание](/static/2021/04/projects/docs/Adventure Seeker.pdf) | 40% | потом | [github](https://github.com/just-4-name/myArcade) | III степень | 5+ | 4 |
+| Та. Л.    | Adventure Seeker    | Аркада (аля Mario)                                            | [описание](/static/2021/04/projects/docs/Adventure Seeker.pdf) | 40% | [.jar](https://github.com/just-4-name/myArcade/releases/download/v1.0/Arcade.jar) | [github](https://github.com/just-4-name/myArcade) | III степень | 5+ | 4 |
 | Тр. А.    | Полет Греты Тунберг и бутылки | Прыгающий динозаврик из хром браузера               | [описание](/static/2021/04/projects/docs/Полет Греты Тунберг и бутылки.pdf) |  |  |  | Участника | 3 | 1 |
 | Фа. М.    | ГИС "Атом"          | Карта мира (OSM, wikimapia)                                   | [описание](/static/2021/04/projects/docs/ГИС Атом.pdf) | 5% | потом | [Wikimapia](https://github.com/Visualprogrammer/Wikimapia_client) | III степень | 5+ | 3 |
 | Че. Ал.   | HeadSoccer          | Футбол 1 на 1, хотсит (HeadBall)                              | [описание](/static/2021/04/projects/docs/HeadSoccer.pdf) | 30% | потом | потом | Похвальный | 3 | 1 |
