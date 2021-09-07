@@ -1,0 +1,29 @@
+---
+layout: ru/blogs/239/2021/post
+title:  "Установка окружения для C++"
+date:   2021-09-07 00:02:00 +0300
+lang:   ru
+categories: school239_11_2021_2022
+---
+
+Нужно установить:
+
+1) [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) - бесплатная версия (в случае если вы используете Linux - достаточно установить ```sudo apt install g++ cmake git```)
+
+2) [CLion](https://www.jetbrains.com/clion/) - установите и активируйте триальный период (30 дней), но вам потребуется запросить ученическую бесплатную лицензию:
+
+2.1) [https://www.jetbrains.com/shop/eform/students](https://www.jetbrains.com/shop/eform/students)
+2.2) Выбрать **Official document**->**I'm a student**
+2.3) Level of study: ```Secondary```
+2.4) Graduation date: ```2022```
+2.5) Введите вашу почту (убедитесь что не забыли к ней пароль)
+2.6) Ввести имя и фамилию на английском
+2.7) Country: ```Russian Federation```
+2.8) Name of your academic institution: ```Presidential Physics and Mathematics Lyceum №239```
+2.9) Website of your academic institution: ```https://www.239.ru/```
+2.10) Отметьте галочкой "The educational program that I am enrolled in takes one or more years of full-time study to complete"
+2.11) **ADD DOCUMENT** - добавить фотографию студенческого чтобы были видны ваши имя, фамилия, название школы и год продления
+
+3) Чтобы настроить Toolchain в CLion можно все оставить по умолчанию кроме битности, позже будет важно компилировать с 64-битностью - поэтому выставите **amd64**:
+
+![Clion MSVC toolchain architecture - amd64](/static/2021/09/08/clion_toolchain_amd64.png)

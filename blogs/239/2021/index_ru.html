@@ -1,0 +1,31 @@
+---
+layout: ru/blogs/239/2020/default
+lang:   ru
+id:     239_2021_11
+---
+
+<div class="home">
+
+  <h1 class="post-title">{% include /commons/icon-rss.html path="feed_ru.xml" %} Компьютерное зрение на С++. ФМЛ №239. 2021/2022</h1>
+
+  <a class="post-link" href="https://github.com/PML239CVCourse">Репозитории на github</a>
+
+  <table class="post-list">
+    {% for post in site.categories.school239_11_2021_2022 %}
+      {% if post.lang == page.lang %}
+        <tr>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%b %-d," }}</span>
+          </td>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%Y" }}</span>
+          </td>
+          <td>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+
+</div>
