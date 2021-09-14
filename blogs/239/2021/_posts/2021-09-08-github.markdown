@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/239/2021/post
-title:  "GitHub репозиторий с заданиями, работа с git"
+title:  "Урок 1: GitHub репозиторий с заданиями, работа с git"
 date:   2021-09-08 00:03:00 +0300
 lang:   ru
 categories: school239_11_2021_2022
