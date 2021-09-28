@@ -8,7 +8,7 @@ categories: school239_11_2021_2022
 
 Нужно установить:
 
-1) [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) - бесплатная версия (в случае если вы используете Linux - достаточно установить ```sudo apt install g++ cmake git```)
+1) [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) - бесплатная версия, не забудьте в процессе поставить галочку на ```Разработка приложений на C++``` (если же вы используете Linux - достаточно установить ```sudo apt install g++ cmake git```)
 
 2) [CLion](https://www.jetbrains.com/clion/) - установите и активируйте триальный период (30 дней), но вам потребуется запросить ученическую бесплатную лицензию:
 
