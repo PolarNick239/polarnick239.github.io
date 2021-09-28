@@ -85,5 +85,7 @@ Mat myFloatingPointImage(height, width, CV_32FC1, Scalar(1.5f)); // в этом 
 
 Поможет перенести папку проекта целиком по новому пути (например создайте на диске C папку ```CPPSchool``` и перенесите проект туда), и затем открыть его из CLion по этому новому пути через File->Open.
 
-2) Если видите ошибку и там встречается слово ```mingw``` - откройте File->Settings->Toolchain и с помощью стрелочки поднимите Visual Studio выше MinGW, заодно убедитесь что выбрано amd64 
+2) Если видите ошибку и там встречается слово ```mingw``` - откройте File->Settings->Toolchain и с помощью стрелочки поднимите Visual Studio выше MinGW, заодно убедитесь что выбрано Architecture: amd64
+
+3) Если видите ошибку "fatal error LNK1120" - откройте File->Settings->Toolchain - поправьте Architecture с х86 на amd64
 
