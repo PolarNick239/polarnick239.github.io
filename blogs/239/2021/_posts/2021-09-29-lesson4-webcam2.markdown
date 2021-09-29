@@ -6,6 +6,11 @@ lang:   ru
 categories: school239_11_2021_2022
 ---
 
+КАК СДЕЛАТЬ ОШИБКИ КОМПИЛЯЦИИ НА РУССКОМ (если сейчас квакозябры)
+======
+
+File->Settings->Editor->General->Console: Default Encoding = IBM866
+
 Если вы все сделали
 ======
 
