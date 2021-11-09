@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/239/2021/post
-title:  "Урок 3: Установка OpenCV, коллаж из объекта на фоне, вебкамера, green-screen"
+title:  "Урок 3: Установка OpenCV, коллаж из объекта на фоне, вебкамера, green-screen (как выставить Working DIR и какие dll подкладывать)"
 date:   2021-09-22 00:02:00 +0300
 lang:   ru
 categories: school239_11_2021_2022
