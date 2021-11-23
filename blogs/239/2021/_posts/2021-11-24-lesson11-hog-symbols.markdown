@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/239/2021/post
-title:  "Урок 11: histograms of gradient (HoG) для распознавания букв"
+title:  "Урок 11: Histograms of Gradients (HoG) для распознавания букв"
 date:   2021-11-24 00:02:00 +0300
 lang:   ru
 categories: school239_11_2021_2022
