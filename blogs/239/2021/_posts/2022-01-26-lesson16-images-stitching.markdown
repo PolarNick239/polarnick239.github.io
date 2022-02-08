@@ -62,3 +62,21 @@ categories: school239_11_2021_2022
 А что если наложить другую картинку по этой же матрице преобразования? Например:
 
 ![Transfered another image](/static/2022/01/stitching/11img0withNesquik.jpg)
+
+Сшивка панорам
+======
+
+В задачах про сшивку панораму например возникает желание увеличить размер картинки, проще всего сделать новую картинку большего размера и уже на нее рисовать и исходную картинку, и ту что вы накладываете поверх.
+
+Осталось лишь не промахнуться с размером - можно просто угадать взяв большое число, но если хочется сделать хорошо, то можно применить матрицу гомографии к каждому из углов исходной картинки, это даст вам четыре новые точки в результирующей картинке-панораме, и взяв из координат этих точек максимум - вы определите требуемые размеры панорамы.
+
+Но как найти для каждой точки-угла куда она переходит? Домножить на матрицу гомографии, можете попробовать нагуглить самостоятельно как это сделать, например гугл ```opencv homography apply to point cpp``` -> [https://answers.opencv.org/question/5440/apply-homography-on-a-sinlge-point/](https://answers.opencv.org/question/5440/apply-homography-on-a-sinlge-point/) -> [https://docs.opencv.org/2.4/doc/tutorials/features2d/feature_homography/feature_homography.html](https://docs.opencv.org/2.4/doc/tutorials/features2d/feature_homography/feature_homography.html) -> код:
+
+```cpp
+std::vector<Point2f> obj_corners(4);
+obj_corners[0] = cvPoint(0,0); obj_corners[1] = cvPoint( img_object.cols, 0 );
+obj_corners[2] = cvPoint( img_object.cols, img_object.rows ); obj_corners[3] = cvPoint( 0, img_object.rows );
+std::vector<Point2f> scene_corners(4);
+
+perspectiveTransform( obj_corners, scene_corners, H);
+```
