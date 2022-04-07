@@ -178,6 +178,7 @@ for (int i = iFirst; i != iLast; i += iStep) {
 - [Сайт](https://gfx.cs.princeton.edu/pubs/Barnes_2009_PAR/)
 - [Статья](https://gfx.cs.princeton.edu/pubs/Barnes_2009_PAR/patchmatch.pdf)
 - [Видео на youtube](https://youtu.be/fMe19oTz6vk?t=54)
+- [Видео с идеями на каких картинках можно потестировать](https://youtu.be/NH0aEp1oDOI?t=63)
 
 Примеры
 ======
