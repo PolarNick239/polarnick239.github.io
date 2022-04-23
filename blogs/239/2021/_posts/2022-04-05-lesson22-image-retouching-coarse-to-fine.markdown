@@ -128,7 +128,7 @@ std::vector<cv::Mat> pyramid; // здесь будем хранить прону
 
 cv::Mat img = original.clone();
 const int PYRAMID_MIN_SIZE = 20; // до какой поры уменьшать картинку? давайте уменьшать пока картинка больше 20 пикселей
-while (img.rows > PYRAMID_MIN_SIZE && img.rows > PYRAMID_MIN_SIZE) { // или пока больше (2 * размер окна для оценки качества)
+while (img.rows > PYRAMID_MIN_SIZE && img.cols > PYRAMID_MIN_SIZE) { // или пока больше (2 * размер окна для оценки качества)
     pyramid.insert(pyramid.begin(), img); // мы могли бы воспользоваться push_back но мы хотим вставлять картинки в начало вектора
     cv::pyrDown(img, img); // эта функция уменьшает картинку в два раза
 }
