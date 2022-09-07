@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/239/2022/post
 title:  "[Java] Введение в базовый синтаксис"
-date:   2022-09-08 12:04:00 +0300
+date:   2022-09-07 12:04:00 +0300
 lang:   ru
 categories: school239_108_2022_2023
 ---
