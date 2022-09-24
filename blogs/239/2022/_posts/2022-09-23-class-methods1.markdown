@@ -19,23 +19,30 @@ categories: school239_108_2022_2023
 ```java
 public class Human {
 
+    // Эти переменные (поля) - являются внутренними знаниями каждого конкретного объета этого класса Human
     int age;
     String name;
 
+    // Это конструктор - то что создает новый объект этого класса Human и заполняет его поля изначальными значениями
     Human(int age, String name) {
+        // this.age - способ обратиться к переменной (полю) текущего объекта, т.е. того объекта который мы сейчас создаем
         this.age = age;
         this.name = name;
     }
     
+    // Это метод - является навыком который есть у каждого конкретного объекта этого класса Human
     void growOneYear() {
-        age += 1;
+        age += 1; // он может обращаться к переменным (полям) этого класса, т.е. он может пользоваться своими знаниям, обновлять их
     }
 
+    // Это тоже метод, и как и прошлый - оба метода ничего не возвращают как результат, в них нет return
+    // поэтоме тип их результата - void = пустота = отсутствие результата
     void tellYourNameLoudly() {
         System.out.print("MY NAAAME ISSS: ");
         System.out.println(name);
     }
 
+    // Этот метод возвращает возраст через год, поэтому здесь есть return и тип результата - int
     int tellMeYourAgeInNextYear() {
         int result = age + 1;
         return result;
@@ -49,9 +56,9 @@ public class Human {
 ```java
 class Main {
     public static void main(String[] args) {
-        Human petya = new Human(10, "Petya");
-        petya.growOneYear();
-        int nextAge = petya.tellMeYourAgeInNextYear();
+        Human petya = new Human(10, "Petya");          // здесь мы вызвали конструктор - создали новый объект класса Human и заполнили его внутренние переменные
+        petya.growOneYear();                           // здесь мы сказали ему позврослеть на один годик (его возраст увеличился на 1)
+        int nextAge = petya.tellMeYourAgeInNextYear(); // здесь мы спросили какой возраст у него будет еще через год и смогли сохранить этот возраст в переменную
         System.out.println("Next age: " + nextAge);
     }
 }
