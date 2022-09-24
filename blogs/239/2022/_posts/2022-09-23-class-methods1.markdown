@@ -13,6 +13,50 @@ categories: school239_108_2022_2023
 [//]: # (есть его конструктор - функция-создания => пример использования)
 [//]: # (есть его методы - функции-навыки => пример использования)
 
+**Покрытые темы**
+====
+
+```java
+public class Human {
+
+    int age;
+    String name;
+
+    Human(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
+    
+    void growOneYear() {
+        age += 1;
+    }
+
+    void tellYourNameLoudly() {
+        System.out.print("MY NAAAME ISSS: ");
+        System.out.println(name);
+    }
+
+    int tellMeYourAgeInNextYear() {
+        int result = age + 1;
+        return result;
+    }
+
+}
+```
+
+И можно использовать в main-функции:
+
+```java
+class Main {
+    public static void main(String[] args) {
+        Human petya = new Human(10, "Petya");
+        petya.growOneYear();
+        int nextAge = petya.tellMeYourAgeInNextYear();
+        System.out.println("Next age: " + nextAge);
+    }
+}
+```
+
 **Правила игры**
 ==============
 
