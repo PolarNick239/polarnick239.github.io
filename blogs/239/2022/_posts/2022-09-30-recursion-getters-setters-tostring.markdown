@@ -105,3 +105,8 @@ public class NaturalValue {
     }
 }
 ```
+
+**Задание**
+====
+
+Задание на урок и на дом (к уроку четверга 6 октября) - [http://mdl.sch239.net/](http://mdl.sch239.net/)
