@@ -55,3 +55,54 @@ categories: school239_108_2022_2023
 Поэтому: придумайте как это загуглить и найдите нужный кусочек код. Дополнительные баллы Гриффиндор получит если вы **заставите себя гуглить на английском** (все-равно в будущем только так и придется искать, на английском банально больше материалов).
 
 ```Спойлер``` я использовал запрос в гугл "java как извлечь корень"
+
+3) Про ```static```:
+
+```java
+public class Vector2d {
+    double x;
+    double y;
+
+    public Vector2d(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    void add(Vector2d that) {
+        this.x += that.x;
+        this.y += that.y;
+    }
+
+    // Этот метод просто суммирует два переданных вектора
+    // в отличии от add(...) он никак не использует this
+    // а значит он не использует текущий объект
+    // а значит эта функция никак не привязана к конкретному объекту
+    // чтобы это фиксировать - нужно написать ключевое слово static
+    // и тогда это позволит вызывать метод без объекта - через Vector2d.plus(a, b)
+    static Vector2d plus(Vector2d a, Vector2d b) {
+        return new Vector2d(a.x + b.x, a.y + b.y);
+    }
+}
+```
+
+4) Иерархия про котиков:
+
+![cat extends animal](static/2022/10/extends_cat.png)
+
+```java
+public class Cat extends Animal {
+    // Ключевое слово extends - наследование всего что было в Animal
+    // Cat теперь является Animal!
+
+    // Но методы можно переопределить:
+    @Override
+    String type() {
+        return "Cat";
+    }
+
+    @Override
+    String typicalPhrase() {
+        return "meow uwu nyaaaa";
+    }
+}
+```
