@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/239/2022/post
 title:  "[Java] Процесс отладки - Debug"
-date:   2022-10-08 12:04:00 +0300
+date:   2022-10-08 09:04:00 +0300
 lang:   ru
 categories: school239_108_2022_2023
 ---
