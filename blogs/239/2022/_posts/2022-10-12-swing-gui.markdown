@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/239/2022/post
-title:  "[Java] Процесс отладки - Debug"
+title:  "[Java] Введение в GUI - Swing"
 date:   2022-10-12 09:04:00 +0300
 lang:   ru
 categories: school239_108_2022_2023
