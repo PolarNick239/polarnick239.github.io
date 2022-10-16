@@ -40,7 +40,7 @@ categories: school239_108_2022_2023
 6) Улучшите ваше окошко:
 
  - Сделайте его побольше: ```frame.setSize(...);```
- - Укажите что при закрытии окошка нужно завершить выполнение программы: ```frame.setDefaultCloseOperation(EXIT_ON_CLOSE);```
+ - Укажите что при закрытии окошка нужно завершить выполнение программы: ```frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);```
  - Создайте объект - вашу панель: ```MyPanel panel = new MyPanel();```
  - Добавьте эту панель в окно: ```frame.add(panel);```
  - Добавьте в вашем классе ```MyPanel``` в переопределении метода ```paintComponent``` рисование отрезка - через метод ```g.drawLine(...)``` у объекта ```Graphics g``` (из точки ```(x=10, y=20)``` в точку ```(x=200, y=100)```)
