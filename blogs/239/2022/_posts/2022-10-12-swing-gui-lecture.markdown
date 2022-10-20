@@ -63,11 +63,6 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        // Создаем окно
-        JFrame frame = new JFrame();
-        frame.setVisible(true);  // делаем его видимым
-        frame.setSize(640, 480); // делаем его нужного размера
-
         // Создаем два человечка
         Human petya = new Human(200, 100, 200, "Petya");
         Human vasya = new Human(400, 100, 180, "Vasya");
@@ -76,10 +71,14 @@ public class Main {
         // чтобы в момент отрисовки она смогла отрисовать обоих
         MyPanel panel = new MyPanel(petya, vasya);
 
-        // Добавляем в окошко панель
-        frame.add(panel);
+        // Создаем окно
+        JFrame frame = new JFrame();
+        frame.add(panel);        // добавляем в окно панель
+        frame.setSize(640, 480); // делаем окно нужного размера
+        frame.setVisible(true);  // делаем его видимым (ОБЯЗАТЕЛЬНО В САМЫЙ ПОСЛЕДНИЙ МОМЕНТ - когда панель уже добавлена)
+
         while (true) {
-            frame.repaint(); // говорим окну что ему нужно рисоваться заново постоянно
+            frame.repaint(); // говорим окну что ему нужно рисоваться заново постоянно (это в свою очередь провоцирует отрисовку панели)
         }
     }
 }
