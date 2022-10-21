@@ -90,7 +90,6 @@ public class Main {
 ```java
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 public class MyPanel extends JPanel { // наследуемся от базовой панели
     Human human;
