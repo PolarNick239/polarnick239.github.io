@@ -111,7 +111,7 @@ public class Main {
 
 24) Сразу вся строка подсветилась красным: ```Class 'BirdPanel' must either be declared abstract or implement abstract method 'dispatchKeyEvent(KeyEvent)' in 'KeyEventDispatcher'```, т.е. **IDEA** сразу говорит нам что наш класс должен **implement abstract method 'dispatchKeyEvent(KeyEvent)'** - т.е. мы должны реализовать этот метод - это очень просто и быстро сделать если в этой красной строке нажать ```Alt+Enter``` -> ```Implement methods```
 
-25) **IDEA** сделала нам заготовку метода ```dispatchKeyEvent```, давайте добавим туда ```System.out.println("EVENT HAPPEND!");```
+25) **IDEA** сделала нам заготовку метода ```dispatchKeyEvent```, давайте добавим туда ```System.out.println("EVENT HAPPENED!");```
 
 26) Запустим программу и нажмем кнопку... ничего не сработало, консоль пуста. Потому что мы должны не только быть сертифицированным слушателем нажатий, но еще и **устроиться на работу** - подключиться к прослушиванию клавиатуры
 
@@ -129,7 +129,7 @@ manager.addKeyEventDispatcher(panel);    // подключаем нашу пан
 ```java
 @Override
 public boolean dispatchKeyEvent(KeyEvent e) {
-    System.out.println("EVENT HAPPEND!");
+    System.out.println("EVENT HAPPENED!");
     // С помощью e.getID() можно выяснить что за событие случилось? нажали кнопку? или отпустили? или какой-то typed? как думаете что это?
     String typeOfEvent = "unknown";
     if (e.getID() == KeyEvent.KEY_PRESSED) {
