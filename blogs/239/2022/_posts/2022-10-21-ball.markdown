@@ -76,7 +76,7 @@ for (int i = 0; i < n; i = i + 1) {
 
 Пример красоты:
 
-<video autoplay loop width="632" height="342">
+<video autoplay loop muted width="632" height="342">
   <source src="/static/2022/10/balls_animation.mp4" type="video/mp4">
 </video>
 
