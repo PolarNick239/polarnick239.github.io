@@ -1,0 +1,118 @@
+2-4=Цель (входновение - виртуальные текстуры, цель - виртуальная геометрия БЕЗ ПОТЕРИ КАЧЕСТВА чтобы сэкономить моделлерам время на подготовку риалтайм ассетов - чтобы готовили сколь угодно сложную модель, а движок разобрался)
+
+Как достичь упрощения?
+6-9=Вариант перехода на воксели (аналогия - это как дискретные пиксели вместо векторной картинки, МИНУСЫ: альясинг артефакты, потеря тонких деталей, увеличение объема данных, потеря UV раскладки, протекание аттрибутов для тонких поверхностей)
+11-12=Displacement maps (работает только пока не меняется топология)
+13=Точки (не ясно как залатывать дыры, может ML денойзинг? потеря информации о связности)
+14=Треугольники (стандарт, а все остальное будет навязывать моделлеру те или иные ограничения что неприемлемо)
+
+15=Пайпалайн рендеринга треугольников (вся сцена в видеопамяти, обновляется только часть что поменялась)
+
+16=Triangle cluster culling (треугольники сгруппированы в связные кластеры - аля суперпиксели + Bounding Box для каждого кластера => быстрое отсечение геометрии вне фрустрома на по-кластерной основе)
+17=Occlusion culling (Hierarchical Z-Buffer (HZB), нашли прямоугольник-проекцию для Bounding Box-а кластера треугольников, делаем Z-Test в HZB на таком уровне MipMap что прямоугольник-проекция<=4x4 пикселя)
+18=А откуда взять HZB? (репроекция Z-буфера из прошлого кадра требует залатывания дыр и не надежна)
+19-20=Occlusion culling в два прохода (видимые на прошлом кадре объекты вероятно все еще видимы - сначала рисуем их, затем строим HZB, рисуем все остальное, идеально честно)
+
+21-22=Decouple VISIBILITY from MATERIAL => чтобы не рассчитывать фрагментный шейдер для пикселей которые никогда не окажутся на экране - используем отложенный шейдинг (deferred materials)
+23=Visibility Buffer: пишем в каждый пиксель Depth+InstanceID+TriangleID, тогда шейдер сможет по этой информации восстановить всю информацию для отработки
+24=Visibility Buffer: хороший кэш-хит, нет избыточности, GPU-driven, CPU нагрузка не зависит от сложности сцены, приятно что всего один проход растеризации
+
+25-26=Sub-linear scaling: (суб)линейное масштабирование по треугольникам НАС НЕ УСТРАИВАЕТ, ray tracing - logN но мы не можем все данные в VRAM положить и даже тогда - все еще слишком медленно, хотим лучше чем logN (дело даже не в числе операций, а в когерентности чтений = кэш хите)
+27=Sub-linear scaling: иначе говоря интуиция в том что на экране число пикселей ограничено, почему мы должны обработать больше треугольников чем это число? мы хотим отрисовывать одинаовое число кластеров на кадр независимо от числа объектов и их детальности, т.е. хотим O(числа пикселей) => LOD
+
+28=Cluster hierarchy: LOD на по-кластерной основе, строим иерархию кластеров
+29=LOD run-time: уровень выбирается на по-кластерной основе, родитель рисуется вместо детей если мы не можем заметить разницу с текущей точки обзора
+30=Streaming: Дерево не влазит во VRAM, храним только некоторую верхушку, как и с виртуальными текстурами - подгружаем более детальные уровни по требованию, если какие-то узлы дерева во VRAM но несколько кадров не были нужны - выкидываем их
+31=LOD cracks: если LOD для кластера независим - то появляются трещины! наивный вариант - замораживать границы при упрощении геометрии
+32=Locked boundaries => будут детальыне границы которые протаскиваются на протяжении всей глубины дерева => фатально
+33-39=LOD cracks solution: группируем кластеры чтобы форсить для них одинаковый уровень детализации, группируем их, при этом от уровня к уровню границы групп МЕНЯЮТСЯ чтобы не накапливать эти швы от корня дерева до самого дна
+40-41=LOD crack options: VDPM оперируют треугольниками/ребрами и стримят на этом уровне гранулярности - слишком большой оверхед на представление данных, skirts (захлест) не работают при сложной не-плоской топологии
+42-43=LOD crack options: Implicit dependencies: ?Progressive Buffers?, ?Adaptive TetraPuzzles?
+44=LOD crack options: Explicit dependencies: Batched Multi-triangulation (dependency between nodes is determined during building and stored): Prior work groups the triangles themselves which results in variable number of triangles per group. But we want groups of multiples of 128 triangles such that they can be divided into clusters of exactly 128. Grouping clusters instead of triangles allows this. ?Не понел?
+
+45-46=Build operations:
+1) cluster all triangles
+2) while N(clusters) > 1:
+2.1) group X clusters
+2.2) simplify to 50% of triangles
+2.3) split simplified triangle list into X/2 clusters (128 tris each)
+47: DAG: очень здорово что теперь нет прямой которая рассекла бы граф на две части - это значит нет замороженной границы накапливающей треугольники
+48-49: Which clusters to group? объединяем кластеры в которых наиболее длинная общая граница, т.е. разбиваем граф на кластеры с минимальными границами + пенальти за далеко разнесенные кластеры (ради кластеров-островов), используют METIS
+50-52: Initial clustering: малое число ребер на границе, треугольников близко к 128 штукам, есть еще малый bounding box (ради culling) но надеемся что он дастся как следствие, при этом число треугольников не строго гарантируется - подразбиваем если что
+53-54: Comparison to prev. work: раньше было как в Tetrapuzzles - пространственное разбиение на ячейки - плохая балансировка числа треугольников, отношения между кластерами ввиде неструктурированного графа дают свободу оптимизировать реально важные метрики
+
+55-59: Mesh simplify: есть оценка привнесенной ошибки, проекция в экран дает ошибку в пикселях, дает право выбрать LOD (QSlim - "Surface Simplification Using Quadric Error Metrics" - http://www.cs.cmu.edu/~garland/Papers/quadrics.pdf)
+Но как получить метрику ошибки для выбора LOD? Ведь она должна включать и геометрическую ошибку, и ошибку аттрибутов вроде нормалей (а они инвариантны к масштабу). Как заметна ошибка нормалей в один градус? А если объект далеко?
+Расстояние не важно, важно лишь сколько пикселей экрана затронуто ошибкой.
+Мысленный эксперимент: статуя + статуя х100 больше - как сделать так чтобы баланс между позицией и нормалями был одинаков? Нормализовать по BoundingBox? А что если статуи сильно разнесены? Нормализация по средней площади треугольника робастнее. Но что если мы меняем число маленьких и больших треугольников? А почему бы не делать нормализацию на более гранулярной основе? В рамках группы кластеров средняя площадь не меняется особо, можно по ней нормализовать.
+
+60-61: Prefiltering ???
+
+62-63: LOD selection: Две версии геометрии с совпадающей границей. Все кластеры в группе должны выбрать одну и ту же LOD версию => коммуникация? Нет, детерминизм (одинаковая сфера-граница для всех кластеров группы).
+64-65: LOD selection in parallel: Обходить DAG медленно. Как тогда найти разрез достаточной детальности? Когда ошибка родителя слишком велика, а ошибка ребенка достаточно мала.
+66: Все хорошо только если разрез уникален. Нужна монотонность метрики ошибки!
+67: Бинарный переход разве не бросится в глаза? Но если ошибка меньше 1 пикселя, то они визуально не различимы.
+68: Surface angle based LOD: не понял почему не достаточно хранить ошибку по трем направлениям?
+69: Но большинство детальных кластеров не хочется даже рассматривать при поиске разреза, как сэкономить?
+70: Hierarchical culling: Если ParentError достаточно мала - текущий кластер не нужен. Строим BVH.
+71: Hierarchical culling - naive approach: BFS, но нужно ждать пока закончится работа на прошлом уровне, плюс возможно напрасные Dispatch для пустых нижних уровней
+72-74: Persistent threads: начинаем процессить узлы следующего уровня как только родитель обработан
+
+75-76: Two-Pass Occlusion Culling: Кластеры видимые в прошлый кадр могли уже быть выкинуты из памяти, поэтому заново проверяем для выбранных кластеров - какие из них были бы видны в прошлом HZB.
+77: Culling Dataflow
+
+78-79: Pixel scale detail
+80-81: Tiny triangles - Terrible for typical rasterizer => Software Rasterization - 3x faster!
+82-83: Certainly hardware could be built to do this at lower power than us but it's questionable if that’s the best use of transistors versus giving us more general compute units we could use for this or anything else.
+84: How to depth test? 64 bit atomics (InterlockedMax)=30 depth+27 visible cluster index+7 triangle index
+85: Micropoly software rasterizer: 128 triangle clusters => threadgroup size 128:
+ - Fetch the vertex position, transform it, and store in groupshared.
+ - in the 2nd phase switch to a thread mapped to each triangle
+86: проход по BoundingBox
+87: Hardware Rasterization for big triangles (also with 64 it atomics)
+88: Критерий выбора растеризатора? BoundingBox <32 пикселя - софтварно
+89-92: Сканлайн!
+93-94: Rasterizer overdraw - The reliance on previous frame depth for occlusion culling is one of Nanite’s biggest deficiencies
+
+95: Tiny instances - если объект занимает меньше пикселя - перестали масштабироваться с разрешением экрана
+96: Tiny instances - мержинг инстансов
+97: Visibility buffer imposters - ???
+
+99: Visibility Buffer recap
+100: Material ID
+101: Material shading - Skip pixels not matching this material ID, It would be awfully inefficient to test every pixel for every material!
+102-103: Material culling - exploit the depth test hardware (depth test is set to equals so we only draw pixels with matching ID)
+104-105: Material culling - grid of tiles
+106-108: как спасти dFdx/dFdy
+
+109: Pipeline numbers - rasterizes 25M triangles (regardless of how complex the scene is)
+110: Performance - 2.5ms for VisBuffer + 2.0ms for deferred materials
+
+111-112: Shadows, the largest visual difference between real geometry and normal maps most often comes from detailed self shadowing
+113-114: Want a raster solution + Most lights don’t move (cache)
+115: Virtual shadow maps (16K), pick mip level where 1 texel = 1 pixel
+Only render the shadow map pixels that are visible
+116-117: Virtual shadow maps: Mark needed pages (Screen pixels project to shadow space), If cached page already exists use that, 
+118: Multi-view rendering
+119: Culling and addressing to pages - Cull if doesn’t overlap needed pages
+120: Nanite shadow LOD - Shadow cost scales with resolution!
+
+121-122: Streaming=virtual texturing, but when we load and unload data we need to make sure it is always a valid cut of the full DAG, so there will be no cracks in the geometry
+123: Streaming unit = group granularity
+124: Paging
+125: Split groups
+126: Deciding what to stream
+127: Streaming requests
+
+128: Compression
+129: Two representations
+130-131: Vertex quantization and encoding - Clusters store values in local coordinates
+132-133: Vertex positions - согласованная поквантовка в рамках объекта
+134: 17 bits per triangle (7+5+5)
+135: Implicit tangent space
+136: Material Tables
+137-143: Disk compression
+
+
+144: Results: Lumen in the Land of Nanite
+146-147: Future
