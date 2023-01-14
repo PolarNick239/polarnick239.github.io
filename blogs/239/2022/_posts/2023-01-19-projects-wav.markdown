@@ -3,7 +3,7 @@ layout: ru/blogs/239/2022/post
 title:  "[Java] Проигрывание звуков (.wav)"
 date:   2023-01-14 0:02:39 +0300
 lang:   ru
-categories: school239_105_2022_2023
+categories: school239_108_2022_2023
 ---
 
 1) Создайте пустой проект (или откройте ваш)
