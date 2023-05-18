@@ -29,7 +29,7 @@ categories: school239_108_2022_2023
 | 10 | Ег. Да.         | Марио    | ---                | 3 степень  | 4 | [презентация](https://disk.yandex.ru/i/Cd5eWloGOpDCOQ) |
 | 11 | За. Дм.       | Рогалик-стрелялка + генерация уровня    | ---               | 1 степень  | 5 | [презентация](https://docs.google.com/presentation/d/1ocjam5NlZmcI3U1JVHWUKKQxwYfnwa_V6A9mUvTmBao/edit?usp=sharing) |
 | 12 | Ра. Ад.          | 2D головоломка + интеграция в 3D    | ---               | 1 степень  | 5+ | [презентация](https://docs.google.com/presentation/d/1hIiOywT-UBtC6k7RQ_ItyCwDtuIuqxvlNZHwLcFWxcQ/edit?usp=sharing) |
-| --- | ---       | ---    | ---               | ---  | --- | --- |            |
+|Номер| Автор     | Описание | Скриншот                    | Диплом (степень) | Оценка | Презентация |
 | 13 | Зу. Ел.     | Езда машинкой по трем полосам    | ---               | диплом участника  | 3- | [презентация](https://disk.yandex.ru/i/UUDE6rzpDXeMEw) |
 | 14 | Ил. Лю.         | Типовая геометрия    | ---               | типовой  | 4 | [презентация](https://docs.google.com/presentation/d/1qayCdO_Ayh9KWZukVh0SOi-TmxYLFQDS9kNLHOmgDKM/edit?usp=sharing) |
 | 15 | Ка. Ан.        | Квест-расследование про побег из особняка    | ---               | 1 степень  | 5+ | [презентация](https://docs.google.com/presentation/d/1gsmW0SN9P_FlKsxkT_KdpGDukQjcXbHV3ViNyDI2wuM/edit) |
