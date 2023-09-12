@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+  {% include /ru/239/2023/head.html %}
+
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+  <script id="greencode_vshader" data-src="/shaders/greencode/vshader.c" type="x-shader/x-vertex"></script>
+  <script id="greencode_fshader" data-src="/shaders/greencode/fshader.c" type="x-shader/x-fragment"></script>
+  <script src="/js/greencode.js"></script>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-106203342-1', 'auto');
+ga('send', 'pageview');
+  </script>
+
+  <!--<body onload="greencode.main(document.getElementById('background_canvas'), document.getElementById('greencode_vshader').text, document.getElementById('greencode_fshader').text)">-->
+  <body>
+    <canvas id="background_canvas" style="width: 100%; height: 100%; position: fixed; z-index: -1;"></canvas>
+
+    <div>
+      <div class="wrapper">
+      
+        {% include /ru/239/2023/header.html %}
+
+        <div class="page-content">
+          {{ content }}
+        </div>
+
+        {% include /ru/239/2023/footer.html %}
+
+      </div>
+    </div>
+
+
+  </body>
+
+</html>
