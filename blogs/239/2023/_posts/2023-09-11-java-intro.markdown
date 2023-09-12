@@ -16,15 +16,15 @@ categories: school239_108_2023_2024
 
 Установить Intellij Idea Community Edition:
 ===========================================
-1. Открыть [https://www.jetbrains.com/idea/#chooseYourEdition](https://www.jetbrains.com/idea/#chooseYourEdition)
-2. Нажать кнопку Download под "Community" версией
+1. Открыть [https://www.jetbrains.com/idea/download/](https://www.jetbrains.com/idea/download/)
+2. Промотать чуть ниже и найти **IntelliJ IDEA Community Edition** - рядом нажать **Download .exe**
 3. Установить
 
 Отправить Hello World в тестовую систему
 ===========================================
 
-1. Открыть [https://mdl.sch239.net/login/index.php](https://mdl.sch239.net/login/index.php)
-2. Использовать ```beepboop``` чтобы попасть в мой "курс"
+1. Открыть [https://mdl.sch239.net/login/index.php](https://mdl.sch239.net/login/index.php) (логин такой же как в школьные компьютеры)
+2. Использовать ```beepboop``` чтобы попасть в наш "курс"
 3. Использовать ключевое слово с доски чтобы попасть в правильную группу
 4. Выполнить задание: ```Проверка работоспособности всех систем, бип-боп``` -> ```Hello World``` 
 
