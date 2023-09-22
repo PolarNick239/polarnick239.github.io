@@ -19,7 +19,7 @@ categories: school239_108_2023_2024
 ====
 
 Таблица ASCII кодов - [https://ru.wikipedia.org/wiki/ASCII](https://ru.wikipedia.org/wiki/ASCII)
-
+ 
 ```java
 String name = scanner.nextLine(); // String - строка, по сути это массив состоящий из символов
 int length = name.length();       // у строки можно спросить ее длину вызвав у нее метод length() (он возвращает целое число)
