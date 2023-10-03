@@ -85,23 +85,25 @@ public class NaturalValue {
 
     void add(int value) {
         this.value += value;
-        fix(); // если вдруг мы вычли слишком много и ушли в минус (или до нуля) - поправляем
+        this.fix(); // если вдруг мы вычли слишком много и ушли в минус (или до нуля) - поправляем
     }
 
-    void add(NaturalValue value) { // методы и функции могут быть "ПЕРЕГРУЖЕНЫ" (overloaded)
+    void add(NaturalValue x) { // методы и функции могут быть "ПЕРЕГРУЖЕНЫ" (overloaded)
         // т.е. их может быть несколько с одинаковым названием (см. add выше)
         // но в момент вызова Java поймет какую функцию выполнять,
-        // т.к. они вызываются с разными типами аргументов
-        this.value += value.value;
-        fix(); // на самом деле это не обязательно т.к. натуральное+натуральное=натуральное, но так спокойнее и надежнее...
+        // т.к. они вызываются с разными типами аргументов.
+        // Обратите внимание что мы обращаемся к нашему полю (this.value) и к чужому полю (x.value)
+        this.value += x.value;
+        this.fix(); // на самом деле это не обязательно т.к. натуральное+натуральное=натуральное, но так спокойнее и надежнее...
     }
 
-    NaturalValue plus(int value) {
-        return new NaturalValue(this.value + value); // нужен ли тут вызов fix?
+    NaturalValue plus(int x) {
+        return new NaturalValue(this.value + x); // нужен ли тут вызов fix?
     }
 
-    NaturalValue plus(NaturalValue value) {
-        return new NaturalValue(this.value + value.value);
+    NaturalValue plus(NaturalValue x) {
+        // обратите внимание что мы обращаемся к нашему полю (this.value) и к чужому полю (x.value)
+        return new NaturalValue(this.value + x.value); 
     }
 
     // @Override - это указание что не мы не просто объявляем новый метод,
@@ -112,7 +114,7 @@ public class NaturalValue {
     // т.е. как представить объект в приятном человеческому глазу виде
     @Override
     public String toString() {
-        return "value=" + value + "";
+        return "value=" + this.value + "";
     }
 }
 ```
