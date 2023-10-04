@@ -1,9 +1,9 @@
 ---
-layout: ru/blogs/239/2022/post
+layout: ru/blogs/239/2023/post
 title:  "[Java] Задание про Vector2D, наследование"
-date:   2022-10-07 12:04:00 +0300
+date:   2023-10-07 12:04:00 +0300
 lang:   ru
-categories: school239_108_2022_2023
+categories: school239_108_2023_2024
 ---
 
 [//]: # что такое static
