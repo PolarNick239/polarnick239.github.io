@@ -85,6 +85,6 @@ categories: school239_108_2023_2024
 
 12) Еще пример вдохновения - дождь и столкновение капель с движущейся платформой:
 
-<video autoplay muted loop>
+<video autoplay muted loop width="632">
     <source src="/static/2023/10/rain.mp4" type="video/mp4">
 </video>
