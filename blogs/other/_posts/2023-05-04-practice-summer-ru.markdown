@@ -7,6 +7,6 @@ lang:   ru
 id:     28_practice_summer
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=XrwdB0WN6iU&list=PL5p-5hHpsHBqFm3CQk6jT0amZjW0_2NMU&index=23" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XrwdB0WN6iU?si=OKVkxpVSDjoMW0Xf" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 [Слайды.](/static/presentations/phg2023/phg_23_internships_in_agisoft.pdf)
