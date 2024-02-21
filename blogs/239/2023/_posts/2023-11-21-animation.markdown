@@ -295,7 +295,7 @@ public class Man {
 ```
 
 И в человечке при отрисовке анимации смотрим куда мы бежим:
-
+ 
 ```java
     public void draw(Graphics g, int panelWidth, int panelHeight) {
         int imageX = (int) x;
