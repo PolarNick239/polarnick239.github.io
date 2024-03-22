@@ -51,7 +51,7 @@ categories: school239_108_2023_2024
 Документы:
 =======
 
- - [Критерии оценивания проекта](/static/2023/03/kriterii_for_project.pdf)
+ - [Критерии оценивания проекта](/static/2023/03/kriterii_for_project.pdf) (здесь в т.ч. рассказано про отчет)
  
  - [Чек-лист оценивания проекта](/static/2023/03/check_list_for_project.pdf)
 
