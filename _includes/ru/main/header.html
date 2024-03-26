@@ -17,11 +17,12 @@
       </a>
 
       <div class="trigger">
-        {% for page in site.pages %}
-          {% if page.title and 'ru' == page.lang %}
-          <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-          {% endif %}
-        {% endfor %}
+        <a class="page-link" href="/cv/Polyarniy_CV.pdf">Обо мне</a>
+<!--        {% for page in site.pages %}-->
+<!--          {% if page.title and 'ru' == page.lang %}-->
+<!--          <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>-->
+<!--          {% endif %}-->
+<!--        {% endfor %}-->
 
         {% assign pages=site.pages | where:"id", page.id | sort: 'lang' %}
         {% for page in pages %}
