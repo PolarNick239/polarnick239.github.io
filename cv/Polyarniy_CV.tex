@@ -1,3 +1,6 @@
+% sudo apt install texlive-latex-base texlive-lang-cyrillic texlive-latex-recommended texlive-latex-extra
+% pdflatex Polyarniy_CV.pdf
+
 \documentclass[11pt,oneside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
@@ -32,15 +35,15 @@
 
     \textbf{Mathematician-Programmer (Team Lead)}
 
-    \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Metashape} developer. Developed detailed, scale-diverse, fast and scalable (out-of-core and cluster-friendly) surface model reconstruction method (published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} on \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}). Developed depth maps reconstruction method based on the state of the art Patch Match method. Mentor of students internship.
+    \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Metashape} developer. R\&D and continous search for points of improvement. Developed a detailed, scale-diverse, fast and scalable (out-of-core and cluster-friendly) surface model reconstruction method (published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} at the top conference \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}). Student Internship Mentor.
 
-    Computer Vision, Computational Geometry, OpenCL and CUDA.
+    Computer Vision, Computational Geometry, OpenCL/CUDA/Vulkan, AI/ML
   \item[ - Transas] \hfill \\
     \textbf{October 2014 - March 2016}
 
     \textbf{Mathematician-Programmer}
 
-    Developed server producing 3D landscape reconstruction and true orthophoto stitching from photos taken by UAV (\hhref{http://polarnick239.github.io/old/cv/Monoceros1.pdf}{presentation}, \hhref{http://polarnick239.github.io/old/cv/Monoceros2.pdf}{second presentation}).
+    Developed a server that produces 3D landscape reconstruction and true orthophoto stitching from UAVs' data (\hhref{http://polarnick239.github.io/old/cv/Monoceros1.pdf}{presentation}, \hhref{http://polarnick239.github.io/old/cv/Monoceros2.pdf}{second presentation}).
 
     OpenCV, OpenCL, Python, Cython, Ceres-solver.
   \item[ - Yandex.Money] \hfill \\
@@ -56,14 +59,12 @@
 \vspace{-9pt}
 
 \begin{itemize}
-    \item{\textbf{Computer Vision}}: structure from motion, multiple view geometry, magic (like  \hhref{http://www.agisoft.com/index.php?id=49}{masks transfering}).
-    Better than state of the art 3D polygonal surface reconstruction.
-    Fast and occlusion-aware depth maps reconstruction.
-    Dense point cloud classification: ground/road/building/vegetation/car.
+    \item{\textbf{Computer Vision}}: Structure from Motion, Multiple View Geometry, AI/ML, objects detection/classification/segmentation, magic.
+    Better than state of the art depth maps estimation, surface reconstruction, texturing and other algorithms.
 
-    \item{\textbf{Computational geometry, CGAL}}: computations with absolute accuracy, algorithms and structures like Delaunay triangulation
+    \item{\textbf{Computational geometry, CGAL}}: computations with absolute accuracy, algorithms and structures like Delaunay triangulation.
 
-    \item{\textbf{OpenCL, CUDA, OpenGL, WebGL}}: GPGPU computations, shaders, ray tracing
+    \item{\textbf{Vulkan, OpenCL, CUDA, OpenGL, WebGL}}: GPGPU computations, shaders, ray tracing, algorithms profiling/acceleration/adaptation for the GPU. Able to work around bugs in video drivers and compilers...
 
     \item{\textbf{C++, Python, Java}}
 \end{itemize}
@@ -74,13 +75,15 @@
 \vspace{-9pt}
 
 \begin{itemize}
-    \item{\textbf{Photogrammetry course}}: developed Photogrammetry  \hhref{https://compsciclub.ru/courses/photogrammetry/2021-spring/}{course} in Computer Science Club. Video recordings available on \hhref{https://www.youtube.com/watch?v=5ojtfaww2nk&list=PLyZ1pMP2ZKOyDrhnno9NQ38kela9dDd4r}{youtube}, tasks available on \hhref{https://github.com/PhotogrammetryCourse/}{github}.
+    \item{\textbf{Consultant}}: provides consultation services to companies and startups on topics related to computer vision algorithms and GPU-acceleration.
 
-    \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/}{course} in Computer Science Center. Video recordings available on \hhref{https://www.youtube.com/watch?v=L79PgDOcVfw&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ}{youtube}, tasks available on \hhref{https://github.com/GPGPUCourse/}{github}.
+    \item{\textbf{Photogrammetry course}}: developed Photogrammetry  \hhref{https://compsciclub.ru/courses/photogrammetry/2021-spring/}{course} in Computer Science Club. Teaching it in \hhref{https://math-cs.spbu.ru/}{SPbU}.  \hhref{https://www.youtube.com/@polarnick239/playlists}{Video recordings}. Tasks on \hhref{https://github.com/PhotogrammetryCourse/}{github}.
 
-    \item{\textbf{Open-source}: \hhref{https://github.com/PolarNick239/ExternalSortingOnGPU}{Out-of-core merge sort} with GPU acceleration. \hhref{https://gist.github.com/PolarNick239/7819fb7722fab09b37ecaee77c82cf58}{96-bit 3D Morton code}. OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{modification} of EDISON mean shift segmentation. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus.}.
+    \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/}{course} in Computer Science Center. \hhref{https://www.youtube.com/watch?v=L79PgDOcVfw&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ}{Video recordings}. Tasks on \hhref{https://github.com/GPGPUCourse/}{github}.
 
-    \item{\textbf{Hackathons}}: four awards on hackatons. Third place on \hhref{https://career.luxoft.com/lp/hack-cv/}{HackCV} (traffic signs recognition), \hhref{http://hackday.ru/sciencehackday-2/projects\#project-1400}{Science Hackday \#2} (Startup nomination), \hhref{http://hackday.ru/hackday-36/projects\#project-1121}{Hackday\#36} (Autodesk 3D-web nomination), \hhref{https://www.hackerleague.org/hackathons/jetbrains-edtech-hackathon/blogposts/53655896e24d32cfbd000006}{HackEdu} by JetBrains (third place). Participation in \hhref{http://www.hackjunction.com/}{Junction 2016, 2017}.
+    \item{\textbf{Open-source}: \hhref{https://github.com/PolarNick239/ExternalSortingOnGPU}{Out-of-core merge sort} with GPU acceleration. \hhref{https://gist.github.com/PolarNick239/7819fb7722fab09b37ecaee77c82cf58}{96-bit 3D Morton code}. OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{implementation} of EDISON mean shift. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus.}.
+
+    \item{\textbf{Hackathons}}: six awards on hackatons. Two first places on \hhref{https://github.com/PolarNick239/HackathonDroneSwarm}{X-Mas Hack} (mission planner for drone swarm). Third place on \hhref{https://career.luxoft.com/lp/hack-cv/}{HackCV} (traffic signs recognition), \hhref{http://hackday.ru/sciencehackday-2/projects\#project-1400}{Science Hackday \#2} (Startup nomination), \hhref{http://hackday.ru/hackday-36/projects\#project-1121}{Hackday\#36} (Autodesk 3D-web nomination), \hhref{https://www.hackerleague.org/hackathons/jetbrains-edtech-hackathon/blogposts/53655896e24d32cfbd000006}{HackEdu} by JetBrains (third place). Participation in \hhref{http://www.hackjunction.com/}{Junction 2016, 2017}.
 
     \item{\textbf{Conferences}}: published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} on \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}. Participated in \hhref{http://3dv18.uniud.it/}{3DV 2018} and \hhref{http://www.3d-arch.org/}{3D-ARCH 2019}.
 
@@ -118,6 +121,6 @@
 
 \end{itemize}
 
-Last updated: 20.08.2021
+Last updated: 24.03.2024
 
 \end{document}
