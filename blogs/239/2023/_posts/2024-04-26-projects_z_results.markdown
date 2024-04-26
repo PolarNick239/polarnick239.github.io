@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/239/2023/post
 title:  "[Конференция] Результаты"
-date:   2024-04-26 0:03:38 +0300
+date:   2024-04-26 0:11:38 +0300
 lang:   ru
 categories: school239_108_2023_2024
 ---
@@ -33,7 +33,7 @@ categories: school239_108_2023_2024
 | 13    | Кут. Рат. | Типовая геометрия 11                                                                                                       | TODO             | TODO   | N/A                                                                                                            | N/A                                                          | [pdf-презентация]()                                         |
 | 14    | Леж. Але. | Plants VS Zombie - ремейк популярной игры - пять уровней, несколько видов растений и зомби, есть даже газонокосилки!       | TODO             | TODO   | <a href="https://youtu.be/uhZ9m3it6XU"><img src="/static/2024/05/projects/14.jpg" width="200"/></a>            | [видео презентации](https://youtu.be/K2FKq8GfQfc)            | [pdf-презентация](https://disk.yandex.ru/i/Lb7FFJlMeC5bcA)  |
 |       |           |                                                                                                                            | TODO             | TODO   |                                                                                                                |                                                              |                                                             |
-| 15    | Мат. Нел. | The Fractal Flame Algorithm 2003 - визуализация красивых математических фрактальных рисунков                               | TODO             | TODO   | <a href="/static/2024/05/projects/15.jpg"><img src="/static/2024/05/projects/15.jpg" width="200"/></a>         |                                                              | [pdf-презентация]()                                         |
+| 15    | Мат. Нел. | The Fractal Flame Algorithm 2003 - визуализация красивых математических фрактальных рисунков                               | TODO             | TODO   | <a href="/static/2024/05/projects/15.jpg"><img src="/static/2024/05/projects/15.jpg" width="200"/></a>         |                                                              | [pdf-презентация](https://disk.yandex.ru/d/Od4GjJB2hmqMMA)  |
 | 16    | Мор. Арк. | Soul Knight - рогалик-стрелялка из комнаты в комнату как в Meat Boy, разное оружие (включая меч), есть босс                | TODO             | TODO   | <a href="https://youtu.be/Ze_sQ1IGpa0"><img src="/static/2024/05/projects/16.jpg" width="200"/></a>            | [видео презентации](https://youtu.be/nv2HhdwJc8Y)            | [pdf-презентация](https://disk.yandex.ru/i/ivV4VxWgmitrdg)  |
 | 17    | Най. Мар. | Ночь в интернате - игра на скрытность, есть система освещения и теней, нужно прятаться от воспитателей и искать домашку    | TODO             | TODO   | <a href="/static/2024/05/projects/17.jpg"><img src="/static/2024/05/projects/17.jpg" width="200"/></a>         |                                                              | [pdf-презентация]()                                         |
 | 18    | Пал. Над. | Арканоид - нужно отбивать платформой шарик, разные уровни                                                                  | TODO             | TODO   | <a href="/static/2024/05/projects/18.jpg"><img src="/static/2024/05/projects/18.jpg" width="200"/></a>         | N/A                                                          | [pdf-презентация](https://disk.yandex.ru/i/TgDpDsYE_gStuw)  |
