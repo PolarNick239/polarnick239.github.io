@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/239/2024/post
 title:  "[Java] Циклы for/while и массивы"
-date:   2024-09-10 12:04:00 +0300
+date:   2024-09-09 12:04:00 +0300
 lang:   ru
 categories: school239_108_2024_2025
 ---
