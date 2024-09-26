@@ -3,7 +3,7 @@ layout: ru/blogs/239/2024/post
 title:  "[Java] Классы/конструкторы/поля/getters/setters/toString()"
 date:   2024-09-26 12:04:00 +0300
 lang:   ru
-categories: school239_108_2023_2024
+categories: school239_108_2024_2025
 ---
 
 [//]: # создали класс Natural
