@@ -55,18 +55,15 @@ categories: school239_108_2024_2025
 4) Про ```static```:
 
 ```java
-public class Vector2d {
-    double x;
-    double y;
+public class NaturalValue {
+    int value;
 
-    public Vector2d(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public NaturalValue(int value) {
+        this.value = value;
     }
 
-    void add(Vector2d that) {
-        this.x += that.x;
-        this.y += that.y;
+    void add(NaturalValue that) {
+        this.value += that.value;
     }
 
     // Этот метод просто суммирует два переданных вектора
@@ -74,11 +71,12 @@ public class Vector2d {
     // а значит он не использует текущий объект
     // а значит эта функция никак не привязана к конкретному объекту
     // чтобы это фиксировать - нужно написать ключевое слово static
-    // и тогда это позволит вызывать метод без объекта - через Vector2d.plus(a, b)
+    // и тогда это позволит вызывать метод без объекта - через NaturalValue.sum(a, b)
     // считайте что это слово static означает что метод является глобальным,
     // вместо того чтобы являться навыком конкретного объекта как было до сих пор
-    static Vector2d plus(Vector2d a, Vector2d b) {
-        return new Vector2d(a.x + b.x, a.y + b.y);
+    static NaturalValue sum(NaturalValue a, NaturalValue b) {
+        NaturalValue res = new NaturalValue(a.value + b.value);
+        return res;
     }
 }
 ```
