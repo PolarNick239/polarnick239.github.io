@@ -83,8 +83,24 @@ categories: school239_108_2024_2025
 
 11) Нарисуйте вашего человечка - для этого вам надо добавить в него метод ```public void paint(Graphics g)```, в котором рисуются нужные его ручки и ножки, а затем вызвать из ```MyPanel``` у этого объекта **"человечек"** этот метод ```human.paint(g)```
 
-12) Еще пример вдохновения - дождь и столкновение капель с движущейся платформой:
+12) Еще примеры вдохновения:
 
 <video autoplay muted loop width="632">
     <source src="/static/2023/10/rain.mp4" type="video/mp4">
+</video>
+
+<video autoplay muted loop width="632">
+    <source src="/static/2024/10/lifeautomato.mp4" type="video/mp4">
+</video>
+
+<video autoplay muted loop width="632">
+    <source src="/static/2024/10/balls_collide.mp4" type="video/mp4">
+</video>
+
+<video autoplay muted loop width="632">
+    <source src="/static/2024/10/night_sky.mp4" type="video/mp4">
+</video>
+
+<video autoplay muted loop width="632">
+    <source src="/static/2024/10/stars_animation.mp4" type="video/mp4">
 </video>
