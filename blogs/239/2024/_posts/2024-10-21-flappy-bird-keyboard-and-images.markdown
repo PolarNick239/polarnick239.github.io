@@ -75,7 +75,7 @@ public class Main {
 
 7) Скачайте эту картинку (или любую другую) - нажмите по ней правой кнопкой и там ```Save image as...``` (чтобы сохранить изображение):
 
-![Flabby bird](/static/flabby_bird/bird.png 
+![Flabby bird](/static/flabby_bird/bird.png)
 
 8) Откройте в проводнике папку куда она скачалась, скопируйте ее (```Ctrl+C```)
 
