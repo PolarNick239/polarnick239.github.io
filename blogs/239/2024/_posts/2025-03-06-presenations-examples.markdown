@@ -18,14 +18,18 @@ categories: school239_108_2024_2025
 
 При этом все что можно объяснить и донести до зрителя через визуал - лучше показывать без текста (например геометрические иллюстрации - отличная идея).
 
+![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_07.png)
+
 ![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_02.png)
 
 ![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_06.png)
 
+![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_08.png)
+
 ![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_04.png)
 
-![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_05.png)
-
 ![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_01.png)
+
+![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_09.png)
 
 ![Пример как можно улучшить слайд](/static/2023/04/presentation_improvement_03.png)
