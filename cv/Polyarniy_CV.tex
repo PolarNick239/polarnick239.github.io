@@ -6,6 +6,7 @@
 \usepackage[english,russian]{babel}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
 
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -16,12 +17,12 @@
 
 \begin{document}
 
-\begin{textblock}{7}(11,1)
-    \includegraphics[scale=0.4]{photo.png}
+\begin{textblock}{7}(9,0.42)
+    \includegraphics[scale=0.6]{photo2025.png}
 \end{textblock}
 
 \begin{center}
-	{\huge Poliarnyi Nikolai}
+	{\huge Poliarnyi Nikolai \\ Полярный Николай}
 \end{center}
 
 \vspace{-9pt}
@@ -35,7 +36,9 @@
 
     \textbf{Mathematician-Programmer (Team Lead)}
 
-    \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Metashape} developer. R\&D and continous search for points of improvement. Developed a detailed, scale-diverse, fast and scalable (out-of-core and cluster-friendly) surface model reconstruction method (published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} at the top conference \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}). Student Internship Mentor.
+    \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Metashape} developer. R\&D and continous search for points of improvement.
+    Invented and developed a detailed, scale-diverse, fast and scalable (out-of-core and cluster-friendly) surface model reconstruction method (published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} at the top conference \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}).
+    Invented and developed novel GPU-accelerated algorithms for depth maps reconstruction (OpenCL/CUDA) and out-of-core texture generation (Vulkan).
 
     Computer Vision, Computational Geometry, OpenCL/CUDA/Vulkan, AI/ML
   \item[ - Transas] \hfill \\
@@ -45,7 +48,7 @@
 
     Developed a server that produces 3D landscape reconstruction and true orthophoto stitching from UAVs' data (\hhref{http://polarnick239.github.io/old/cv/Monoceros1.pdf}{presentation}, \hhref{http://polarnick239.github.io/old/cv/Monoceros2.pdf}{second presentation}).
 
-    OpenCV, OpenCL, Python, Cython, Ceres-solver.
+    OpenCV, OpenCL, Python, Cython, Ceres-solver
   \item[ - Yandex.Money] \hfill \\
     \textbf{February 2014 – October 2014:} Software Developer (Java backend)
   \item[ - DevExperts] \hfill \\
@@ -77,15 +80,17 @@
 \begin{itemize}
     \item{\textbf{Consultant}}: provides consultation services to companies and startups on topics related to computer vision algorithms and GPU-acceleration.
 
+    \item{\textbf{Public lectures}}: \hhref{https://csspace.io/open-lecture/2025-gpu}{GPGPU in CS Space}, \hhref{https://www.youtube.com/watch?v=adQQoH3iXPQ}{Science Day in school}, \hhref{https://www.youtube.com/watch?v=ltUzX1IR9JI&list=PL5p-5hHpsHBolSeDn7__1c9hgPprYTjnn&index=3}{Algorithms behind Unreal Engine 5 Nanite tech}.
+
     \item{\textbf{Photogrammetry course}}: developed Photogrammetry  \hhref{https://compsciclub.ru/courses/photogrammetry/2021-spring/}{course} in Computer Science Club. Teaching it in \hhref{https://math-cs.spbu.ru/}{SPbU}.  \hhref{https://www.youtube.com/@polarnick239/playlists}{Video recordings}. Tasks on \hhref{https://github.com/PhotogrammetryCourse/}{github}.
 
     \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/}{course} in Computer Science Center. \hhref{https://www.youtube.com/watch?v=L79PgDOcVfw&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ}{Video recordings}. Tasks on \hhref{https://github.com/GPGPUCourse/}{github}.
 
-    \item{\textbf{Open-source}: \hhref{https://github.com/PolarNick239/ExternalSortingOnGPU}{Out-of-core merge sort} with GPU acceleration. \hhref{https://gist.github.com/PolarNick239/7819fb7722fab09b37ecaee77c82cf58}{96-bit 3D Morton code}. OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{implementation} of EDISON mean shift. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus.}
+    \item{\textbf{Open-source}: \hhref{https://github.com/GPGPUCourse/GPGPUVulkan}{Vulkan API library}. \hhref{https://github.com/PolarNick239/ExternalSortingOnGPU}{Out-of-core merge sort} with GPU acceleration. \hhref{https://gist.github.com/PolarNick239/7819fb7722fab09b37ecaee77c82cf58}{96-bit 3D Morton code}. OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{implementation} of EDISON mean shift. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus.}
 
     \item{\textbf{Hackathons}}: six awards on hackatons. Two first places on \hhref{https://github.com/PolarNick239/HackathonDroneSwarm}{X-Mas Hack} (mission planner for drone swarm). Third place on \hhref{https://career.luxoft.com/lp/hack-cv/}{HackCV} (traffic signs recognition), \hhref{http://hackday.ru/sciencehackday-2/projects\#project-1400}{Science Hackday \#2} (Startup nomination), \hhref{http://hackday.ru/hackday-36/projects\#project-1121}{Hackday\#36} (Autodesk 3D-web nomination), \hhref{https://www.hackerleague.org/hackathons/jetbrains-edtech-hackathon/blogposts/53655896e24d32cfbd000006}{HackEdu} by JetBrains (third place). Participation in \hhref{http://www.hackjunction.com/}{Junction 2016, 2017}.
 
-    \item{\textbf{Conferences}}: published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} on \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}. Participated in \hhref{http://3dv18.uniud.it/}{3DV 2018} and \hhref{http://www.3d-arch.org/}{3D-ARCH 2019}.
+    \item{\textbf{Conferences}}: published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} on \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}. Presented the report \hhref{https://polarnick.com/static/presentations/AgisoftMetashapeGSW2023.pdf}{LiDAR and Photogrammetry Compared and Combined} at the \hhref{https://gsw2023.com/}{ISPRS GSW 2023 Conference}. Participated in \hhref{http://3dv18.uniud.it/}{3DV 2018} and \hhref{http://www.3d-arch.org/}{3D-ARCH 2019}.
 
     \item{\textbf{Magister Ludi}}: \hhref{http://239.ru}{PML №239} programming teacher.
 \end{itemize}
@@ -121,6 +126,6 @@
 
 \end{itemize}
 
-Last updated: 07.11.2024
+Last updated: 09.05.2025
 
 \end{document}
