@@ -31,22 +31,30 @@
 
 
 \begin{description}
-  \item[ - Agisoft] \hfill \\
+  \item[ - \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Agisoft Metashape}] \hfill \\
     \textbf{Since April 2016}
 
     \textbf{Mathematician-Programmer (Team Lead)}
 
-    \hhref{https://en.wikipedia.org/wiki/PhotoScan}{Metashape} developer. R\&D and continous search for points of improvement.
-    Invented and developed a detailed, scale-diverse, fast and scalable (out-of-core and cluster-friendly) surface model reconstruction method (published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} at the top conference \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}).
-    Invented and developed novel GPU-accelerated algorithms for depth maps reconstruction (OpenCL/CUDA) and out-of-core texture generation (Vulkan).
+    R\&D: tune performance, pioneer innovations, identify\&eliminate major user pain points.
 
-    Computer Vision, Computational Geometry, OpenCL/CUDA/Vulkan, AI/ML
+    \begin{itemize}
+
+      \item Invented a scalable, multi-scale surface reconstruction method (out-of-core/cluster-friendly), \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{published a paper} at \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}.
+      \item Developed GPU-accelerated algorithms (using custom OpenCL/CUDA/Vulkan wrappers), including: depth maps reconstruction and out-of-core texture generation.
+      \item Enhanced cloud performance, achieving 2x faster processing.
+      \item Photographed (15K images) and digitized the UNESCO site \hhref{https://heritage3d.ru/models/kizhskiy-pogost}{Kizhi Pogost}.
+      \item Set up in-office local LLM server.
+    \end{itemize}
+
+    Computer Vision, Computational Geometry, OpenCL/CUDA/Vulkan, \hhref{https://polarnick.com/static/presentations/AgisoftMetashapeGSW2023.pdf}{LiDAR}, AI/ML
   \item[ - Transas] \hfill \\
     \textbf{October 2014 - March 2016}
 
     \textbf{Mathematician-Programmer}
 
-    Developed a server that produces 3D landscape reconstruction and true orthophoto stitching from UAVs' data (\hhref{http://polarnick239.github.io/old/cv/Monoceros1.pdf}{presentation}, \hhref{http://polarnick239.github.io/old/cv/Monoceros2.pdf}{second presentation}).
+    Developed a server that produces 3D landscape reconstruction and true orthophoto stitching from UAVs' data.
+    % (\hhref{http://polarnick239.github.io/old/cv/Monoceros1.pdf}{presentation}, \hhref{http://polarnick239.github.io/old/cv/Monoceros2.pdf}{second presentation}).
 
     OpenCV, OpenCL, Python, Cython, Ceres-solver
   \item[ - Yandex.Money] \hfill \\
@@ -78,13 +86,13 @@
 \vspace{-9pt}
 
 \begin{itemize}
-    \item{\textbf{Consultant}}: provides consultation services to companies and startups on topics related to computer vision algorithms and GPU-acceleration.
+    \item{\textbf{Consultant}}: provides consultation/project-development services to companies and startups on topics related to Computer Vision and GPU-acceleration.
 
     \item{\textbf{Public lectures}}: \hhref{https://csspace.io/open-lecture/2025-gpu}{GPGPU in CS Space}, \hhref{https://www.youtube.com/watch?v=adQQoH3iXPQ}{Science Day in school}, \hhref{https://www.youtube.com/watch?v=ltUzX1IR9JI&list=PL5p-5hHpsHBolSeDn7__1c9hgPprYTjnn&index=3}{Algorithms behind Unreal Engine 5 Nanite tech}.
 
-    \item{\textbf{Photogrammetry course}}: developed Photogrammetry  \hhref{https://compsciclub.ru/courses/photogrammetry/2021-spring/}{course} in Computer Science Club. Teaching it in \hhref{https://math-cs.spbu.ru/}{SPbU}.  \hhref{https://www.youtube.com/@polarnick239/playlists}{Video recordings}. Tasks on \hhref{https://github.com/PhotogrammetryCourse/}{github}.
+    \item{\textbf{Photogrammetry course}}: developed Photogrammetry  \hhref{https://compsciclub.ru/courses/photogrammetry/2021-spring/}{course} in Computer Science Club. Teaching it in \hhref{https://math-cs.spbu.ru/}{SPbU} and \hhref{https://ct.itmo.ru/}{ITMO}.  \hhref{https://www.youtube.com/watch?v=rEF0zkv2cn8&list=PL5p-5hHpsHBp4yTpeZJ_QMSmJPAuov-VF&index=1}{Video recordings}. Tasks on \hhref{https://github.com/PhotogrammetryCourse/}{github}.
 
-    \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/}{course} in Computer Science Center. \hhref{https://www.youtube.com/watch?v=L79PgDOcVfw&list=PLlb7e2G7aSpTgwAm0GBkvn5XA0NokovJJ}{Video recordings}. Tasks on \hhref{https://github.com/GPGPUCourse/}{github}.
+    \item{\textbf{GPGPU course}}: developed GPGPU OpenCL \hhref{https://compscicenter.ru/courses/video_cards_computation/}{course} in Computer Science Center. \hhref{https://www.youtube.com/watch?v=LDt4KQEdImY&list=PLlb7e2G7aSpSkDWlyJQzT9Qx9rrgKSgAp&index=1}{Video recordings}. Tasks on \hhref{https://github.com/GPGPUCourse/}{github}.
 
     \item{\textbf{Open-source}: \hhref{https://github.com/GPGPUCourse/GPGPUVulkan}{Vulkan API library}. \hhref{https://github.com/PolarNick239/ExternalSortingOnGPU}{Out-of-core merge sort} with GPU acceleration. \hhref{https://gist.github.com/PolarNick239/7819fb7722fab09b37ecaee77c82cf58}{96-bit 3D Morton code}. OpenCL \hhref{https://github.com/PolarNick239/OpenMeanShift}{implementation} of EDISON mean shift. \hhref{https://github.com/opencv/opencv/pull/6078}{Implemented} Python bindings for OpenCL algorithms in OpenCV. Contributions to OpenCV, PyOpenCL, jupyter qtconsole and others. GPU monitoring in i3pystatus.}
 
@@ -92,7 +100,7 @@
 
     \item{\textbf{Conferences}}: published \hhref{https://www.polarnick.com/static/papers/poliarnyi2021.pdf}{a paper} on \hhref{http://iccv2021.thecvf.com/}{ICCV 2021}. Presented the report \hhref{https://polarnick.com/static/presentations/AgisoftMetashapeGSW2023.pdf}{LiDAR and Photogrammetry Compared and Combined} at the \hhref{https://gsw2023.com/}{ISPRS GSW 2023 Conference}. Participated in \hhref{http://3dv18.uniud.it/}{3DV 2018} and \hhref{http://www.3d-arch.org/}{3D-ARCH 2019}.
 
-    \item{\textbf{Magister Ludi}}: \hhref{http://239.ru}{PML №239} programming teacher.
+    \item{\textbf{Magister Ludi}}: \hhref{http://239.ru}{PML №239} programming teacher. Supervising 20+ student game dev projects \hhref{https://www.youtube.com/watch?v=bbKXnsysUXw}{each year}.
 \end{itemize}
 
 \vspace{-9pt}
@@ -126,6 +134,6 @@
 
 \end{itemize}
 
-Last updated: 09.05.2025
+Last updated: 15.05.2025
 
 \end{document}
