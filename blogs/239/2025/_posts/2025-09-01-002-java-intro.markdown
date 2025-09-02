@@ -22,7 +22,7 @@ categories: school239_108_2025_2026
 2. Промотать чуть ниже (**не скачайте случайно** в самом верху **IntelliJ IDEA Ultimate**) и найти **IntelliJ IDEA Community Edition** - рядом нажать **Download .exe**
 3. Установить
 
-Отправить Hello World в тестовую систему
+Отправить Hello World в тестовую систему (это на завтра)
 ===========================================
 
 1. Открыть [https://mdl.sch239.net/login/index.php](https://mdl.sch239.net/login/index.php) (логин такой же как в школьные компьютеры)
