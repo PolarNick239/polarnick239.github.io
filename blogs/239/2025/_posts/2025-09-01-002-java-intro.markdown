@@ -17,15 +17,17 @@ categories: school239_108_2025_2026
 
 Установить Java JDK (набор разработчика):
 =========================================
-1. Открыть [https://aws.amazon.com/corretto/](https://aws.amazon.com/corretto/) -> Download Amazon Corretto 17 -> найти строчку "Windows x64" -> справа от нее скачать **msi**-установщик по ссылке [https://corretto.aws/downloads/latest/amazon-corretto-17-x64-windows-jdk.msi](https://corretto.aws/downloads/latest/amazon-corretto-17-x64-windows-jdk.msi)
-2. Дождаться окончания скачки файла
-3. Установить
+1. Открыть [https://aws.amazon.com/corretto/](https://aws.amazon.com/corretto/) -> Download Amazon Corretto 21 -> найти строчку "Windows x64" -> справа от нее скачать **msi**-установщик по ссылке [https://corretto.aws/downloads/latest/amazon-corretto-21-x64-windows-jdk.msi](https://corretto.aws/downloads/latest/amazon-corretto-21-x64-windows-jdk.msi)
+2. Если ссылка не открывается скачайте с яндекс диска - [amazon-corretto-21.0.8.9.1-windows-x64.msi](https://disk.yandex.ru/d/WV8ivr791OuPrQ)
+3. Дождаться окончания скачки файла
+4. Установить
 
 Установить Intellij Idea Community Edition:
 ===========================================
 1. Открыть [https://www.jetbrains.com/idea/download/](https://www.jetbrains.com/idea/download/)
 2. Промотать чуть ниже (**не скачайте случайно** в самом верху **IntelliJ IDEA Ultimate**) и найти **IntelliJ IDEA Community Edition** - рядом нажать **Download .exe**
-3. Установить
+3. Если ссылка не открывается скачайте с яндекс диска - [ideaIC-2025.2.1.exe](https://disk.yandex.ru/d/irPrUThKGzx4WA)
+4. Установить
 
 Отправить Hello World в тестовую систему (это на завтра)
 ===========================================
