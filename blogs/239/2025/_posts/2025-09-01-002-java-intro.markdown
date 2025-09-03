@@ -29,6 +29,8 @@ categories: school239_108_2025_2026
 3. Если ссылка не открывается скачайте с яндекс диска - [ideaIC-2025.2.1.exe](https://disk.yandex.ru/d/irPrUThKGzx4WA)
 4. Установить
 
+Дополнительные установщики (в т.ч. для Apple MacBook) - https://disk.yandex.ru/d/NPSbEvzOuf6uBA
+
 Отправить Hello World в тестовую систему (это на завтра)
 ===========================================
 
