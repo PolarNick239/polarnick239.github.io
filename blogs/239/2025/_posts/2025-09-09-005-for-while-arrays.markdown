@@ -19,6 +19,16 @@ categories: school239_108_2025_2026
 [//]: # (while - continue - break &#40;четные игнорим, остальные выводим, ввели -1 - выходим&#41;)
 [//]: # (сравнение строк через equals)
 
+Видеозаписи урока 1:
+
+- [в VK видео](https://vkvideo.ru/video-232475999_456239019)
+- [на YouTube](https://youtu.be/BfFxwH3sLno)
+
+Видеозаписи урока 2:
+
+- [в VK видео](https://vkvideo.ru/video-232475999_456239020)
+- [на YouTube](https://youtu.be/MeVvggmIdsY)
+
 **По прошлому ДЗ**
 ====
 
