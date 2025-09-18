@@ -15,6 +15,11 @@ categories: school239_108_2025_2026
 [//]: # (ArrayList - массив произвольной длины, вместо int-Integer)
 [//]: # (size get add)
 
+Видеозаписи урока:
+
+- [в VK видео](https://vkvideo.ru/video-232475999_456239022)
+- [на YouTube](https://youtu.be/5lK0hQlZIKM)
+
 **Покрытые темы**
 ====
 
