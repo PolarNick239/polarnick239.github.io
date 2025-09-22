@@ -1,0 +1,25 @@
+---
+layout: ru/blogs/239/2025/post
+title:  "Всероссийская олимпиада по ИИ"
+date:   2025-09-21 12:04:00 +0300
+lang:   ru
+categories: school239_108_2025_2026
+---
+
+**Школьный этап**
+===
+
+Тестовый вариант школьного этапа ВсОШ по ИИ, **9-11** класс:
+ - [условия](/static/2025/09/vseros_ai/school/vseros_ai_school_9_11_class.pdf)
+ - [разбор на youtube](https://youtu.be/zNHbffr6JpY)
+ - [разбор на vk](https://vkvideo.ru/video-232217120_456239025)
+
+Тестовый вариант школьного этапа ВсОШ по ИИ, **7-8** класс:
+- [условия](/static/2025/09/vseros_ai/school/vseros_ai_school_7_8_class.pdf)
+- [разбор на youtube](https://youtu.be/zYOEaK0Cbns)
+- [разбор на vk](https://vkvideo.ru/video-232217120_456239024)
+
+Тестовый вариант школьного этапа ВсОШ по ИИ, **5-6** класс:
+- [условия](/static/2025/09/vseros_ai/school/vseros_ai_school_5_6_class.pdf)
+- [разбор на youtube](https://youtu.be/g6wx_MU96ho)
+- [разбор на vk](https://vkvideo.ru/video-232217120_456239023)
