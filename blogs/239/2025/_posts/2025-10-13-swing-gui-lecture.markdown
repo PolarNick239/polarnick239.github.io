@@ -6,6 +6,11 @@ lang:   ru
 categories: school239_108_2025_2026
 ---
 
+Видеозаписи урока:
+
+- [в VK урок](https://vkvideo.ru/video-232475999_456239027)
+- [на YouTube урок](https://youtu.be/1NtzjyBbexI?si=WUFjO3MacYn7A2I7)
+
 Заметки
 ===
 
