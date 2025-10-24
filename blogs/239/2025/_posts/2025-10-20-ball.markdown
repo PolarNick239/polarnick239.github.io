@@ -6,6 +6,11 @@ lang:   ru
 categories: school239_108_2025_2026
 ---
 
+Видеозаписи урока:
+
+- [в VK урок](https://vkvideo.ru/video-232475999_456239029)
+- [на YouTube урок](https://youtu.be/tT61H7w9t6w)
+
 1) Создайте пустой проект
 
 2) На базе [недавно обсужденного](/blogs/239/2025/school239_108_2025_2026/2025/10/13/swing-gui-lecture.html):
