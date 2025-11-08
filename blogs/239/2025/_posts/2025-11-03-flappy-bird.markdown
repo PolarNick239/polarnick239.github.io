@@ -6,6 +6,11 @@ lang:   ru
 categories: school239_108_2025_2026
 ---
 
+Видеозаписи урока:
+
+- [в VK урок](https://vkvideo.ru/video-232475999_456239030)
+- [на YouTube урок](https://www.youtube.com/watch?v=bo2xG-c_Mp8)
+
 На следующем уроке мы изучим как обрабатывать нажатия кнопок клавиатуры и как рисовать картинку и сможем сделать полноценную игру - Flappy Bird:
 
 ![Flappy Bird demo](/static/2024/10/flappy_bird_demo.jpg)
