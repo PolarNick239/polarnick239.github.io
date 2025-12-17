@@ -8,7 +8,7 @@ categories: school239_108_2025_2026
 
 Нейросети могут нарисовать очень много красивых картинок по вашему запросу.
 
-Рекомендую использовать (т.к. сам использую) [**ChatGPT Sora**](https://sora.chatgpt.com/explore) или поискать аналоги, например [Kandinsky в @gigachat_bot](https://t.me/gigachat_bot).
+Рекомендую использовать (т.к. сам использую) [**ChatGPT Sora**](https://sora.chatgpt.com/explore) или поискать аналоги, например [giga.chat](https://giga.chat/) или [@gigachat_bot](https://t.me/gigachat_bot).
 
 Как выдержать единый стиль?
 ------
