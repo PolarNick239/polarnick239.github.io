@@ -4,8 +4,8 @@ layout: null
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Миникурс компьютерного зрения - сопоставляем кусочки пазла, Сириус, 2026</title>
-    <description>Миникурс компьютерного зрения - сопоставляем кусочки пазла, Сириус, 2026</description>
+    <title>Мини-курс компьютерного зрения - сопоставляем кусочки пазла, Сириус, 2026</title>
+    <description>Мини-курс компьютерного зрения - сопоставляем кусочки пазла, Сириус, 2026</description>
     <link>{{ site.url_en }}/blogs/courses/Sirius26CVPuzzleSolver/index_ru.html</link>
     <atom:link href="{{ "/blogs/courses/Sirius26CVPuzzleSolver/feed_ru.xml" | prepend: site.url_en }}" rel="self" type="application/rss+xml"/>
     <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
