@@ -54,7 +54,7 @@ categories: school239_11_2021_2022
 Задание 1: Дейкстра
 ======
 
-[mainDijkstra.cpp](https://github.com/PML239CVCourse/CPPExercises2021/tree/main/lesson15/src/mainDijkstra.cpp)
+[mainDijkstra.cpp](https://github.com/CompVisionCourses/CPPExercises2021/tree/main/lesson15/src/mainDijkstra.cpp)
 
 Реализуйте метод Дейкстры описанный выше.
 
@@ -67,7 +67,7 @@ categories: school239_11_2021_2022
 Задание 2: Лабиринт
 ======
 
-[mainMaze.cpp](https://github.com/PML239CVCourse/CPPExercises2021/tree/main/lesson15/src/mainMaze.cpp)
+[mainMaze.cpp](https://github.com/CompVisionCourses/CPPExercises2021/tree/main/lesson15/src/mainMaze.cpp)
 
 Теперь давайте сделаем из этого что-нибудь классное, например найдем кратчайший путь в лабиринте:
 

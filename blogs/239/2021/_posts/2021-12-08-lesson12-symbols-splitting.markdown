@@ -24,7 +24,7 @@ categories: school239_11_2021_2022
 
 Вбейте в гугл ```opencv docs cpp```.
 
-Убеждаетесь что сверху слева указана версия библиотеки навроде 4.5.4 (т.к. мы используем версию 4.5.1 или выше - см. файл в корне проекта [CMakeLists.txt](https://github.com/PML239CVCourse/CPPExercises2021/blob/main/lesson11/CMakeLists.txt#L4)):
+Убеждаетесь что сверху слева указана версия библиотеки навроде 4.5.4 (т.к. мы используем версию 4.5.1 или выше - см. файл в корне проекта [CMakeLists.txt](https://github.com/CompVisionCourses/CPPExercises2021/blob/main/lesson11/CMakeLists.txt#L4)):
 
 ![opencv docs version](/static/2021/12/08/opencv_docs_version.png)
 

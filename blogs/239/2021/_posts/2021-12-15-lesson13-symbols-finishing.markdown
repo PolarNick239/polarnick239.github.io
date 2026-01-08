@@ -9,9 +9,9 @@ categories: school239_11_2021_2022
 Идеи/советы
 ======
 
-1) Чтобы перенести реализацию построения HoG из позапрошлого урока в предыдущий урок в котором было реализовано разбиение картинки на буквы - казалось бы достаточно скопировать ваш [hog.h хэдер с декларацией](https://github.com/PML239CVCourse/CPPExercises2021/blob/main/lesson10/src/hog.h) и [hog.cpp файл с реализацией](https://github.com/PML239CVCourse/CPPExercises2021/blob/main/lesson10/src/hog.cpp) в папку прошлого урока [рядом с parseSymbols.h и parseSymbols.cpp](https://github.com/PML239CVCourse/CPPExercises2021/tree/main/lesson11/src).
+1) Чтобы перенести реализацию построения HoG из позапрошлого урока в предыдущий урок в котором было реализовано разбиение картинки на буквы - казалось бы достаточно скопировать ваш [hog.h хэдер с декларацией](https://github.com/CompVisionCourses/CPPExercises2021/blob/main/lesson10/src/hog.h) и [hog.cpp файл с реализацией](https://github.com/CompVisionCourses/CPPExercises2021/blob/main/lesson10/src/hog.cpp) в папку прошлого урока [рядом с parseSymbols.h и parseSymbols.cpp](https://github.com/CompVisionCourses/CPPExercises2021/tree/main/lesson11/src).
 
-И да, это очень хорошая идея - осталось дело за малым - подсказать компилятору что этот файл надо компилировать в рамках проекта, давайте посмотрим как это было проделано для [parseSymbols.h и parseSymbols.cpp](https://github.com/PML239CVCourse/CPPExercises2021/blob/main/lesson11/CMakeLists.txt#L13-L14) и сделаем по аналогии и для hog.h + hog.cpp.
+И да, это очень хорошая идея - осталось дело за малым - подсказать компилятору что этот файл надо компилировать в рамках проекта, давайте посмотрим как это было проделано для [parseSymbols.h и parseSymbols.cpp](https://github.com/CompVisionCourses/CPPExercises2021/blob/main/lesson11/CMakeLists.txt#L13-L14) и сделаем по аналогии и для hog.h + hog.cpp.
 
 2) Как упорядочить буквы? Для начала просто отсортировать их по оси x - воспользуйтесь ```std::sort```, а чтобы узнать как сформулировать критерий сортировки (оператор сравнения объектов) - загуглите ```cpp how to sort vector of custom objects```.
 

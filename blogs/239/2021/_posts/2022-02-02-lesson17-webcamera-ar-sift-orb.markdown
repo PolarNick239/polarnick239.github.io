@@ -14,7 +14,7 @@ categories: school239_11_2021_2022
 
 Но еще и работающее через вебкамеру.
 
-Итого план задания - выполнять [TODO](https://github.com/PML239CVCourse/CPPExercises2021/blob/main/lesson14/src/main.cpp) в исходниках, в частности:
+Итого план задания - выполнять [TODO](https://github.com/CompVisionCourses/CPPExercises2021/blob/main/lesson14/src/main.cpp) в исходниках, в частности:
 
 1) Проверьте работает ли у вас вебкамера через OpenCV, и выставите ```useWebcam``` соответственно
 
