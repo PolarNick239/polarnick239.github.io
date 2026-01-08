@@ -1,0 +1,29 @@
+---
+layout: ru/blogs/courses/Sirius26CVPuzzleSolver/default
+lang:   ru
+id:     blogs_Sirius26CVPuzzleSolver_index
+---
+
+<div class="home">
+
+  <h1 class="post-title">{% include /commons/icon-rss.html path="feed_ru.xml" %} Миникурс компьютерного зрения - сопоставляем кусочки пазла, Сириус, 2026</h1>
+
+  <table class="post-list">
+    {% for post in site.categories.Sirius26CVPuzzleSolver %}
+      {% if post.lang == page.lang %}
+        <tr>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%b %-d," }}</span>
+          </td>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%Y" }}</span>
+          </td>
+          <td>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+
+</div>
