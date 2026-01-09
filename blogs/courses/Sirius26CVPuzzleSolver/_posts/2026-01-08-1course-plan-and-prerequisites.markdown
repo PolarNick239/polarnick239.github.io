@@ -6,6 +6,8 @@ lang:   ru
 categories: Sirius26CVPuzzleSolver
 ---
 
+![Downscaled photo of puzzle example](/static/2026/01/downscaled_photo_example.jpg)
+
 В рамках курса на C++ изучим и вручную реализуем некоторые алгоритмы компьютерного зрения, которые в совокупности помогут нам решить задачу сборки пазла:
 
 1) Что вообще такое картинка с точки зрения кода?
