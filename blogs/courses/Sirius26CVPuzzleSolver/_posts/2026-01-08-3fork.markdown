@@ -1,0 +1,17 @@
+---
+layout: ru/blogs/courses/Sirius26CVPuzzleSolver/post
+title:  "Как сделать fork исходников"
+date:   2026-01-08 21:30:50 +0300
+lang:   ru
+categories: Sirius26CVPuzzleSolver
+---
+
+Логинитесь на github, открываете [репозиторий задания](https://github.com/CompVisionCourses/CVPuzzleSolver)
+
+Жмете сверху-справа fork чтобы у вас появилась копия проекта (вы сможете делать **commit+push**):
+
+![How to fork a github repo](/static/2026/01/fork_github_repo.png)
+
+После этого у вас есть ваш репозиторий, чтобы скачать его себе локально в CLion:
+
+```Жмете на четыре полоски в верхнем левом углу -> Git -> Clone... -> GitHub``` (потребуется нажать **Authenticate** браузере, чтобы дать доступ к своему гитхабу).
