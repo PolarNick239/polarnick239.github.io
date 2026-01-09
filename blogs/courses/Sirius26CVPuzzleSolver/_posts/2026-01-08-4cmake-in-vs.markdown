@@ -1,6 +1,6 @@
 ---
 layout: ru/blogs/courses/Sirius26CVPuzzleSolver/post
-title:  "Как запустить в Visual Studio"
+title:  "Как запустить в Visual Studio, настройка working directory"
 date:   2026-01-08 21:30:52 +0300
 lang:   ru
 categories: Sirius26CVPuzzleSolver
@@ -8,11 +8,13 @@ categories: Sirius26CVPuzzleSolver
 
 ```Файл->Открыть->CMake...``` и выбираете CMakeLists.txt в корне проекта.
 
-Если вы видите ошибку про путь к картинке:
+**UPD:** игнорируйте все что написано ниже, начиная с [этого commit-а](https://github.com/CompVisionCourses/CVPuzzleSolver/commit/9147360e6ab0eae3e0dfb4f9d58833de8a5c51a6#diff-34d21af3c614ea3cee120df276c9c4ae95053830d7f1d3deaf009a4625409ad2) настривать Working Directory больше не надо, она будет работать автоматически везде (благодаря вызову ```configureWorkingDirectory()``` в main.cpp).
+
+Если вы видите ошибку про путь к картинке (**UPD:** больше такую проблему вы встречать не должны):
 
 ![Visual Studio terminal error about working directory path](/static/2026/01/msvc_path_error.png)
 
-То вам нужно изменить рабочую папку - то есть папку из которой запускается программа:
+То вам нужно изменить рабочую папку (working directory) - то есть папку из которой запускается программа:
 
 Добавьте в самом начале ```main.cpp```:
 
