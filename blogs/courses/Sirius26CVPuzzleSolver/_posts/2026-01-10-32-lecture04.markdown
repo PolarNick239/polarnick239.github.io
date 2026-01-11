@@ -54,7 +54,7 @@ categories: Sirius26CVPuzzleSolver
 
 А если у нас есть цикл из этих пикселей-вершин, то **как разбить их на четыре множества** - четыре стороны куска:
 
-![Good foreground mask after morphology](/static/2026/01/object_4sides.png)
+![4 sides](/static/2026/01/object_4sides.png)
 
 Чего мы хотим
 ===
