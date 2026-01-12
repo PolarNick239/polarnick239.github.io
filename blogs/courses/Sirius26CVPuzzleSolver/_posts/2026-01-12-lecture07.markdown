@@ -1,7 +1,7 @@
 ---
 layout: ru/blogs/courses/Sirius26CVPuzzleSolver/post
-title:  "Занятия 5-6: Сопоставляем стороны кусочков"
-date:   2026-01-11 12:31:40 +0300
+title:  "Занятие 7: Сшиваем пазл в единую картинку"
+date:   2026-01-12 12:31:40 +0300
 lang:   ru
 categories: Sirius26CVPuzzleSolver
 ---
@@ -9,7 +9,7 @@ categories: Sirius26CVPuzzleSolver
 Мем
 ===
 
-![Meme Iceberg exchange rate AHAHAHAhahAHAH](/static/2026/01/mem_iceberg.jpg)
+![Meme Unicorn](/static/2026/01/meme_unicorn.jpg)
 
 Используйте Extended Thinking/DeepThink у LLM
 ===
