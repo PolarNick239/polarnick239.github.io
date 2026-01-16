@@ -53,7 +53,11 @@ CI, Continous Integration - автоматическая проверка ком
 Практическая часть
 ---
 
-Предлагаю вам начать с [проекта-заготовки](https://github.com/CompVisionCourses/CVPuzzleSolver), там уже есть весь скелет проекта и пример фотографии.
+Предлагаю вам начать с [проекта-заготовки](https://github.com/CompVisionCourses/CVPuzzleSolver/releases/tag/lesson01) - обратите внимание что это его старая версия, актуальная для этого первого задания. Чтобы скачать исходники - откройте эту ссылку и скачайте исходники:
+
+![GitHub download source code for old revision](/static/2026/01/download_old_repo_sources.png)
+
+Там уже есть весь скелет проекта и пример фотографии.
 
 Считаем картинку, сделаем ярче, сохраним
 ---
