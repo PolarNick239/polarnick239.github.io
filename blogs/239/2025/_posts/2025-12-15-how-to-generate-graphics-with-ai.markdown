@@ -27,6 +27,18 @@ categories: school239_108_2025_2026
 
 Благодаря этому, используя **одну и ту же картинку-дизайн-подсказку** - можно получить согласованную по дизайну графику.
 
+Пример использования [sora.chatgpt.com](https://sora.chatgpt.com/)
+------
+
+![Пример как делать картинки](/static/2026/01/llm_neuroimage_example_chatgpt_2.jpg)
+
+![Пример как делать картинки](/static/2026/01/llm_neuroimage_example_chatgpt_1.jpg)
+
+Пример использования [chadgpt.ru](http://chadgpt.ru/)
+------
+
+![Пример как делать картинки](/static/2026/01/llm_neuroimage_example_chadgpt.jpg)
+
 Не бойтесь экспериментировать!
 ------
 
