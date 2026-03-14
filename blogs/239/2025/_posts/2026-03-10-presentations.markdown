@@ -6,6 +6,9 @@ lang:   ru
 categories: school239_108_2025_2026
 ---
 
+- [в VK урок](https://vkvideo.ru/video-232475999_456239049)
+- [на YouTube урок](https://youtu.be/FW59CxgpKyY?si=mW9oqAIudI9P2lMI)
+
 Что должно быть в презентации?
 =======
 

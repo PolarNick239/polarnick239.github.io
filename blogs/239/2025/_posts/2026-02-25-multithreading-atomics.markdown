@@ -7,7 +7,7 @@ categories: school239_108_2025_2026
 ---
 
 - [в VK урок](https://vkvideo.ru/video-232475999_456239045)
-- [на YouTube урок](https://vkvideo.ru/video-232475999_456239047)
+- [на YouTube урок](https://youtu.be/YCiWc3dSHbU?si=wLJUSW6vzz0vj_ph)
 
 Темы урока:
 
