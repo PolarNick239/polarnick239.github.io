@@ -95,4 +95,5 @@ categories: school239_108_2025_2026
 
 - [Пример презентации_про_расследование](/static/2021/04/projects/presentations/Point-and-Click%20detective.pdf)
 - [Пример_презентации_про_медведя](/static/2021/04/projects/presentations/ted_presentation.pdf)
+- [Пример_презентации_с_208_слайдами](https://disk.yandex.ru/i/k7oS3iBI2d4daQ)
 - [Пример_презентации_типового_проекта](/static/2021/04/projects/presentations/geom_presentation.pdf)
