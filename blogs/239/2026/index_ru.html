@@ -1,0 +1,54 @@
+---
+layout: ru/blogs/239/2026/default
+lang:   ru
+id:     239_2026_10_8
+---
+
+<div class="home">
+
+  <h1 class="post-title">{% include /commons/icon-rss.html path="feed_ru.xml" %} Задания для 10-8. ФМЛ №239. 2026/2027</h1>
+
+  <table class="post-list">
+    {% for post in site.categories.school239_108_2026_2027 %}
+      {% if post.lang == page.lang %}
+        <tr>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%b %-d," }}</span>
+          </td>
+          <td>
+            <span class="post-meta">{{ post.date | date: "%Y" }}</span>
+          </td>
+          <td>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+
+    <tr>
+      <td>
+        <span class="post-meta"></span>
+      </td>
+      <td>
+        <span class="post-meta">2025</span>
+      </td>
+      <td>
+        <a class="post-link" href="https://vkvideo.ru/@club232475999/all">Видеозаписи прошлогодних уроков в VK</a><a class="post-link" href="https://youtube.com/playlist?list=PL5p-5hHpsHBpcPekiI21CIiy2RUC3egp8">на YouTube</a>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <span class="post-meta"></span>
+      </td>
+      <td>
+        <span class="post-meta">2025</span>
+      </td>
+      <td>
+        <a class="post-link" href="/blogs/239/2025/index_ru.html">Материалы курса прошлого года</a>
+      </td>
+    </tr>
+
+  </table>
+
+</div>
