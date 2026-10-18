@@ -71,6 +71,10 @@ who can modify `master` can publish site content, so protect GitHub write access
 The upload identity can overwrite existing site files even though it cannot delete
 them. Compromised code running in the authorized CI job can use that identity.
 
+Jekyll uses explicit UTC, matching GitHub's runners, so the build workstation's
+timezone does not change post dates, HTML metadata or generated URL paths.
+Feeds still include their build time by design.
+
 HTML/feed cache TTL is 5 minutes, other assets one day (not `immutable`, since
 historical filenames can be overwritten). All object MIME types are set.
 

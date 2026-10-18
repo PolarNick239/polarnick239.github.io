@@ -20,6 +20,7 @@ description: > # this means to ignore newlines until "baseurl:"
   My personal blog about computer vision, GPU coding and other stuff.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://polarnick.com"
+timezone: "UTC" # Match GitHub runners and keep local/CI dates reproducible.
 url_en: "https://polarnick.com"
 url_ru: "https://polarnick.com"
 github_username:  PolarNick239
