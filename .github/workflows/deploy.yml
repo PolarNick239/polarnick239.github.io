@@ -1,0 +1,63 @@
+name: Deploy static site to Yandex Object Storage
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: polarnick-site-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: ruby/setup-ruby@651ff0d62c5c79bed6d53ec518387aae20e72c1a # v1
+        with:
+          bundler-cache: true
+      - name: Test deployment safety checks
+        run: python3 -m unittest discover -s tests -v
+      - name: Build and validate (never upload the repository)
+        env:
+          JEKYLL_ENV: production
+        run: |
+          bundle exec jekyll build --trace
+          python3 -c 'import runpy; m = runpy.run_path("scripts/deploy.py"); print("Validated", len(m["files"]()), "built files")'
+      # No clear/delete step. Assets must succeed before publishing HTML and feeds.
+      - name: Upload assets
+        uses: yc-actions/yc-obj-storage-upload@10c88817ef70fa6b118748e9787f5e07a371211c # v4
+        with:
+          yc-sa-id: ajeod99ve5lr8iiar1ei
+          bucket: polarnick.com
+          root: _site
+          include: '**'
+          exclude: |
+            **/*.html
+            **/*.xml
+          clear: 'false'
+          skip-unchanged: 'true'
+          fail-on-error: 'true'
+          concurrency: '6'
+          cache-control: '*: public, max-age=86400'
+      - name: Upload pages and feeds
+        uses: yc-actions/yc-obj-storage-upload@10c88817ef70fa6b118748e9787f5e07a371211c # v4
+        with:
+          yc-sa-id: ajeod99ve5lr8iiar1ei
+          bucket: polarnick.com
+          root: _site
+          include: |
+            **/*.html
+            **/*.xml
+          clear: 'false'
+          skip-unchanged: 'true'
+          fail-on-error: 'true'
+          concurrency: '6'
+          cache-control: '*: public, max-age=300'

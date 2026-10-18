@@ -19,8 +19,9 @@ email: PolarNick239@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   My personal blog about computer vision, GPU coding and other stuff.
 baseurl: "" # the subpath of your site, e.g. /blog
-url_en: "http://polarnick.com"
-url_ru: "http://polarnick.ru"
+url: "https://polarnick.com"
+url_en: "https://polarnick.com"
+url_ru: "https://polarnick.com"
 github_username:  PolarNick239
 vk_username:  PolarNick
 telegram_username:  PolarNick239
@@ -29,7 +30,19 @@ telegram_username:  PolarNick239
 markdown: kramdown
 highlighter: rouge
 source: .
-exclude: [src]
+exclude:
+  - src
+  - AGENTS.md
+  - CNAME
+  - CNAME_domain_config.md
+  - Gemfile
+  - Gemfile.lock
+  - Makefile
+  - scripts
+  - infrastructure
+  - tests
+  - vendor
+  - .bundle
 
 kramdown:
   input: GFM

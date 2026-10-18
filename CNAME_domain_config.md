@@ -1,3 +1,10 @@
+# Domain configuration
+
+Current Yandex Object Storage / Cloud DNS setup and guarded cutover:
+[infrastructure/README.md](infrastructure/README.md).
+
+## Legacy GitHub Pages / REG records (rollback reference)
+
 https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
 
 A * → 185.199.108.153
